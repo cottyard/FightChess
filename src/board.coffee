@@ -22,8 +22,6 @@ draw_board = (ctx, size) ->
 set_canvas_attr = (cvs, z_index, size) ->
   cvs.style.border = "solid #000 #{cvs_border_width}px"
   cvs.style.position = "absolute"
-  cvs.style.left = "10px"
-  cvs.style.top = "10px"
   cvs.style['z-index'] = "#{z_index}"
   cvs.width = cvs.height = size
 
