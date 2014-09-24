@@ -2,8 +2,20 @@
 <html>
 <head>
   <title>Fight Chess!</title>
-  <style>
-    table {
+  <script src="lib/util.js"></script>
+  <script src="lib/board.js"></script>
+</head>
+<body onload="start_client()">
+  <canvas id="cream"></canvas>
+  <canvas id="board"></canvas>
+  <script>
+    function start_client() {
+      board.start();
+    }
+  </script>
+</body>
+</html>
+<!-- /*    table {
       text-align: center;
       border-collapse: collapse;
       position: absolute;
@@ -21,20 +33,8 @@
     table tr:nth-child(odd) td:nth-child(even),
           tr:nth-child(even) td:nth-child(odd) {
       background: #BB9;
-    }
-    canvas {
-      z-index: 1;
-      border: solid #000 1px;
-      position: absolute;
-      left: 10px;
-      top: 10px;
-    }
-  </style>
-  <script src="lib/util.js"></script>
-</head>
-<body onload="start_client()">
-  <canvas id="cream" height="403" width="409"></canvas>
-  <table>
+    }*/ -->
+  <!-- <table>
     <tr>
       <td>&#9820;</td>
       <td>&#9822;</td>
@@ -115,16 +115,4 @@
       <td>&#9816;</td>
       <td>&#9814;</td>
     </tr>
-  </table>
-  <script>
-    function start_client() {
-      cvs = document.getElementById('cream')
-      ctx = cvs.getContext('2d');
-      style_red = "rgba(255, 0, 0, 0.7)"
-      style_green = "rgba(0, 255, 0, 0.7)"
-      util.set_style(ctx, style_green)
-      util.arrow(ctx, 25, 25, 100, 100);
-    }
-  </script>
-</body>
-</html>
+  </table> -->
