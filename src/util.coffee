@@ -39,6 +39,9 @@ rectangle = (ctx, x, y, width, height, fill = no) ->
   else 
     ctx.strokeRect x, y, width, height
 
+text = (ctx, text, x, y) ->
+  ctx.fillText text, x, y
+
 clear_canvas = (ctx, canvas) ->
   ctx.save()
   ctx.setTransform 1, 0, 0, 1, 0, 0
@@ -57,6 +60,7 @@ window.util = {
   line,
   triangle,
   rectangle,
+  text,
   
   clear_canvas,
   

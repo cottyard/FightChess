@@ -1,5 +1,6 @@
 cvs_border_width = 3
 cvs_size = 400
+grid_size = cvs_size / 8
 
 cvs = null
 ctx = null
@@ -10,13 +11,12 @@ ctx_background = null
 cvs_bounding_rect = null
 
 draw_board = (ctx, size) ->
-  grid_len = size  / 8
   ctx.save()
   util.set_style ctx, util.style_brown
-  for x in [0...size ] by grid_len
-    for y in [0...size ] by grid_len
-      if (x + y) / grid_len % 2 isnt 0
-        util.rectangle ctx, x, y, grid_len, grid_len, yes
+  for x in [0...size ] by grid_size
+    for y in [0...size ] by grid_size
+      if (x + y) / grid_size % 2 isnt 0
+        util.rectangle ctx, x, y, grid_size, grid_size, yes
   ctx.restore()
 
 set_canvas_attr = (cvs, z_index, size) ->
@@ -25,18 +25,62 @@ set_canvas_attr = (cvs, z_index, size) ->
   cvs.style['z-index'] = "#{z_index}"
   cvs.width = cvs.height = size
 
+piece =
+  black:
+    pawn: '\u265F'
+    knight: '\u265E'
+    bishop: '\u265D'
+    rook: '\u265C'
+    queen: '\u265B'
+    king: '\u265A'
+  white:
+    pawn: '\u2659'
+    knight: '\u2658'
+    bishop: '\u2657'
+    rook: '\u2656'
+    queen: '\u2655'
+    king: '\u2654'
+
+piece_arrangement = [
+  'rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'
+]
+
+coord_to_pos = (x, y) ->
+  console.log x, y
+  pos_x = grid_size * (x - 1) + 5
+  pos_y = grid_size * (y - 1) + 40
+  console.log pos_x, pos_y
+  [pos_x, pos_y]
+
+draw_piece = (piece, coord_x, coord_y) ->
+  [pos_x, pos_y] = coord_to_pos coord_x, coord_y
+  util.text ctx, piece, pos_x, pos_y
+
+draw_pieces = ->
+  for x in [1..8]
+    draw_piece piece.white.pawn, x, 7
+    draw_piece piece.white[piece_arrangement[x - 1]], x, 8
+  
+  for x in [1..8]
+    draw_piece piece.black.pawn, x, 2
+    draw_piece piece.black[piece_arrangement[x - 1]], x, 1
+    
 start = ->
   cvs = document.getElementById 'cream'
+  ctx = cvs.getContext '2d'
+  cvs_bounding_rect = cvs.getBoundingClientRect()
+  
   cvs_background = document.getElementById 'board'
+  ctx_background = cvs_background.getContext '2d'
   
   set_canvas_attr cvs_background, 1, cvs_size
   set_canvas_attr cvs, 2, cvs_size
   
-  ctx_background = cvs_background .getContext '2d'
+  ctx.font = "40px Courier New"
+    
   draw_board ctx_background, cvs_size
-
-  ctx = cvs.getContext '2d'
-  cvs_bounding_rect = cvs.getBoundingClientRect()
+  draw_pieces()
+  
 
   cvs.addEventListener "mousedown", on_mousedown, false
   cvs.addEventListener "mouseup", on_mouseup, false
