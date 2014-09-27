@@ -42,10 +42,10 @@ rectangle = (ctx, x, y, width, height, fill = no) ->
 text = (ctx, text, x, y) ->
   ctx.fillText text, x, y
 
-clear_canvas = (ctx, canvas) ->
+clear_canvas = (ctx) ->
   ctx.save()
   ctx.setTransform 1, 0, 0, 1, 0, 0
-  ctx.clearRect 0, 0, canvas.width, canvas.height
+  ctx.clearRect 0, 0, ctx.canvas.width, ctx.canvas.height
   ctx.restore()
 
 set_style = (ctx, style) ->
