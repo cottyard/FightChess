@@ -10,6 +10,8 @@ ctx_background = null
 
 cvs_bounding_rect = null
 
+textarea = null
+
 draw_board = (ctx, size) ->
   ctx.save()
   util.set_style ctx, util.style_brown
@@ -45,15 +47,23 @@ piece_arrangement = [
   'rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'
 ]
 
-coord_to_pos = (x, y) ->
-  console.log x, y
+hoop = (num, [range_lower, range_upper]) ->
+  num = range_lower if num < range_lower
+  num = range_upper if num > range_upper
+  num
+
+coord_to_pos = ([x, y]) ->
   pos_x = grid_size * (x - 1) + 5
   pos_y = grid_size * (y - 1) + 40
-  console.log pos_x, pos_y
   [pos_x, pos_y]
 
+pos_to_coord = ([x, y]) ->
+  coord_x = hoop x // grid_size + 1, [1, 8]
+  coord_y = hoop y // grid_size + 1, [1, 8]
+  [coord_x, coord_y]
+
 draw_piece = (piece, coord_x, coord_y) ->
-  [pos_x, pos_y] = coord_to_pos coord_x, coord_y
+  [pos_x, pos_y] = coord_to_pos [coord_x, coord_y]
   util.text ctx, piece, pos_x, pos_y
 
 draw_pieces = ->
@@ -81,11 +91,11 @@ start = ->
   draw_board ctx_background, cvs_size
   draw_pieces()
   
+  textarea = document.getElementById 'mousepos'
 
-  cvs.addEventListener "mousedown", on_mousedown, false
-  cvs.addEventListener "mouseup", on_mouseup, false
+  #cvs.addEventListener "mousedown", on_mousedown, false
+  #cvs.addEventListener "mouseup", on_mouseup, false
   cvs.addEventListener "mousemove", on_mousemove, false
-  
 
 get_mouse_pos = (evt) ->
   mouse_x = evt.clientX - cvs_bounding_rect.left - cvs_border_width
@@ -105,12 +115,13 @@ on_mouseup = (evt) ->
   pos = get_mouse_pos evt
   util.set_style ctx_background, util.style_red_tp
   util.arrow ctx_background, down_pos[0], down_pos[1], pos[0], pos[1]
-  
+
 on_mousemove = (evt) ->
-  return unless drawing
-  util.clear_canvas ctx, cvs
-  pos = get_mouse_pos evt
-  util.arrow ctx, down_pos[0], down_pos[1], pos[0], pos[1]
+  textarea.value = pos_to_coord get_mouse_pos evt
+  #return unless drawing
+  #util.clear_canvas ctx, cvs
+  #pos = get_mouse_pos evt
+  #util.arrow ctx, down_pos[0], down_pos[1], pos[0], pos[1]
 
 window.board = {
   start
