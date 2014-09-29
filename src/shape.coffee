@@ -53,9 +53,11 @@ set_style = (ctx, style) ->
 
 style_red_tp = "rgba(255, 0, 0, 0.7)"
 style_green_tp = "rgba(0, 255, 0, 0.7)"
+style_tp = "rgba(0, 0, 0, 0.5)"
 style_brown = "#BB9"
 
-window.util = {
+
+window.shape = {
   arrow,
   line,
   triangle,
@@ -68,5 +70,6 @@ window.util = {
   
   style_red_tp,
   style_green_tp,
-  style_brown
+  style_brown,
+  style_tp
 }
