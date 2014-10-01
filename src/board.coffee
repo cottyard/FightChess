@@ -36,16 +36,29 @@ paint_pieces_on_board = (ctx) ->
 picking_piece = null
 
 on_pick = (evt) ->
+  return unless board.chess_board.is_occupied evt.coord
   picking_piece = board.chess_board.get_piece evt.coord
+  paint.mark_grid game.ctx.static, evt.coord
+  moves = picking_piece.valid_moves()
+  for mr in moves.regular
+    paint.mark_grid game.ctx.static, mr, shape.style_green_tp
+  for mo in moves.offensive
+    paint.mark_grid game.ctx.static, mo, shape.style_red_tp
 
 on_drop = (evt) ->
-  picking_piece.move_to evt.coord
+  moves = picking_piece.valid_moves()
+  if calc.coord_one_of(evt.coord, moves.regular) or calc.coord_one_of(evt.coord, moves.offensive)
+    picking_piece.move_to evt.coord
   picking_piece = null
   paint_pieces_on_board game.ctx.static
   shape.clear_canvas game.ctx.animate
 
 on_hover = (evt) ->
   game.textarea.value = "#{evt.coord}"
+  if picking_piece or board.chess_board.is_occupied evt.coord
+    game.cvs.animate.style.cursor = "pointer"
+  else
+    game.cvs.animate.style.cursor = "default"
 
 on_mousedown = (evt) ->
   coord = calc.pos_to_coord evt.pos

@@ -32,10 +32,22 @@ piece_at = (ctx, piece, [pos_x, pos_y]) ->
   type = piece.type
   grid_size = settings.grid_size
   shape.text ctx, piece_drawing_types[color][type],
-            pos_x - grid_size / 2 + 5, pos_y - grid_size / 2 + 40
+             pos_x - grid_size / 2 + 5, pos_y - grid_size / 2 + 40
+
+mark_grid = (ctx, coord, style) ->
+  padding = 2
+  grid_size = settings.grid_size
+  [x, y] = coord
+  [x, y] = [(x - 1) * grid_size + padding, (y - 1) * grid_size + padding]
+  ctx.save()
+  ctx.lineWidth = 1 + (padding - 1) * 2
+  shape.set_style ctx, style if style?
+  shape.rectangle ctx, x, y, grid_size - 2 * padding, grid_size - 2 * padding
+  ctx.restore()
 
 window.paint = {
   background,
   piece,
-  piece_at
+  piece_at,
+  mark_grid
 }

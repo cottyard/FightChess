@@ -16,8 +16,15 @@ pos_to_coord = ([x, y]) ->
 coord_equal = (coord_1, coord_2) ->
    coord_1[0] is coord_2[0] and coord_1[1] is coord_2[1]
 
+coord_one_of = (coord, coord_list) ->
+  for c in coord_list
+    if coord_equal coord, c
+      return true
+  false
+
 window.calc = {
   coord_to_pos,
   pos_to_coord,
-  coord_equal
+  coord_equal,
+  coord_one_of
 }
