@@ -13,7 +13,7 @@ init_cvs = (name) ->
   ctx[name] = cvs[name].getContext '2d'
 
 set_canvas_attr = (cvs, z_index, size) ->
-  cvs.style.border = "solid #000 #{settings.cvs_border_width }px"
+  cvs.style.border = "solid #000 #{settings.cvs_border_width}px"
   cvs.style.position = "absolute"
   cvs.style.cursor = "pointer"
   cvs.style['z-index'] = "#{z_index}"

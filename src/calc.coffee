@@ -13,7 +13,11 @@ pos_to_coord = ([x, y]) ->
   coord_y = hoop y // settings.grid_size + 1, [1, 8]
   [coord_x, coord_y]
 
+coord_equal = (coord_1, coord_2) ->
+   coord_1[0] is coord_2[0] and coord_1[1] is coord_2[1]
+
 window.calc = {
   coord_to_pos,
-  pos_to_coord
+  pos_to_coord,
+  coord_equal
 }

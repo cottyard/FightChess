@@ -1,10 +1,17 @@
-# chess board
-
 class Board
+  piece_arrangement = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
   constructor: ->
     @board = (
       (null for j in [1..8]) for i in [1..8]
     )
+    
+    for x in [1..8]
+      @place_piece new piece.Piece 'white', 'pawn', [x, 7], @
+      @place_piece new piece.Piece 'white', piece_arrangement[x - 1], [x, 8], @
+
+    for x in [1..8]
+      @place_piece new piece.Piece 'black', 'pawn', [x, 2], @
+      @place_piece new piece.Piece 'black', piece_arrangement[x - 1], [x, 1], @
 
   is_occupied: ([coord_x, coord_y]) ->
     @board[coord_x - 1][coord_y - 1]?
@@ -19,21 +26,6 @@ class Board
     [coord_x, coord_y] = piece.coordinate
     @board[coord_x - 1][coord_y - 1] = piece
 
-# chess piece
-
-piece_arrangement = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
-
-class Piece
-  constructor: (@color, @type, @coordinate, @board) ->
-
-  move_to: (new_coord) ->
-    @board.lift_piece @coordinate if @is_onboard()
-    @coordinate = new_coord
-    @board.place_piece @ if new_coord?
-
-  is_onboard: ->
-    @coordinate?
-
 paint_pieces_on_board = (ctx) ->
   shape.clear_canvas ctx
   for i in [1..8]
@@ -41,18 +33,51 @@ paint_pieces_on_board = (ctx) ->
       continue unless board.chess_board.is_occupied [i, j]
       paint.piece ctx, board.chess_board.get_piece [i, j]
 
+picking_piece = null
+
+on_pick = (evt) ->
+  picking_piece = board.chess_board.get_piece evt.coord
+
+on_drop = (evt) ->
+  picking_piece.move_to evt.coord
+  picking_piece = null
+  paint_pieces_on_board game.ctx.static
+  shape.clear_canvas game.ctx.animate
+
+on_hover = (evt) ->
+  game.textarea.value = "#{evt.coord}"
+
+on_mousedown = (evt) ->
+  coord = calc.pos_to_coord evt.pos
+  ev.trigger 'pick', {coord}
+
+on_mouseup = (evt) ->
+  return unless picking_piece
+  coord = calc.pos_to_coord evt.pos
+  ev.trigger 'drop', {coord}
+
+hovering_coord = [-1, -1]
+
+on_mousemove = (evt) ->
+  coord = calc.pos_to_coord evt.pos
+  ev.trigger 'hover', {coord} unless calc.coord_equal hovering_coord, coord
+  hovering_coord = coord
+
+  return unless picking_piece
+  shape.clear_canvas game.ctx.animate
+  shape.set_style game.ctx.animate, shape.style_tp
+  paint.piece_at game.ctx.animate, picking_piece, evt.pos
+
 init = ->
   board.chess_board = new Board()
-
-  for x in [1..8]
-    board.chess_board.place_piece new Piece 'white', 'pawn', [x, 7], board.chess_board
-    board.chess_board.place_piece new Piece 'white', piece_arrangement[x - 1], [x, 8], board.chess_board
-
-  for x in [1..8]
-    board.chess_board.place_piece new Piece 'black', 'pawn', [x, 2], board.chess_board
-    board.chess_board.place_piece new Piece 'black', piece_arrangement[x - 1], [x, 1], board.chess_board
-
   paint_pieces_on_board game.ctx.static
+  
+  ev.hook 'mousedown', on_mousedown
+  ev.hook 'mouseup', on_mouseup
+  ev.hook 'mousemove', on_mousemove
+  ev.hook 'pick', on_pick
+  ev.hook 'drop', on_drop
+  ev.hook 'hover', on_hover
 
 window.board = {
   init,
