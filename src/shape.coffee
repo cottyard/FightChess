@@ -51,8 +51,24 @@ clear_canvas = (ctx) ->
 set_style = (ctx, style) ->
   ctx.strokeStyle = ctx.fillStyle = style
 
+# state
+
+saved_strokestyle = null
+saved_fillstyle = null
+
+save_style = (ctx) ->
+  saved_strokestyle = ctx.strokeStyle
+  saved_fillstyle = ctx.fillStyle
+  
+restore_style = (ctx) ->
+  ctx.strokeStyle = saved_strokestyle
+  ctx.fillStyle = saved_fillstyle
+
+# constant
+
 style_red_tp = "rgba(255, 0, 0, 0.7)"
 style_green_tp = "rgba(0, 255, 0, 0.7)"
+style_blue_tp = "rgba(0, 0, 255, 0.7)"
 style_tp = "rgba(0, 0, 0, 0.5)"
 style_blue = "#BBF"
 style_brown = "#BB9"
@@ -67,9 +83,12 @@ window.shape = {
   clear_canvas,
   
   set_style,
+  save_style,
+  restore_style,
   
   style_red_tp,
   style_green_tp,
+  style_blue_tp,
   style_brown,
   style_blue,
   style_tp

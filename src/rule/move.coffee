@@ -108,7 +108,6 @@ king = (color, coord, board) ->
   
   {regular, offensive}
 
-window.rule = {}
 window.rule.move = {
   strategies: {
     pawn,
