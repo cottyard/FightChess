@@ -19,12 +19,12 @@ set_canvas_attr = (cvs, z_index, size) ->
 
   cvs.width = cvs.height = size
 
-init_all = ->
+init = ->
   init_cvs 'background'
   init_cvs 'static'
   init_cvs 'animate'
 
-  game.cvs_bounding_rect = cvs.animate.getBoundingClientRect()
+  ui.cvs_bounding_rect = cvs.animate.getBoundingClientRect()
   
   set_canvas_attr cvs.background, 1, settings.cvs_size
   set_canvas_attr cvs.static, 2, settings.cvs_size
@@ -35,10 +35,10 @@ init_all = ->
 
   paint.background ctx.background, settings.cvs_size
   
-  game.textarea = document.getElementById 'mousepos'
+  ui.textarea = document.getElementById 'mousepos'
 
-window.game = {
-  init_all,
+window.ui = {
+  init,
   cvs,
   ctx,
   cvs_bounding_rect: null,
