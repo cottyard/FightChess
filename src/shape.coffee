@@ -1,22 +1,11 @@
-arrow = (ctx, x, y, to_x, to_y, size = 10) ->
+arrow = (ctx, x, y, to_x, to_y, size = 5) ->
   line ctx, x, y, to_x, to_y
 
-  delta_x = to_x - x
-  delta_y = to_y - y
-  
-  if delta_x is 0
-    angle = if delta_y > 0 then Math.PI else 0
-  else
-    angle = Math.atan delta_y / delta_x
-    if delta_x < 0
-      angle -= Math.PI / 2
-    else
-      angle += Math.PI / 2
-
+  angle = calc.get_segment_angle x, y, to_x, to_y
   ctx.save()
   ctx.translate to_x, to_y
   ctx.rotate angle
-  triangle ctx, 0, -size, -size / 2, 0, size / 2, 0
+  triangle ctx, 0, 0, -size / 2, size, size / 2, size
   ctx.restore()
 
 line = (ctx, x, y, to_x, to_y) ->

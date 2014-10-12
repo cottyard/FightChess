@@ -51,8 +51,8 @@ on_drop = (evt) ->
   abort_preview()
 
 on_hover = (evt) ->
-  ui.textarea.value = "#{evt.coord}"
   if board.chess_board.is_occupied evt.coord
+    ui.textarea.value = board.chess_board.get_piece(evt.coord).info()
     ui.cvs.animate.style.cursor = "pointer"
   else
     ui.cvs.animate.style.cursor = "default"

@@ -1,3 +1,29 @@
+shrink_segment = (point_from, point_to, length = 15)->
+  [x, y] = point_from
+  [to_x, to_y] = point_to
+  angle = get_segment_angle x, y, to_x, to_y
+  dx = length * Math.sin angle
+  dy = length * Math.cos angle
+  x += dx
+  y -= dy
+  to_x -= dx
+  to_y += dy
+  return [[x, y], [to_x, to_y]]
+
+get_segment_angle = (x, y, to_x, to_y) ->
+  delta_x = to_x - x
+  delta_y = to_y - y
+  
+  if delta_x is 0
+    angle = if delta_y > 0 then Math.PI else 0
+  else
+    angle = Math.atan delta_y / delta_x
+    if delta_x < 0
+      angle -= Math.PI / 2
+    else
+      angle += Math.PI / 2
+  return angle
+
 hoop = (num, [range_lower, range_upper]) ->
   num = range_lower if num < range_lower
   num = range_upper if num > range_upper
@@ -26,5 +52,7 @@ window.calc = {
   coord_to_pos,
   pos_to_coord,
   coord_equal,
-  coord_one_of
+  coord_one_of,
+  get_segment_angle,
+  shrink_segment
 }

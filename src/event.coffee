@@ -12,10 +12,15 @@ input operation
 game operation
   op_movepiece {piece, coord_to}
 battle
-  battle_attack {piece_atker, piece_atkee}
-  battle_assist {piece_aster, piece_astee}
+  battle_attack {piece_atker, piece_atkee, coord_from, coord_to, damage}
+  battle_assist {piece_aster, piece_astee, coord_from, coord_to, enhancement}
+  battle_heal {piece_healer, piece_healee, coord_from, coord_to, recuperation}
   battle_move {piece, coord_to}
 game
+  move_round_begin, move_round, move_round_end,
+  assist_round_begin, assist_round, assist_round_end, 
+  recover_round_begin, recover_round, recover_round_end, 
+  attack_round_begin, attack_round, attack_round_end {}
   gametick {}
   render {}
  
