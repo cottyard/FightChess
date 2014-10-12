@@ -6,7 +6,9 @@
     window.rule = {}
   </script>
   <script src="lib/settings.js"></script>
+  <script src="lib/game.js"></script>
   <script src="lib/ui.js"></script>
+  <script src="lib/preview.js"></script>
   <script src="lib/event.js"></script>
   <script src="lib/input.js"></script>
   <script src="lib/shape.js"></script>
@@ -14,6 +16,7 @@
   <script src="lib/board.js"></script>
   <script src="lib/piece.js"></script>
   <script src="lib/paint.js"></script>
+  <script src="lib/log.js"></script>
   <script src="lib/rule/move.js"></script>
   <script src="lib/rule/ability.js"></script>
 
@@ -31,7 +34,11 @@
     function start_client() {
       ui.init();
       input.init();
+      preview.init();
       board.init();
+      game.init();
+      log.init();
+      game.start();
     }
   </script>
 </body>

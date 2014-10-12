@@ -46,9 +46,6 @@ background = (ctx, size) ->
         shape.rectangle ctx, x, y, grid_size, grid_size, yes
   ctx.restore()
 
-piece = (ctx, piece) ->
-  piece_at ctx, piece, calc.coord_to_pos piece.coordinate
-
 piece_at = (ctx, piece, [pos_x, pos_y]) ->
   color = piece.color
   type = piece.type
@@ -59,6 +56,12 @@ piece_at = (ctx, piece, [pos_x, pos_y]) ->
   hp_indicator ctx, [pos_x, pos_y], piece.hp, piece.hp_total
   shield_indicator ctx, [pos_x, pos_y], piece.shield, piece.shield_total
   shape.restore_style ctx
+
+board = (ctx) ->
+  for i in [1..8]
+    for j in [1..8]
+      continue unless window.board.chess_board.is_occupied [i, j]
+      piece_at ctx, window.board.chess_board.get_piece([i, j]), calc.coord_to_pos([i, j])
 
 mark_grid = (ctx, coord, style) ->
   padding = 2
@@ -73,7 +76,7 @@ mark_grid = (ctx, coord, style) ->
 
 window.paint = {
   background,
-  piece,
   piece_at,
+  board,
   mark_grid
 }
