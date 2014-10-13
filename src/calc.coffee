@@ -2,7 +2,7 @@ remove_item_from_array = (item, arr) ->
   index = arr.indexOf item
   arr.splice index, 1 unless index is -1
 
-randint = ([upper, lower]) ->
+randint = ([lower, upper]) ->
   Math.floor((Math.random() * (upper - lower + 1)) + lower);
 
 shrink_segment = (point_from, point_to, length = 15)->
