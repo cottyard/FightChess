@@ -1,3 +1,10 @@
+remove_item_from_array = (item, arr) ->
+  index = arr.indexOf item
+  arr.splice index, 1 unless index is -1
+
+randint = ([upper, lower]) ->
+  Math.floor((Math.random() * (upper - lower + 1)) + lower);
+
 shrink_segment = (point_from, point_to, length = 15)->
   [x, y] = point_from
   [to_x, to_y] = point_to
@@ -54,5 +61,7 @@ window.calc = {
   coord_equal,
   coord_one_of,
   get_segment_angle,
-  shrink_segment
+  shrink_segment,
+  randint,
+  remove_item_from_array
 }

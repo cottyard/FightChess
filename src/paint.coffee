@@ -22,7 +22,7 @@ hp_indicator = (ctx, [pos_x, pos_y], current, total) ->
   color_offset = Math.floor (total - current) / total * 255 * 2
   red_offset = if color_offset > 255 then 255 else color_offset
   green_offset = color_offset - red_offset
-  shape.set_style ctx, "rgba(#{red_offset}, #{255 - green_offset}, 0, 0.7)"
+  shape.set_style ctx, "rgba(#{red_offset}, #{255 - green_offset}, 0, 0.9)"
   shape.rectangle ctx, pos_x + half - 7, pos_y - half, 7, 7, yes
 
 shield_indicator = (ctx, [pos_x, pos_y], current, total) ->

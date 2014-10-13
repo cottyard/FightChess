@@ -41,8 +41,7 @@ hook = (evt_name, hdl) ->
 unhook = (evt_name, hdl) ->
   hdls = handlers[evt_name]
   if hdls?
-    i = hdls.indexOf hdl
-    hdls.splice i, 1 unless i is -1
+    calc.remove_item_from_array hdl, hdls
 
 window.ev = {
   trigger,

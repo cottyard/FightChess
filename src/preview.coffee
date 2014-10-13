@@ -1,4 +1,4 @@
-# preview
+# piece move preview
 
 previewing = no
 previewing_piece = null
@@ -35,6 +35,16 @@ paint_previewing_piece = (evt) ->
   paint.piece_at ui.ctx.animate, previewing_piece, evt.pos
   ui.cvs.animate.style.cursor = "pointer"
 
+# view piece info
+
+view_info_coord = [1, 1]
+
+view_info = (evt) ->
+  if board.chess_board.is_occupied view_info_coord
+    ui.textarea.value = board.chess_board.get_piece(view_info_coord).info()
+  else
+    ui.textarea.value = ''
+
 # input operation handlers
 
 on_pick = (evt) ->
@@ -51,8 +61,8 @@ on_drop = (evt) ->
   abort_preview()
 
 on_hover = (evt) ->
+  view_info_coord = evt.coord
   if board.chess_board.is_occupied evt.coord
-    ui.textarea.value = board.chess_board.get_piece(evt.coord).info()
     ui.cvs.animate.style.cursor = "pointer"
   else
     ui.cvs.animate.style.cursor = "default"
@@ -81,6 +91,8 @@ init = ->
   ev.hook 'pick', on_pick
   ev.hook 'drop', on_drop
   ev.hook 'hover', on_hover
+  
+  ev.hook 'gametick', view_info
 
 window.preview = {
   init

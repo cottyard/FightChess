@@ -40,18 +40,24 @@ clear_canvas = (ctx) ->
 set_style = (ctx, style) ->
   ctx.strokeStyle = ctx.fillStyle = style
 
+set_linewidth = (ctx, width) ->
+  ctx.lineWidth = width
+
 # state
 
 saved_strokestyle = null
 saved_fillstyle = null
+saved_linewidth = null
 
 save_style = (ctx) ->
   saved_strokestyle = ctx.strokeStyle
   saved_fillstyle = ctx.fillStyle
-  
+  saved_linewidth = ctx.lineWidth
+
 restore_style = (ctx) ->
   ctx.strokeStyle = saved_strokestyle
   ctx.fillStyle = saved_fillstyle
+  ctx.lineWidth = saved_linewidth
 
 # constant
 
