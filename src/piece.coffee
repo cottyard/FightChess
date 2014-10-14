@@ -101,6 +101,10 @@ class Piece
     ev.unhook 'attack_round_begin', @on_attack_round_begin
     ev.unhook 'attack_round_end', @on_attack_round_end
     ev.unhook 'recover_round', @on_recover_round
+    ev.trigger 'piece_die', {
+      piece: @,
+      coord: @coordinate
+    }
   
   info: ->
     """hp: #{Math.floor @hp}/#{@hp_total}

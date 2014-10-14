@@ -5,7 +5,7 @@ previewing_piece = null
 previewing_coord = [-1, -1]
 
 preview = (gametick_evt) ->
-  unless board.chess_board.is_occupied(previewing_coord) or
+  if not board.chess_board.is_occupied(previewing_coord) or
          board.chess_board.get_piece(previewing_coord) isnt previewing_piece
     abort_preview()
     return

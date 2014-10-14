@@ -24,6 +24,7 @@ game
   gametick {}
   render {}
 piece state
+  piece_die {piece, coord}
   piece_hurt {piece, coord}
 
 ###
