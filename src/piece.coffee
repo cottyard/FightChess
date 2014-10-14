@@ -79,6 +79,10 @@ class Piece
       damage -= @shield
       @shield = 0
       @hp -= damage
+      ev.trigger 'piece_hurt', {
+        piece: @, 
+        coord: @coordinate
+      }
     if @hp <= 0
       @die()
 

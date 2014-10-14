@@ -23,7 +23,9 @@ game
   attack_round_begin, attack_round, attack_round_end {}
   gametick {}
   render {}
- 
+piece state
+  piece_hurt {piece, coord}
+
 ###
 
 handlers = {}
