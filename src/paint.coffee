@@ -17,8 +17,12 @@ piece_drawing_types =
 # indicators
 
 hp_indicator = (ctx, [pos_x, pos_y], current, total) ->
-  
   half = settings.half_grid_size
+  # for hp < 10%, give the red indicator.
+  # for hp > 10%, give a gradient color from green to red.
+  total = 0.9 * total
+  current -= 0.1 * total
+  current = 0 if current < 0
   color_offset = Math.floor (total - current) / total * 255 * 2
   red_offset = if color_offset > 255 then 255 else color_offset
   green_offset = color_offset - red_offset
