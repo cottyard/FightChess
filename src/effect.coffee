@@ -53,7 +53,7 @@ on_piece_hurt = (evt) ->
 render_effects = (ctx, effects) ->
   for e, i in effects
     to_be_continued = e.render ctx
-    delete effects[i] unless to_be_continued
+    effects[i] = null unless to_be_continued
   effects.filter (e) -> e?
 
 render_all = ->

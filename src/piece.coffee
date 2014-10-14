@@ -73,6 +73,7 @@ class Piece
       @shield = @shield_total
     
   inflict: (damage) ->
+    return unless @is_onboard()
     if @shield >= damage
       @shield -= damage
     else

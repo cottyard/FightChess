@@ -4,9 +4,12 @@ previewing = no
 previewing_piece = null
 previewing_coord = [-1, -1]
 
-preview = (gametick_evt) ->
-  if not board.chess_board.is_occupied(previewing_coord) or
-         board.chess_board.get_piece(previewing_coord) isnt previewing_piece
+in_previewing_condition = ->
+  board.chess_board.is_occupied(previewing_coord) and
+  board.chess_board.get_piece(previewing_coord) is previewing_piece
+
+preview = (evt) ->
+  if not in_previewing_condition()
     abort_preview()
     return
   paint.mark_grid ui.ctx.static, previewing_coord 
@@ -19,15 +22,15 @@ preview = (gametick_evt) ->
     paint.mark_grid ui.ctx.static, mo, shape.style_blue_tp
 
 abort_preview = ->
-  ev.unhook 'gametick', preview
-  ev.unhook 'gametick', paint_previewing_piece
+  ev.unhook 'render', preview
+  ev.unhook 'render', paint_previewing_piece
   ev.unhook 'mousemove', paint_previewing_piece
   shape.clear_canvas ui.ctx.animate
   previewing = no
 
 launch_preview = ->
-  ev.hook 'gametick', preview
-  ev.hook 'gametick', paint_previewing_piece
+  ev.hook 'render', preview
+  ev.hook 'render', paint_previewing_piece
   ev.hook 'mousemove', paint_previewing_piece
   previewing = yes
 
@@ -37,6 +40,8 @@ update_mouse_position = (evt) ->
   last_mouse_position = evt.pos
 
 paint_previewing_piece = (evt) ->
+  if not in_previewing_condition()
+    return
   shape.clear_canvas ui.ctx.animate
   shape.set_style ui.ctx.animate, shape.style_tp
   paint.piece_at ui.ctx.animate, previewing_piece, last_mouse_position 
@@ -100,7 +105,7 @@ init = ->
   ev.hook 'drop', on_drop
   ev.hook 'hover', on_hover
   
-  ev.hook 'gametick', view_info
+  ev.hook 'render', view_info
 
 window.preview = {
   init

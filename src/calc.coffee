@@ -1,3 +1,6 @@
+copy_array = (arr) ->
+  arr.slice 0
+
 remove_item_from_array = (item, arr) ->
   index = arr.indexOf item
   arr.splice index, 1 unless index is -1
@@ -63,5 +66,6 @@ window.calc = {
   get_segment_angle,
   shrink_segment,
   randint,
-  remove_item_from_array
+  remove_item_from_array,
+  copy_array
 }

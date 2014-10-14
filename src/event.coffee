@@ -32,8 +32,11 @@ piece state
 handlers = {}
 
 trigger = (evt_name, evt) ->
-  if handlers[evt_name]?
-    for hdl in handlers[evt_name]
+  hdls = handlers[evt_name]
+  if hdls?
+    # some handlers may be unhooked during the invocation,
+    # so make a copy of all handlers first before invoking them.
+    for hdl in calc.copy_array hdls 
       hdl evt
 
 hook = (evt_name, hdl) ->
