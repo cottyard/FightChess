@@ -20,19 +20,26 @@ preview = (gametick_evt) ->
 
 abort_preview = ->
   ev.unhook 'gametick', preview
+  ev.unhook 'gametick', paint_previewing_piece
   ev.unhook 'mousemove', paint_previewing_piece
   shape.clear_canvas ui.ctx.animate
   previewing = no
 
 launch_preview = ->
   ev.hook 'gametick', preview
+  ev.hook 'gametick', paint_previewing_piece
   ev.hook 'mousemove', paint_previewing_piece
   previewing = yes
+
+last_mouse_position = null
+
+update_mouse_position = (evt) ->
+  last_mouse_position = evt.pos
 
 paint_previewing_piece = (evt) ->
   shape.clear_canvas ui.ctx.animate
   shape.set_style ui.ctx.animate, shape.style_tp
-  paint.piece_at ui.ctx.animate, previewing_piece, evt.pos
+  paint.piece_at ui.ctx.animate, previewing_piece, last_mouse_position 
   ui.cvs.animate.style.cursor = "pointer"
 
 # view piece info
@@ -65,7 +72,7 @@ on_hover = (evt) ->
   if board.chess_board.is_occupied evt.coord
     ui.cvs.animate.style.cursor = "pointer"
   else
-    ui.cvs.animate.style.cursor = "default"
+    ui.cvs.animate.style.cursor = "auto"
 
 # raw input handlers, raw input -> input operation
 
@@ -88,6 +95,7 @@ init = ->
   ev.hook 'mousedown', on_mousedown
   ev.hook 'mouseup', on_mouseup
   ev.hook 'mousemove', on_mousemove
+  ev.hook 'mousemove', update_mouse_position
   ev.hook 'pick', on_pick
   ev.hook 'drop', on_drop
   ev.hook 'hover', on_hover
