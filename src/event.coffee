@@ -30,8 +30,22 @@ piece state
 ###
 
 handlers = {}
+dispatching = no 
+event_queue = []
 
 trigger = (evt_name, evt) ->
+  event_queue.push [evt_name, evt]
+  if not dispatching # the event being dispatched may trigger other events
+    dispatch()
+
+dispatch = ->
+  dispatching = yes
+  while event_queue.length > 0
+    dispatch_an_event()
+  dispatching = no
+
+dispatch_an_event = ->
+  [evt_name, evt] = event_queue.shift()
   hdls = handlers[evt_name]
   if hdls?
     # some handlers may be unhooked during the invocation,
