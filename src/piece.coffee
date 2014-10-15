@@ -1,5 +1,15 @@
 class Piece
   constructor: (@color, @type, @coordinate) ->
+    @retrieve_basic_info()
+    @initialize_state_info()
+    
+    ev.hook 'assist_round_begin', @on_assist_round_begin
+    ev.hook 'assist_round_end', @on_assist_round_end
+    ev.hook 'attack_round_begin', @on_attack_round_begin
+    ev.hook 'attack_round_end', @on_attack_round_end
+    ev.hook 'recover_round', @on_recover_round
+
+  retrieve_basic_info: ->
     ability = rule.ability[@type]
     
     @attack = ability['atk']
@@ -10,22 +20,37 @@ class Piece
     @shield_heal_born = ability['shield_heal']
     @move_cd = ability['move_cd']
 
+  initialize_state_info: ->
     @hp = @hp_total
     @shield = @shield_total = @shield_total_born
     @shield_heal = @shield_heal_born
     @attack_cd_ticks = 0
     @move_cd_ticks = 0
 
-    ev.hook 'assist_round_begin', @on_assist_round_begin
-    ev.hook 'assist_round_end', @on_assist_round_end
-    ev.hook 'attack_round_begin', @on_attack_round_begin
-    ev.hook 'attack_round_end', @on_attack_round_end
-    ev.hook 'recover_round', @on_recover_round
-
   move_to: (new_coord) ->
-    board.instance.lift_piece @coordinate if @is_onboard()
-    @coordinate = new_coord
-    board.instance.place_piece @ if new_coord?
+    if new_coord?
+      board.instance.lift_piece @coordinate if @is_onboard()
+      @coordinate = new_coord
+      board.instance.place_piece @
+    if @type is 'pawn'
+      @try_promoting()
+    if @type is 'super_pawn'
+      @try_transforming()
+
+  try_promoting: (coord) ->
+    if (@color is 'white' and @coordinate[1] is 1) or
+       (@color is 'black' and @coordinate[1] is 8)
+      @type = 'super_pawn'
+      @retrieve_basic_info()
+      @initialize_state_info()
+
+  transform_column = ['rook', 'knight', 'bishop', 'queen', 'queen', 'bishop', 'knight', 'rook']
+  try_transforming: (coord) ->
+    if (@color is 'white' and @coordinate[1] is 8) or
+       (@color is 'black' and @coordinate[1] is 1)
+      @type = transform_column[@coordinate[0] - 1]
+      @retrieve_basic_info()
+      @initialize_state_info()
 
   valid_moves: ->
     rule.move.strategies[@type] @color, @coordinate, board.instance
@@ -108,7 +133,7 @@ class Piece
     }
   
   info: ->
-    """hp: #{Math.floor @hp}/#{@hp_total}
+    """hp: #{Math.ceil @hp}/#{@hp_total}
        shield: #{Math.floor @shield}/#{@shield_total} (#{@shield_heal})
     """
   

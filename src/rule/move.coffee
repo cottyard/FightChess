@@ -45,6 +45,26 @@ pawn = (color, coord, board) ->
   
   {regular, offensive, defensive}
 
+super_pawn_moves_deltas = [
+  [1, 0], [-1, 0], [0, 1], [0, -1]
+]
+super_pawn_atk_ast_deltas = [
+  [1, 1], [1, -1], [-1, 1], [-1, -1]
+]
+super_pawn = (color, coord, board) ->
+  regular = []
+  offensive = []
+  defensive = []
+  
+  [col, row] = coord
+  for [x, y] in super_pawn_moves_deltas
+    add_regular_move regular, [col + x, row + y], board
+  for [x, y] in super_pawn_atk_ast_deltas
+    add_defensive_move defensive, color, [col + x, row + y], board
+    add_offensive_move offensive, color, [col + x, row + y], board
+
+  {regular, offensive, defensive}
+
 knight_moves_deltas = [
   [2, 1], [2, -1], [-2, 1], [-2, -1],
   [1, 2], [1, -2], [-1, 2], [-1, -2]
@@ -132,6 +152,7 @@ king = (color, coord, board) ->
 window.rule.move = {
   strategies: {
     pawn,
+    super_pawn,
     knight,
     bishop,
     rook,

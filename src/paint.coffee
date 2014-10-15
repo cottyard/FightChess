@@ -1,6 +1,7 @@
 piece_drawing_types =
   black:
     pawn: '\u265F'
+    super_pawn: '\u265F'
     knight: '\u265E'
     bishop: '\u265D'
     rook: '\u265C'
@@ -8,6 +9,7 @@ piece_drawing_types =
     king: '\u265A'
   white:
     pawn: '\u2659'
+    super_pawn: '\u2659'
     knight: '\u2658'
     bishop: '\u2657'
     rook: '\u2656'
