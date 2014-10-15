@@ -35,7 +35,7 @@ init = ->
 
   paint.background ctx.background, settings.cvs_size
   
-  ui.textarea = document.getElementById 'mousepos'
+  ui.textarea = document.getElementById 'info'
 
 window.ui = {
   init,
