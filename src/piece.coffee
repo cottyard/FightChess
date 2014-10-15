@@ -1,5 +1,5 @@
 class Piece
-  constructor: (@color, @type, @coordinate, @board) ->
+  constructor: (@color, @type, @coordinate) ->
     ability = rule.ability[@type]
     
     @attack = ability['atk']
@@ -23,12 +23,12 @@ class Piece
     ev.hook 'recover_round', @on_recover_round
 
   move_to: (new_coord) ->
-    @board.lift_piece @coordinate if @is_onboard()
+    board.instance.lift_piece @coordinate if @is_onboard()
     @coordinate = new_coord
-    @board.place_piece @ if new_coord?
+    board.instance.place_piece @ if new_coord?
 
   valid_moves: ->
-    rule.move.strategies[@type] @color, @coordinate, @board
+    rule.move.strategies[@type] @color, @coordinate, board.instance
 
   is_onboard: ->
     @coordinate?
@@ -37,7 +37,7 @@ class Piece
     @shield_total = @shield_total_born
     @shield_heal = @shield_heal_born
     for coord in @valid_moves().defensive
-      astee = @board.get_piece coord
+      astee = board.instance.get_piece coord
       ev.trigger 'battle_assist', {
         aster: @, 
         astee: astee,
@@ -53,7 +53,7 @@ class Piece
   on_attack_round_begin: =>
     return if @attack_cd_ticks > 0 or @valid_moves().offensive.length is 0
     for coord in @valid_moves().offensive
-      target = @board.get_piece coord
+      target = board.instance.get_piece coord
       ev.trigger 'battle_attack', {
         atker: @, 
         atkee: target,
@@ -95,7 +95,7 @@ class Piece
   
   die: ->
     return unless @is_onboard()
-    @board.lift_piece @coordinate
+    board.instance.lift_piece @coordinate
     @coordinate = null
     ev.unhook 'assist_round_begin', @on_assist_round_begin
     ev.unhook 'assist_round_end', @on_assist_round_end

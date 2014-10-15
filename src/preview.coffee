@@ -5,8 +5,8 @@ previewing_piece = null
 previewing_coord = [-1, -1]
 
 in_previewing_condition = ->
-  board.chess_board.is_occupied(previewing_coord) and
-  board.chess_board.get_piece(previewing_coord) is previewing_piece
+  board.instance.is_occupied(previewing_coord) and
+  board.instance.get_piece(previewing_coord) is previewing_piece
 
 preview = (evt) ->
   if not in_previewing_condition()
@@ -52,16 +52,16 @@ paint_previewing_piece = (evt) ->
 view_info_coord = [1, 1]
 
 view_info = (evt) ->
-  if board.chess_board.is_occupied view_info_coord
-    ui.textarea.value = board.chess_board.get_piece(view_info_coord).info()
+  if board.instance.is_occupied view_info_coord
+    ui.textarea.value = board.instance.get_piece(view_info_coord).info()
   else
     ui.textarea.value = ''
 
 # input operation handlers
 
 on_pick = (evt) ->
-  return unless board.chess_board.is_occupied evt.coord
-  previewing_piece = board.chess_board.get_piece evt.coord
+  return unless board.instance.is_occupied evt.coord
+  previewing_piece = board.instance.get_piece evt.coord
   previewing_coord = evt.coord
   launch_preview()
 
@@ -74,7 +74,7 @@ on_drop = (evt) ->
 
 on_hover = (evt) ->
   view_info_coord = evt.coord
-  if board.chess_board.is_occupied evt.coord
+  if board.instance.is_occupied evt.coord
     ui.cvs.animate.style.cursor = "pointer"
   else
     ui.cvs.animate.style.cursor = "auto"

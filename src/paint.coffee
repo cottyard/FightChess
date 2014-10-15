@@ -64,8 +64,8 @@ piece_at = (ctx, piece, [pos_x, pos_y]) ->
 board = (ctx) ->
   for i in [1..8]
     for j in [1..8]
-      continue unless window.board.chess_board.is_occupied [i, j]
-      piece_at ctx, window.board.chess_board.get_piece([i, j]), calc.coord_to_pos([i, j])
+      continue unless window.board.instance.is_occupied [i, j]
+      piece_at ctx, window.board.instance.get_piece([i, j]), calc.coord_to_pos([i, j])
 
 mark_grid = (ctx, coord, style) ->
   padding = 2
