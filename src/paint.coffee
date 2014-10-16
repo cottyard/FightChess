@@ -31,14 +31,28 @@ hp_indicator = (ctx, [pos_x, pos_y], current, total) ->
   shape.set_style ctx, "rgba(#{red_offset}, #{255 - green_offset}, 0, 0.9)"
   shape.rectangle ctx, pos_x + half - 7, pos_y - half, 7, 7, yes
 
+determine_shield_transparency = (total) ->
+  if total <= 1 then 0.4 else \
+  if total <= 3 then 0.5 else \
+  if total <= 7 then 0.6 else \
+  if total <= 13 then 0.7 else \
+  if total <= 21 then 0.8 else 0.9
+
 shield_indicator = (ctx, [pos_x, pos_y], current, total) ->
   return if total is 0
   half = settings.half_grid_size
   length = settings.grid_size - 7
   percentage = current / total
   cut_length = (1 - percentage) * length
-  shape.set_style ctx, shape.style_blue_tp
-  shape.rectangle ctx, pos_x - half + cut_length, pos_y - half, length - cut_length, 7, yes
+  transparency = determine_shield_transparency total
+  x = pos_x - half + cut_length
+  y = pos_y - half
+  w = length - cut_length
+  h = 7
+  shape.set_style ctx, shape.style_white
+  shape.rectangle ctx, x, y, w, h, yes
+  shape.set_style ctx, "rgba(0, 0, 255, #{transparency})"
+  shape.rectangle ctx, x, y, w, h, yes
 
 # api
 

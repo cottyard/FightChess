@@ -65,6 +65,7 @@ style_red_tp = "rgba(255, 0, 0, 0.7)"
 style_green_tp = "rgba(0, 255, 0, 0.7)"
 style_blue_tp = "rgba(0, 0, 255, 0.7)"
 style_tp = "rgba(0, 0, 0, 0.5)"
+style_white = "#FFF"
 style_blue = "#BBF"
 style_brown = "#BB9"
 
@@ -84,6 +85,7 @@ window.shape = {
   style_red_tp,
   style_green_tp,
   style_blue_tp,
+  style_white,
   style_brown,
   style_blue,
   style_tp
