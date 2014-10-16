@@ -19,6 +19,9 @@
   <script src="lib/piece.js"></script>
   <script src="lib/paint.js"></script>
   <script src="lib/log.js"></script>
+  <script src="lib/account.js"></script>
+  <script src="lib/network/network.js"></script>
+  <script src="src/network/peer.min.js"></script>
   <script src="lib/rule/move.js"></script>
   <script src="lib/rule/ability.js"></script>
   <style>
@@ -28,9 +31,9 @@
   </style>
 </head>
 <body onload="start_client()">
-  <textarea id="player_id" cols="20" rows="1">your name</textarea>
-  <button id="login" type="button" disabled>login</button>
-  <textarea id="opponent_id" cols="20" rows="1">opponent's name</textarea>
+  <textarea id="player_id" onclick="this.focus();this.select();" cols="20" rows="1">your name</textarea>
+  <button id="login" type="button">login</button>
+  <textarea id="opponent_id" onclick="this.focus();this.select();" cols="20" rows="1">opponent's name</textarea>
   <button id="challenge" type="button" disabled>challenge</button>
   <textarea id="info" readonly></textarea>
   <div align="center">
@@ -50,6 +53,7 @@
       battle.init();
       effect.init();
       log.init();
+      account.init();
       game.start();
     }
   </script>

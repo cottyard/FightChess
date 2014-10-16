@@ -53,9 +53,9 @@ view_info_coord = [1, 1]
 
 view_info = (evt) ->
   if board.instance.is_occupied view_info_coord
-    ui.textarea.value = board.instance.get_piece(view_info_coord).info()
+    ui.info.value = board.instance.get_piece(view_info_coord).info()
   else
-    ui.textarea.value = ''
+    ui.info.value = ''
 
 # input operation handlers
 

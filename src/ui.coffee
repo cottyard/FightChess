@@ -35,12 +35,20 @@ init = ->
 
   paint.background ctx.background, settings.cvs_size
   
-  ui.textarea = document.getElementById 'info'
+  ui.info = document.getElementById 'info'
+  ui.player_id = document.getElementById 'player_id'
+  ui.opponent_id = document.getElementById 'opponent_id'
+  ui.login_button = document.getElementById 'login'
+  ui.challenge_button = document.getElementById 'challenge'
 
 window.ui = {
   init,
   cvs,
   ctx,
   cvs_bounding_rect: null,
-  textarea: null
+  info: null,
+  player_id: null,
+  opponent_id: null,
+  login_button: null,
+  challenge_button: null
 }
