@@ -4,7 +4,7 @@ peer = null
 
 wait = (callback) ->
   me.on 'connection', (conn) ->
-    init_connection conn, callback conn.peer
+    init_connection conn, -> callback conn.peer
 
 connect = (id, callback) ->
   conn = me.connect id
@@ -21,7 +21,7 @@ send_data = (conn, data) ->
   conn.send data
 
 login = (id, callback) ->
-  me = new Peer id, {host: 'localhost', port: '9000'}
+  me = new Peer id, {key: '6l7puzc60rgujtt9'}
   me.on 'open', (id) ->
     my_id = id
     callback()
