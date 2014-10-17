@@ -46,6 +46,7 @@ class Piece
       @type = 'super_pawn'
       @retrieve_basic_info()
       @initialize_state_info()
+      @move_cd_ticks = @move_cd
 
   transform_column = ['rook', 'knight', 'bishop', 'queen', 'queen', 'bishop', 'knight', 'rook']
   try_transforming: (coord) ->
@@ -54,6 +55,7 @@ class Piece
       @type = transform_column[@coordinate[0] - 1]
       @retrieve_basic_info()
       @initialize_state_info()
+      @move_cd_ticks = @move_cd
 
   valid_moves: ->
     rule.move.strategies[@type] @color, @coordinate, board.instance

@@ -52,10 +52,14 @@ paint_previewing_piece = (evt) ->
 view_info_coord = [1, 1]
 
 view_info = (evt) ->
+  cursor = "auto"
   if board.instance.is_occupied view_info_coord
     ui.info.value = board.instance.get_piece(view_info_coord).info()
+    if board.instance.get_piece(view_info_coord).can_move()
+      cursor = "pointer"
   else
     ui.info.value = ''
+  ui.cvs.animate.style.cursor = cursor
 
 # input operation handlers
 
@@ -71,16 +75,10 @@ on_drop = (evt) ->
   moves = previewing_piece.valid_moves().regular
   if calc.coord_one_of(evt.coord, moves)
     ev.trigger 'op_movepiece', {piece: previewing_piece, coord_to: evt.coord}
-    ui.cvs.animate.style.cursor = "auto"
   abort_preview()
 
 on_hover = (evt) ->
   view_info_coord = evt.coord
-  if board.instance.is_occupied(evt.coord) and 
-     board.instance.get_piece(evt.coord).can_move()
-    ui.cvs.animate.style.cursor = "pointer"
-  else
-    ui.cvs.animate.style.cursor = "auto"
 
 # raw input handlers, raw input -> input operation
 
