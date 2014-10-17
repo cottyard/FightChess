@@ -31,6 +31,15 @@ hp_indicator = (ctx, [pos_x, pos_y], current, total) ->
   shape.set_style ctx, "rgba(#{red_offset}, #{255 - green_offset}, 0, 0.9)"
   shape.rectangle ctx, pos_x + half - 7, pos_y - half, 7, 7, yes
 
+move_cd_indicator = (ctx, [pos_x, pos_y], current, total) ->
+  return if current is 0
+  percentage = (total - current) / total
+  half = settings.half_grid_size
+  shape.save_style ctx
+  shape.set_style ctx, "rgba(0, 255, 255, 0.7)"
+  shape.rectangle ctx, pos_x - half, pos_y + half - 3, settings.grid_size * percentage, 4, yes
+  shape.restore_style ctx
+
 determine_shield_transparency = (total) ->
   if total <= 1 then 0.4 else \
   if total <= 3 then 0.5 else \
@@ -75,6 +84,7 @@ piece_at = (ctx, piece, [pos_x, pos_y]) ->
   shape.save_style ctx
   hp_indicator ctx, [pos_x, pos_y], piece.hp, piece.hp_total
   shield_indicator ctx, [pos_x, pos_y], piece.shield, piece.shield_total
+  move_cd_indicator ctx, [pos_x, pos_y], piece.move_cd_ticks, piece.move_cd
   shape.restore_style ctx
 
 board = (ctx) ->

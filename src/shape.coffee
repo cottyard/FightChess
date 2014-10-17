@@ -45,19 +45,19 @@ set_linewidth = (ctx, width) ->
 
 # state
 
-saved_strokestyle = null
-saved_fillstyle = null
-saved_linewidth = null
+saved_strokestyle = []
+saved_fillstyle = []
+saved_linewidth = []
 
 save_style = (ctx) ->
-  saved_strokestyle = ctx.strokeStyle
-  saved_fillstyle = ctx.fillStyle
-  saved_linewidth = ctx.lineWidth
+  saved_strokestyle.push ctx.strokeStyle
+  saved_fillstyle.push ctx.fillStyle
+  saved_linewidth.push ctx.lineWidth
 
 restore_style = (ctx) ->
-  ctx.strokeStyle = saved_strokestyle
-  ctx.fillStyle = saved_fillstyle
-  ctx.lineWidth = saved_linewidth
+  ctx.strokeStyle = saved_strokestyle.pop()
+  ctx.fillStyle = saved_fillstyle.pop()
+  ctx.lineWidth = saved_linewidth.pop()
 
 # constant
 

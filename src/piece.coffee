@@ -28,14 +28,17 @@ class Piece
     @move_cd_ticks = 0
 
   move_to: (new_coord) ->
-    if new_coord?
-      board.instance.lift_piece @coordinate if @is_onboard()
-      @coordinate = new_coord
-      board.instance.place_piece @
+    board.instance.lift_piece @coordinate if @is_onboard()
+    @coordinate = new_coord
+    board.instance.place_piece @
+    @move_cd_ticks = @move_cd
     if @type is 'pawn'
       @try_promoting()
     if @type is 'super_pawn'
       @try_transforming()
+
+  can_move: ->
+    @move_cd_ticks is 0
 
   try_promoting: (coord) ->
     if (@color is 'white' and @coordinate[1] is 1) or
@@ -96,6 +99,7 @@ class Piece
     @shield += @shield_heal
     if @shield > @shield_total
       @shield = @shield_total
+    @move_cd_ticks-- if @move_cd_ticks > 0
     
   inflict: (damage) ->
     return unless @is_onboard()
