@@ -31,9 +31,9 @@ network
   network_out {data}
 ###
 
-handlers = null
-dispatching = null
-event_queue = null
+handlers = {}
+dispatching = no
+event_queue = []
 
 trigger = (evt_name, evt) ->
   event_queue.push [evt_name, evt]
@@ -73,7 +73,10 @@ unhook = (evt_name, hdl) ->
     calc.remove_item_from_array hdl, hdls
 
 init = ->
+  # preserve the network_out handler for network module
+  hdls = handlers['network_out']
   handlers= {}
+  handlers['network_out'] = hdls
   dispatching = no 
   event_queue = []
 

@@ -28,7 +28,7 @@ on_login_failed = ->
 on_challenge_accepted = ->
   ui.set_button_text ui.challenge_button, 'challenge was accepted'
   game.stop()
-  game.init_observer()
+  game.init_guest()
   game.start()
 
 on_challenge_failed = ->
@@ -38,6 +38,9 @@ on_challenged = (challenger_id) ->
   ui.opponent_id.value = challenger_id
   ui.disable_button ui.challenge_button
   ui.set_button_text ui.challenge_button, 'challenged you'
+  game.stop()
+  game.init_host()
+  game.start()
 
 window.account = {
   init

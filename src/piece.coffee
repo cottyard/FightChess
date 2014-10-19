@@ -142,7 +142,11 @@ class Piece
     """hp: #{Math.ceil @hp}/#{@hp_total}
        shield: #{Math.floor @shield}/#{@shield_total} (#{@shield_heal})
     """
+
+piece_equal = (piece_1, piece_2) ->
+  piece_1.type is piece_2.type and piece_1.color is piece_2.color
   
 window.piece = {
-  Piece
+  Piece,
+  piece_equal
 }
