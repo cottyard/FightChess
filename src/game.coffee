@@ -13,20 +13,20 @@ handle_operation = (op_evt) ->
     ev.trigger 'battle_move', {piece: op_evt.piece, coord_to: op_evt.coord_to}
 
 on_gametick = (evt) ->
-  ev.trigger 'move_round_begin', {}
-  ev.trigger 'move_round', {}
-  ev.trigger 'move_round_end', {}
-  ev.trigger 'assist_round_begin', {}
-  ev.trigger 'assist_round', {}
-  ev.trigger 'assist_round_end', {}
-  ev.trigger 'recover_round_begin', {}
-  ev.trigger 'recover_round', {}
-  ev.trigger 'recover_round_end', {}
-  ev.trigger 'attack_round_begin', {}
-  ev.trigger 'attack_round', {}
-  ev.trigger 'attack_round_end', {}
+  ev.trigger_now 'move_round_begin', {}
+  ev.trigger_now 'move_round', {}
+  ev.trigger_now 'move_round_end', {}
+  ev.trigger_now 'assist_round_begin', {}
+  ev.trigger_now 'assist_round', {}
+  ev.trigger_now 'assist_round_end', {}
+  ev.trigger_now 'recover_round_begin', {}
+  ev.trigger_now 'recover_round', {}
+  ev.trigger_now 'recover_round_end', {}
+  ev.trigger_now 'attack_round_begin', {}
+  ev.trigger_now 'attack_round', {}
+  ev.trigger_now 'attack_round_end', {}
   shape.clear_canvas ui.ctx.static
-  ev.trigger 'render', {}
+  ev.trigger_now 'render', {}
 
 on_render = (evt) ->
   paint.board ui.ctx.static

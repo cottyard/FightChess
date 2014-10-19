@@ -38,16 +38,23 @@ event_queue = []
 trigger = (evt_name, evt) ->
   event_queue.push [evt_name, evt]
   if not dispatching # the event being dispatched may trigger other events
-    dispatch()
+    dispatching = yes
+    dispatch_queue()
+    dispatching = no
 
-dispatch = ->
-  dispatching = yes
+trigger_now = (evt_name, evt) ->
+  event_queue.push [evt_name, evt]
+  dispatch_queue()
+
+dispatch_queue = ->
   while event_queue.length > 0
-    dispatch_an_event()
-  dispatching = no
+    dispatch_an_event_from_queue()
 
-dispatch_an_event = ->
+dispatch_an_event_from_queue = ->
   [evt_name, evt] = event_queue.shift()
+  dispatch_event evt_name, evt
+
+dispatch_event = (evt_name, evt) ->
   hdls = handlers[evt_name]
   if hdls?
     # some handlers may be unhooked during the invocation,
@@ -67,6 +74,7 @@ unhook = (evt_name, hdl) ->
 
 window.ev = {
   trigger,
+  trigger_now,
   hook,
   unhook
 }
