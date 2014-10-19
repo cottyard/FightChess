@@ -7,11 +7,13 @@ handle_operation_queue = ->
     handle_operation(operation_queue.shift())
 
 handle_operation = (op_evt) ->
-  # need some validation on the operation
-  # and convert the operations to battle_move evt??
-  op_evt.piece.move_to op_evt.coord_to
+  return unless op_evt.piece.is_onboard()
+  moves = op_evt.piece.valid_moves()
+  if calc.coord_one_of op_evt.coord_to, moves.regular
+    ev.trigger 'battle_move', {piece: op_evt.piece, coord_to: op_evt.coord_to}
 
 on_gametick = (evt) ->
+  ev.trigger 'move_round_begin', {}
   ev.trigger 'move_round', {}
   ev.trigger 'move_round_end', {}
   ev.trigger 'assist_round_begin', {}
@@ -25,8 +27,7 @@ on_gametick = (evt) ->
   ev.trigger 'attack_round_end', {}
   shape.clear_canvas ui.ctx.static
   ev.trigger 'render', {}
-  ev.trigger 'move_round_begin', {}
-  
+
 on_render = (evt) ->
   paint.board ui.ctx.static
 
@@ -37,7 +38,7 @@ init = ->
   ev.hook 'gametick', on_gametick
   ev.hook 'render', on_render
   ev.hook 'op_movepiece', on_game_operation
-  ev.hook 'move_round', handle_operation_queue
+  ev.hook 'move_round_begin', handle_operation_queue
 
 next_tick = ->
   ev.trigger 'gametick', {}
