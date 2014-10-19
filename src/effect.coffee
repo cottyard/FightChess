@@ -6,6 +6,8 @@ class Assist
     shape.set_style ctx, shape.style_blue_tp
     shape.arrow ctx, x, y, to_x, to_y
     shape.restore_style ctx
+    
+  next_frame: ->
     no
 
 class Attack
@@ -19,6 +21,8 @@ class Attack
     ctx.lineWidth = 3
     shape.arrow ctx, x, y, to_x, to_y, 10
     shape.restore_style ctx
+    
+  next_frame: ->
     @transparency -= 0.2
     if @transparency >= 0.2 then yes else no
 
@@ -34,6 +38,8 @@ class Hurt
       x - settings.half_grid_size, y - settings.half_grid_size, \
       settings.grid_size, settings.grid_size, yes
     shape.restore_style ctx
+    
+  next_frame: ->
     @transparency -= 0.1
     if @transparency >= 0.1 then yes else no
 
@@ -52,7 +58,8 @@ on_piece_hurt = (evt) ->
 
 render_effects = (ctx, effects) ->
   for e, i in effects
-    to_be_continued = e.render ctx
+    e.render ctx
+    to_be_continued = e.next_frame()
     effects[i] = null unless to_be_continued
   effects.filter (e) -> e?
 
@@ -68,6 +75,21 @@ init = ->
   ev.hook 'piece_hurt', on_piece_hurt
   ev.hook 'render', render_all
 
+get_state = ->
+  calc.to_string {
+    assist: effects_assist,
+    attack: effects_attack,
+    hurt: effects_hurt
+  }
+
+set_state = (str) ->
+  state = calc.from_string str
+  effects_assist = (calc.set_type e, Assist for e in state.assist)
+  effects_attack = (calc.set_type e, Attack for e in state.attack)
+  effects_hurt = (calc.set_type e, Hurt for e in state.hurt)
+
 window.effect = {
-  init
+  init,
+  get_state,
+  set_state
 }

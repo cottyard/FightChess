@@ -1,3 +1,13 @@
+to_string = (obj) ->
+  JSON.stringify obj
+
+from_string = (str) ->
+  JSON.parse str
+
+set_type = (obj, type) ->
+  obj.__proto__ = type.prototype
+  obj
+
 copy_array = (arr) ->
   arr.slice 0
 
@@ -63,9 +73,16 @@ window.calc = {
   pos_to_coord,
   coord_equal,
   coord_one_of,
+  
   get_segment_angle,
   shrink_segment,
+  
   randint,
+  
   remove_item_from_array,
-  copy_array
+  copy_array,
+  
+  to_string,
+  from_string,
+  set_type
 }

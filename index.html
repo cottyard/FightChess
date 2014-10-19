@@ -7,6 +7,7 @@
   </script>
   <script src="lib/settings.js"></script>
   <script src="lib/game.js"></script>
+  <script src="lib/gamestate.js"></script>
   <script src="lib/battle.js"></script>
   <script src="lib/ui.js"></script>
   <script src="lib/preview.js"></script>
@@ -30,7 +31,7 @@
     }
   </style>
 </head>
-<body onload="start_client()">
+<body onload="start()">
   <textarea id="player_id" onclick="this.focus();this.select();" cols="20" rows="1">your name</textarea>
   <button id="login" type="button">login</button>
   <textarea id="opponent_id" onclick="this.focus();this.select();" cols="20" rows="1">opponent's name</textarea>
@@ -44,16 +45,10 @@
     </div>
   </div>
   <script>
-    function start_client() {
+    function start() {
       ui.init();
-      input.init();
-      preview.init();
-      board.init();
-      battle.init();
-      effect.init();
-      log.init();
       account.init();
-      game.init();
+      game.init_demo();
       game.start();
     }
   </script>

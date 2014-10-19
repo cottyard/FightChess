@@ -31,9 +31,9 @@ network
   network_out {data}
 ###
 
-handlers = {}
-dispatching = no 
-event_queue = []
+handlers = null
+dispatching = null
+event_queue = null
 
 trigger = (evt_name, evt) ->
   event_queue.push [evt_name, evt]
@@ -72,7 +72,13 @@ unhook = (evt_name, hdl) ->
   if hdls?
     calc.remove_item_from_array hdl, hdls
 
+init = ->
+  handlers= {}
+  dispatching = no 
+  event_queue = []
+
 window.ev = {
+  init,
   trigger,
   trigger_now,
   hook,

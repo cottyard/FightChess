@@ -29,7 +29,19 @@ class Board
 init = ->
   board.instance = new Board()
 
+get_state = ->
+  calc.to_string board.instance
+  
+set_state = (str) ->
+  board.instance = calc.from_string str
+  calc.set_type board.instance, Board
+  for pieces in board.instance.board
+    for p in pieces
+      calc.set_type p, piece.Piece if p?
+
 window.board = {
   init,
-  instance: null
+  instance: null,
+  get_state,
+  set_state
 }

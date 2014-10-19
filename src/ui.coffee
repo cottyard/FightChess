@@ -19,6 +19,15 @@ set_canvas_attr = (cvs, z_index, size) ->
 
   cvs.width = cvs.height = size
 
+set_button_text = (button, text) ->
+  button.innerHTML = text
+
+disable_button = (button) ->
+  button.disabled = 'disabled'
+
+enable_button = (button) ->
+  button.disabled = undefined
+
 init = ->
   init_cvs 'background'
   init_cvs 'static'
@@ -43,6 +52,11 @@ init = ->
 
 window.ui = {
   init,
+  
+  set_button_text,
+  disable_button,
+  enable_button,
+  
   cvs,
   ctx,
   cvs_bounding_rect: null,
