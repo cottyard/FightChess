@@ -27,8 +27,10 @@ piece state
   piece_die {piece, coord}
   piece_hurt {piece, coord}
 network
-  network_in {data}
-  network_out {data}
+  network_out_gamestate {gamestate}
+  network_out_operation {operation}
+  network_in_gamestate {gamestate}
+  network_in_operation {operation}
 ###
 
 handlers = {}
@@ -73,10 +75,7 @@ unhook = (evt_name, hdl) ->
     calc.remove_item_from_array hdl, hdls
 
 init = ->
-  # preserve the network_out handler for network module
-  hdls = handlers['network_out']
   handlers= {}
-  handlers['network_out'] = hdls
   dispatching = no 
   event_queue = []
 

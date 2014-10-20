@@ -1,6 +1,5 @@
-my_id = null
 me = null
-peer = null
+connection = null
 
 wait = (callback) ->
   me.on 'connection', (conn) ->
@@ -13,20 +12,41 @@ connect = (id, callback) ->
 
 init_connection = (conn, callback) ->
   conn.on 'data', (data) ->
-    ev.trigger 'network_in', {data}
-  ev.hook 'network_out', (evt) -> send_data conn, evt.data
+    handle_network_in data
+  connection = conn
   callback()
-
-send_data = (conn, data) ->
-  conn.send data
 
 login = (id, callback) ->
   me = new Peer id, {key: '6l7puzc60rgujtt9'}
   me.on 'open', (id) ->
-    my_id = id
     callback()
 
+handle_network_in = (data) ->
+  data = calc.from_string data
+  switch data.type
+    when 'gamestate'
+      ev.trigger 'network_in_gamestate', {gamestate: data.content}
+    when 'operation'
+      ev.trigger 'network_in_operation', {operation: data.content}
+
+wrap_data = (type, content) ->
+  calc.to_string {
+    type,
+    content
+  }
+
+on_network_out = (type, content_name) ->
+  (evt) ->
+    return unless connection?
+    connection.send wrap_data type, evt[content_name]
+
+init = ->
+  ev.hook 'network_out_gamestate', on_network_out 'gamestate', 'gamestate'
+  ev.hook 'network_out_operation', on_network_out 'operation', 'operation'
+
 window.network = {
+  init,
+
   wait,
   connect,
   login

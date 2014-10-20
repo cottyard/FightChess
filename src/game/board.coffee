@@ -28,10 +28,14 @@ class Board
 
 init = ->
   board.instance = new Board()
+  ev.hook 'render', on_render
+
+on_render = (evt) ->
+  paint.board ui.ctx.static
 
 get_state = ->
   calc.to_string board.instance
-  
+
 set_state = (str) ->
   board.instance = calc.from_string str
   calc.set_type board.instance, Board
