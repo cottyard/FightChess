@@ -75,21 +75,6 @@ init = ->
   ev.hook 'piece_hurt', on_piece_hurt
   ev.hook 'render', render_all
 
-get_state = ->
-  calc.to_string {
-    assist: effects_assist,
-    attack: effects_attack,
-    hurt: effects_hurt
-  }
-
-set_state = (str) ->
-  state = calc.from_string str
-  effects_assist = (calc.set_type e, Assist for e in state.assist)
-  effects_attack = (calc.set_type e, Attack for e in state.attack)
-  effects_hurt = (calc.set_type e, Hurt for e in state.hurt)
-
 window.effect = {
-  init,
-  get_state,
-  set_state
+  init
 }

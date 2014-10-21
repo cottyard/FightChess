@@ -22,7 +22,6 @@ login = (id, callback) ->
     callback()
 
 handle_network_in = (data) ->
-  data = calc.from_string data
   switch data.type
     when 'gamestate'
       ev.trigger 'network_in_gamestate', {gamestate: data.content}
@@ -30,7 +29,7 @@ handle_network_in = (data) ->
       ev.trigger 'network_in_operation', {operation: data.content}
 
 wrap_data = (type, content) ->
-  calc.to_string {
+  {
     type,
     content
   }

@@ -1,10 +1,16 @@
+sync_up_gamestate = ->
+  gamestate.to_next_state()
+#  if gamestate.to_next_state()
+#    while gamestate.cache_size() > 5
+#      gamestate.to_next_state()
+
 on_gametick = (evt) ->
   operation.send_cached_operations()
-  if gamestate.to_next_state()
-    game.render_gametick()
-    while gamestate.cache_size() > 5
-      gamestate.to_next_state()
-      game.render_gametick()
+  sync_up_gamestate()
+  game.assist_round()
+  game.recover_round()
+  game.attack_round()
+  game.render_gametick()
 
 init_guest = ->
   ev.init()
@@ -13,6 +19,7 @@ init_guest = ->
   preview.init()
   gamestate.init()
   board.init()
+  battle.init()
   effect.init()
   network.init()
 

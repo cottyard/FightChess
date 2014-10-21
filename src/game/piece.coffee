@@ -2,13 +2,8 @@ class Piece
   constructor: (@color, @type, @coordinate) ->
     @retrieve_basic_info()
     @initialize_state_info()
+    @hook_actions()
     
-    ev.hook 'assist_round_begin', @on_assist_round_begin
-    ev.hook 'assist_round_end', @on_assist_round_end
-    ev.hook 'attack_round_begin', @on_attack_round_begin
-    ev.hook 'attack_round_end', @on_attack_round_end
-    ev.hook 'recover_round', @on_recover_round
-
   retrieve_basic_info: ->
     ability = rule.ability[@type]
     
@@ -124,20 +119,30 @@ class Piece
     
   recover: (hp) ->
   
-  die: ->
-    return unless @is_onboard()
-    board.instance.lift_piece @coordinate
-    @coordinate = null
+  hook_actions: ->
+    ev.hook 'assist_round_begin', @on_assist_round_begin
+    ev.hook 'assist_round_end', @on_assist_round_end
+    ev.hook 'attack_round_begin', @on_attack_round_begin
+    ev.hook 'attack_round_end', @on_attack_round_end
+    ev.hook 'recover_round', @on_recover_round
+  
+  unhook_actions: ->
     ev.unhook 'assist_round_begin', @on_assist_round_begin
     ev.unhook 'assist_round_end', @on_assist_round_end
     ev.unhook 'attack_round_begin', @on_attack_round_begin
     ev.unhook 'attack_round_end', @on_attack_round_end
     ev.unhook 'recover_round', @on_recover_round
+  
+  die: ->
+    return unless @is_onboard()
+    board.instance.lift_piece @coordinate
+    @coordinate = null
+    @unhook_actions()
     ev.trigger 'piece_die', {
       piece: @,
       coord: @coordinate
     }
-  
+
   info: ->
     """hp: #{Math.ceil @hp}/#{@hp_total}
        shield: #{Math.floor @shield}/#{@shield_total} (#{@shield_heal})
@@ -145,8 +150,45 @@ class Piece
 
 piece_equal = (piece_1, piece_2) ->
   piece_1.type is piece_2.type and piece_1.color is piece_2.color
-  
+
+serialization_btyes = 9
+
+serialize_piece = (piece) ->
+  buffer = new ArrayBuffer serialization_btyes
+  view8 = new Uint8Array buffer 
+  view16 = new Uint16Array buffer, 4, 1
+  view8[0] = if piece.color is 'white' then 0 else 1
+  view8[1] = (a for a of rule.ability).indexOf piece.type
+  view8[2] = piece.coordinate[0]
+  view8[3] = piece.coordinate[1]
+  view16[0] = piece.hp
+  view8[6] = piece.shield
+  view8[7] = piece.attack_cd_ticks
+  view8[8] = piece.move_cd_ticks
+  buffer
+
+deserialize_piece = (buffer) ->
+  view8 = new Uint8Array buffer 
+  view16 = new Uint16Array buffer, 4, 1
+  color = if view8[0] is 0 then 'white' else 'black'
+  type = (a for a of rule.ability)[view8[1]]
+  coord = [view8[2], view8[3]]
+  hp = view16[0]
+  shield = view8[6]
+  atk_cd = view8[7]
+  move_cd = view8[8]
+  piece = new Piece color, type, coord
+  piece.hp = hp
+  piece.shield = shield
+  piece.attack_cd_ticks = atk_cd
+  piece.move_cd_ticks = move_cd
+  piece
+
 window.piece = {
   Piece,
-  piece_equal
+  piece_equal,
+  
+  serialize_piece,
+  deserialize_piece,
+  serialization_btyes
 }
