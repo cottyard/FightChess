@@ -1,3 +1,36 @@
+write_to_buffer = (buffer, pos, bytes, content) ->
+  constructor = if bytes is 1 then Uint8Array else Uint16Array
+  view = new constructor buffer, pos, 1
+  view[0] = content
+
+read_from_buffer = (buffer, pos, bytes) ->
+  constructor = if bytes is 1 then Uint8Array else Uint16Array
+  view = new constructor buffer, pos, 1
+  view[0]
+
+sum_byte_spec_size = (byte_spec) ->
+  total_bytes = 0
+  for attr of byte_spec
+    total_bytes += byte_spec[attr]
+  total_bytes
+
+obj_to_arraybuffer = (obj, byte_spec) ->
+  buffer = new ArrayBuffer sum_byte_spec_size byte_spec
+  byte_count = 0
+  for attr of byte_spec
+    write_to_buffer buffer, byte_count, byte_spec[attr], obj[attr]
+    byte_count += byte_spec[attr]
+  buffer
+
+arraybuffer_to_obj = (buffer, byte_spec) ->
+  obj = {}
+  byte_count = 0
+  for attr of byte_spec
+    content = read_from_buffer buffer, byte_count, byte_spec[attr]
+    obj[attr] = content
+    byte_count += byte_spec[attr]
+  obj
+
 to_string = (obj) ->
   JSON.stringify obj
 
@@ -84,5 +117,8 @@ window.calc = {
   
   to_string,
   from_string,
-  set_type
+  set_type,
+
+  obj_to_arraybuffer,
+  arraybuffer_to_obj
 }

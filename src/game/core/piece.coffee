@@ -151,37 +151,49 @@ class Piece
 piece_equal = (piece_1, piece_2) ->
   piece_1.type is piece_2.type and piece_1.color is piece_2.color
 
-serialization_btyes = 9
+byte_spec = 
+  color: 1
+  type: 1
+  coord_x: 1
+  coord_y: 1
+  hp: 2
+  sd: 2
+  sd_total: 2
+  sd_heal: 1
+  atk_cd: 1
+  mv_cd: 1
+
+serialization_btyes = 13
 
 serialize_piece = (piece) ->
-  buffer = new ArrayBuffer serialization_btyes
-  view8 = new Uint8Array buffer 
-  view16 = new Uint16Array buffer, 4, 1
-  view8[0] = if piece.color is 'white' then 0 else 1
-  view8[1] = (a for a of rule.ability).indexOf piece.type
-  view8[2] = piece.coordinate[0]
-  view8[3] = piece.coordinate[1]
-  view16[0] = piece.hp
-  view8[6] = piece.shield
-  view8[7] = piece.attack_cd_ticks
-  view8[8] = piece.move_cd_ticks
-  buffer
+  piece_obj =
+    color: if piece.color is 'white' then 0 else 1
+    type: (a for a of rule.ability).indexOf piece.type
+    coord_x: piece.coordinate[0]
+    coord_y: piece.coordinate[1]
+    hp: piece.hp
+    sd: Math.floor piece.shield * 10
+    sd_total: Math.floor piece.shield_total * 10
+    sd_heal: Math.floor piece.shield_heal * 10
+    atk_cd: piece.attack_cd_ticks
+    mv_cd: piece.move_cd_ticks
+  
+  calc.obj_to_arraybuffer piece_obj, byte_spec
 
 deserialize_piece = (buffer) ->
-  view8 = new Uint8Array buffer 
-  view16 = new Uint16Array buffer, 4, 1
-  color = if view8[0] is 0 then 'white' else 'black'
-  type = (a for a of rule.ability)[view8[1]]
-  coord = [view8[2], view8[3]]
-  hp = view16[0]
-  shield = view8[6]
-  atk_cd = view8[7]
-  move_cd = view8[8]
+  piece_obj = calc.arraybuffer_to_obj buffer, byte_spec
+
+  color = if piece_obj.color is 0 then 'white' else 'black'
+  type = (a for a of rule.ability)[piece_obj.type]
+  coord = [piece_obj.coord_x, piece_obj.coord_y]
+
   piece = new Piece color, type, coord
-  piece.hp = hp
-  piece.shield = shield
-  piece.attack_cd_ticks = atk_cd
-  piece.move_cd_ticks = move_cd
+  piece.hp = piece_obj.hp
+  piece.shield = piece_obj.sd / 10
+  piece.shield_total = piece_obj.sd_total / 10
+  piece.shield_heal = piece_obj.sd_heal / 10
+  piece.attack_cd_ticks = piece_obj.atk_cd
+  piece.move_cd_ticks = piece_obj.mv_cd
   piece
 
 window.piece = {
