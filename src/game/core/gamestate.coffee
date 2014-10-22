@@ -7,10 +7,12 @@ to_next_state = ->
   true
 
 get_state = ->
-  board.get_state()
+  board: board.get_state()
+  effect: effect.get_state()
 
 set_state = (state) ->
-  board.set_state state
+  board.set_state state.board
+  effect.set_state state.effect
 
 on_network_gamestate_in = (evt) ->
   state_queue.push evt.gamestate

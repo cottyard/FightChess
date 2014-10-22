@@ -1,13 +1,18 @@
+state_buf = 0
+
 sync_up_gamestate = ->
-  gamestate.to_next_state()
-  if gamestate.to_next_state()
-    while gamestate.cache_size() > 5
-      gamestate.to_next_state()
+  suceeded = no
+  while gamestate.cache_size() > state_buf
+    suceeded = gamestate.to_next_state()
+  suceeded
 
 on_gametick = (evt) ->
   operation.send_cached_operations()
-  sync_up_gamestate()
-  game.render_gametick()
+  if sync_up_gamestate()
+    game.render_gametick()
+    state_buf -= 0.1 if state_buf > 1
+  else
+    state_buf += 1 if state_buf < 5
 
 init_guest = ->
   ev.init()

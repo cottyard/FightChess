@@ -21,7 +21,7 @@ class Attack
     ctx.lineWidth = 3
     shape.arrow ctx, x, y, to_x, to_y, 10
     shape.restore_style ctx
-    
+
   next_frame: ->
     @transparency -= 0.2
     if @transparency >= 0.2 then yes else no
@@ -75,6 +75,83 @@ init = ->
   ev.hook 'piece_hurt', on_piece_hurt
   ev.hook 'render', render_all
 
+assist_byte_spec =
+    from_x: 1
+    from_y: 1
+    to_x: 1
+    to_y: 1
+
+attack_byte_spec =
+    from_x: 1
+    from_y: 1
+    to_x: 1
+    to_y: 1
+    tp: 1
+
+hurt_byte_spec =
+    x: 1
+    y: 1
+    tp: 1
+
+get_state = ->
+  serialized_assist = []
+  for e in effects_assist
+    e_obj =
+      from_x: e.coord_from[0]
+      from_y: e.coord_from[1]
+      to_x: e.coord_to[0]
+      to_y: e.coord_to[1]
+    serialized_assist.push calc.obj_to_arraybuffer e_obj, assist_byte_spec
+
+  serialized_attack = []
+  for e in effects_attack
+    e_obj =
+      from_x: e.coord_from[0]
+      from_y: e.coord_from[1]
+      to_x: e.coord_to[0]
+      to_y: e.coord_to[1]
+      tp: Math.floor e.transparency * 10
+    serialized_attack.push calc.obj_to_arraybuffer e_obj, attack_byte_spec
+
+  serialized_hurt = []
+  for e in effects_hurt
+    e_obj =
+      x: e.coord[0]
+      y: e.coord[1]
+      tp: Math.floor e.transparency * 10
+    serialized_hurt.push calc.obj_to_arraybuffer e_obj, hurt_byte_spec
+
+  {
+    assist: serialized_assist,
+    attack: serialized_attack,
+    hurt: serialized_hurt
+  }
+
+set_state = (state) ->
+  serialized_assist = state.assist
+  effects_assist = []
+  for se in serialized_assist
+    e_obj = calc.arraybuffer_to_obj se, assist_byte_spec
+    effects_assist.push new Assist [e_obj.from_x, e_obj.from_y], [e_obj.to_x, e_obj.to_y]
+
+  serialized_attack = state.attack
+  effects_attack = []
+  for se in serialized_attack
+    e_obj = calc.arraybuffer_to_obj se, attack_byte_spec
+    atk = new Attack [e_obj.from_x, e_obj.from_y], [e_obj.to_x, e_obj.to_y]
+    atk.transparency = e_obj.tp / 10
+    effects_attack.push atk
+
+  serialized_hurt = state.hurt
+  effects_hurt = []
+  for se in serialized_hurt
+    e_obj = calc.arraybuffer_to_obj se, hurt_byte_spec
+    hrt = new Hurt [e_obj.x, e_obj.y]
+    hrt.transparency = e_obj.tp / 10
+    effects_hurt.push hrt
+
 window.effect = {
-  init
+  init,
+  get_state,
+  set_state
 }
