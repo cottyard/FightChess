@@ -29,6 +29,7 @@ on_challenge_accepted = ->
   ui.set_button_text ui.challenge_button, 'challenge was accepted'
   game.stop()
   game.init_guest()
+  preview.set_color 'black'
   game.start()
 
 on_challenge_failed = ->
@@ -40,6 +41,7 @@ on_challenged = (challenger_id) ->
   ui.set_button_text ui.challenge_button, 'challenged you'
   game.stop()
   game.init_host()
+  preview.set_color 'white'
   game.start()
 
 window.account = {

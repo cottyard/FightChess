@@ -1,3 +1,9 @@
+wrap_float_for_arraybuffer = (num, precision = 0.1) ->
+  Math.floor num * (1 / precision)
+
+unwrap_float_from_arraybuffer = (num, precision = 0.1) ->
+  num / (1 / precision)
+
 write_to_buffer = (buffer, pos, bytes, content) ->
   constructor = if bytes is 1 then Uint8Array else Uint16Array
   view = new constructor buffer, pos, 1
@@ -120,5 +126,8 @@ window.calc = {
   set_type,
 
   obj_to_arraybuffer,
-  arraybuffer_to_obj
+  arraybuffer_to_obj,
+
+  wrap_float_for_arraybuffer,
+  unwrap_float_from_arraybuffer
 }

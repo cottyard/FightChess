@@ -4,12 +4,12 @@ previewing = no
 previewing_piece = null
 previewing_coord = [-1, -1]
 
-in_previewing_condition = ->
+preview_condition = ->
   board.instance.is_occupied(previewing_coord) and
   piece.piece_equal board.instance.get_piece(previewing_coord), previewing_piece
 
 preview = (evt) ->
-  if not in_previewing_condition()
+  if not preview_condition()
     abort_preview()
     return
   paint.mark_grid ui.ctx.static, previewing_coord 
@@ -40,7 +40,7 @@ update_mouse_position = (evt) ->
   last_mouse_position = evt.pos
 
 paint_previewing_piece = (evt) ->
-  if not in_previewing_condition()
+  if not preview_condition()
     return
   shape.clear_canvas ui.ctx.animate
   shape.set_style ui.ctx.animate, shape.style_tp
@@ -55,7 +55,7 @@ view_info = (evt) ->
   cursor = "auto"
   if board.instance.is_occupied view_info_coord
     ui.info.value = board.instance.get_piece(view_info_coord).info()
-    if board.instance.get_piece(view_info_coord).can_move()
+    if pick_condition.check view_info_coord
       cursor = "pointer"
   else
     ui.info.value = ''
@@ -63,9 +63,23 @@ view_info = (evt) ->
 
 # input operation handlers
 
+default_pick_condition = (coord) ->
+  board.instance.is_occupied(coord) and 
+  board.instance.get_piece(coord).can_move()
+
+pick_condition = 
+  check: default_pick_condition
+
+set_color = (color) ->
+  if not color?
+    pick_condition = default_pick_condition
+  else
+    pick_condition.check = (coord) ->
+      default_pick_condition(coord) and
+      board.instance.get_piece(coord).color is color
+
 on_pick = (evt) ->
-  return unless board.instance.is_occupied(evt.coord) and 
-                board.instance.get_piece(evt.coord).can_move()
+  return unless pick_condition.check evt.coord
   previewing_piece = board.instance.get_piece evt.coord
   previewing_coord = evt.coord
   launch_preview()
@@ -109,5 +123,6 @@ init = ->
   ev.hook 'render', view_info
 
 window.preview = {
-  init
+  init,
+  set_color
 }

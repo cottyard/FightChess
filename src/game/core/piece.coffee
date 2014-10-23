@@ -171,10 +171,10 @@ serialize_piece = (piece) ->
     type: (a for a of rule.ability).indexOf piece.type
     coord_x: piece.coordinate[0]
     coord_y: piece.coordinate[1]
-    hp: piece.hp
-    sd: Math.floor piece.shield * 10
-    sd_total: Math.floor piece.shield_total * 10
-    sd_heal: Math.floor piece.shield_heal * 10
+    hp: calc.wrap_float_for_arraybuffer piece.hp
+    sd: calc.wrap_float_for_arraybuffer piece.shield
+    sd_total: calc.wrap_float_for_arraybuffer piece.shield_total
+    sd_heal: calc.wrap_float_for_arraybuffer piece.shield_heal
     atk_cd: piece.attack_cd_ticks
     mv_cd: piece.move_cd_ticks
   
@@ -188,10 +188,10 @@ deserialize_piece = (buffer) ->
   coord = [piece_obj.coord_x, piece_obj.coord_y]
 
   piece = new Piece color, type, coord
-  piece.hp = piece_obj.hp
-  piece.shield = piece_obj.sd / 10
-  piece.shield_total = piece_obj.sd_total / 10
-  piece.shield_heal = piece_obj.sd_heal / 10
+  piece.hp = calc.unwrap_float_from_arraybuffer piece_obj.hp
+  piece.shield = calc.unwrap_float_from_arraybuffer piece_obj.sd
+  piece.shield_total = calc.unwrap_float_from_arraybuffer piece_obj.sd_total
+  piece.shield_heal = calc.unwrap_float_from_arraybuffer piece_obj.sd_heal
   piece.attack_cd_ticks = piece_obj.atk_cd
   piece.move_cd_ticks = piece_obj.mv_cd
   piece
