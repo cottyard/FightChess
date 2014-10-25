@@ -28,6 +28,12 @@ disable_button = (button) ->
 enable_button = (button) ->
   button.disabled = undefined
 
+message_timeout_obj = null
+show_message = (message) ->
+  ui.message.innerHTML = message
+  clearTimeout message_timeout_obj
+  message_timeout_obj = setTimeout (-> ui.message.innerHTML = ''), 5000
+
 init = ->
   init_cvs 'background'
   init_cvs 'static'
@@ -45,6 +51,7 @@ init = ->
   paint.background ctx.background, settings.cvs_size
   
   ui.info = document.getElementById 'info'
+  ui.message = document.getElementById 'message'
   ui.player_id = document.getElementById 'player_id'
   ui.opponent_id = document.getElementById 'opponent_id'
   ui.login_button = document.getElementById 'login'
@@ -56,11 +63,14 @@ window.ui = {
   set_button_text,
   disable_button,
   enable_button,
+
+  show_message,
   
   cvs,
   ctx,
   cvs_bounding_rect: null,
   info: null,
+  message: null,
   player_id: null,
   opponent_id: null,
   login_button: null,

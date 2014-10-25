@@ -145,7 +145,7 @@ class Piece
 
   info: ->
     """hp: #{Math.ceil @hp}/#{@hp_total}
-       shield: #{Math.floor @shield}/#{@shield_total} (#{@shield_heal})
+       shield: #{Math.floor @shield}/#{@shield_total} (#{@shield_heal.toFixed(1)})
     """
 
 piece_equal = (piece_1, piece_2) ->

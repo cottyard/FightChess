@@ -19,6 +19,7 @@ init_guest = ->
   input.init()
   operation.init()
   preview.init()
+  preview.set_color 'black'
   gamestate.init()
   board.init()
   effect.init()

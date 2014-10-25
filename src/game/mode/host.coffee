@@ -11,6 +11,7 @@ init_host = ->
   input.init()
   operation.init()
   preview.init()
+  preview.set_color 'white'
   board.init()
   battle.init()
   effect.init()
