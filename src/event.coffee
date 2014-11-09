@@ -21,6 +21,7 @@ game
   assist_round_begin, assist_round, assist_round_end, 
   recover_round_begin, recover_round, recover_round_end, 
   attack_round_begin, attack_round, attack_round_end {}
+  ai_think_round {}
   gametick {}
   render {}
 piece state

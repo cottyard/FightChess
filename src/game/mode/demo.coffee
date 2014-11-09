@@ -1,9 +1,10 @@
 on_gametick = (evt) ->
+  game.ai_think_round()
   game.move_round()
   game.assist_round()
   game.recover_round()
   game.attack_round()
-  gamestate.send_current_state()
+  #gamestate.send_current_state()
   game.render_gametick()
 
 init_demo = ->
@@ -11,6 +12,7 @@ init_demo = ->
   input.init()
   operation.init()
   preview.init()
+  preview.set_color 'white'
   board.init()
   battle.init()
   effect.init()
@@ -18,5 +20,8 @@ init_demo = ->
 
   ev.hook 'gametick', on_gametick
   ev.hook 'move_round_begin', operation.handle_cached_operations
+
+  ai.init()
+  ai.activate 'black'
 
 window.game.init_demo = init_demo

@@ -18,6 +18,9 @@ attack_round = ->
   ev.trigger_now 'attack_round', {}
   ev.trigger_now 'attack_round_end', {}
   
+ai_think_round = ->
+  ev.trigger_now 'ai_think_round', {}
+
 render_gametick = ->
   shape.clear_canvas ui.ctx.static
   ev.trigger_now 'render', {}
@@ -44,5 +47,6 @@ window.game = {
   assist_round,
   recover_round,
   attack_round,
+  ai_think_round,
   render_gametick
 }
