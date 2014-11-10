@@ -45,6 +45,13 @@
   <textarea id="opponent_id" onclick="this.focus();this.select();" cols="20" rows="1">opponent's name</textarea>
   <button id="challenge" type="button" disabled>challenge</button>
   <textarea id="info" cols="40" readonly></textarea>
+  <a>AI Move Interval</a>
+  <select onchange="ai.set_interval(this.value)">
+    <option value="0.5">0.5</option>
+    <option value="1" selected="selected">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
   <p id="message"></p>
   <div align="center">
     <div align="left" style="width: 40%;padding-top: 50px">

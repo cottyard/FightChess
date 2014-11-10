@@ -19,9 +19,13 @@ on_think = ->
   else
     thinking_cooldown--
 
+set_interval = (interval) ->
+  think_interval = Math.floor interval * 10
+
 window.ai = {
   init,
   activate,
   deactivate,
+  set_interval,
   monkey: null
 }
