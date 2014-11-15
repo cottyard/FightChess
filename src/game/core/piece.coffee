@@ -52,8 +52,8 @@ class Piece
       @initialize_state_info()
       @move_cd_ticks = @move_cd
 
-  valid_moves: ->
-    rule.move.strategies[@type] @color, @coordinate, board.instance
+  valid_moves: (board_instance = board.instance)->
+    rule.move.strategies[@type] @color, @coordinate, board_instance
 
   is_onboard: ->
     @coordinate?

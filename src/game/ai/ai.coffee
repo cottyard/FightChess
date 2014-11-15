@@ -25,10 +25,7 @@ set_interval = (interval) ->
   think_interval = Math.floor interval * 10
 
 set_ai = (ai_number) ->
-  all_ai = 
-    0: null
-    1: ai.monkey
-    2: ai.dolphin
+  all_ai = [null, ai.monkey, ai.dolphin]
   ai_current = all_ai[ai_number]
 
 window.ai = {

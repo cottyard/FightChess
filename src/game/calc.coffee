@@ -66,6 +66,9 @@ remove_item_from_array = (item, arr) ->
 randint = ([lower, upper]) ->
   Math.floor((Math.random() * (upper - lower + 1)) + lower);
 
+pick_one = (list) ->
+  list[calc.randint([0, list.length - 1])]
+
 shrink_segment = (point_from, point_to, length = 15)->
   [x, y] = point_from
   [to_x, to_y] = point_to
@@ -126,6 +129,7 @@ window.calc = {
   shrink_segment,
   
   randint,
+  pick_one,
   
   remove_item_from_array,
   copy_array,

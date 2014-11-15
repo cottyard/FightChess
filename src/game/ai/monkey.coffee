@@ -1,11 +1,8 @@
-pick_one = (list) ->
-  list[calc.randint([0, list.length - 1])]
-
 try_moving_piece = (piece) ->
   return 'no moves' unless piece.can_move()
   moves = piece.valid_moves()
   if moves.regular.length > 0
-    return pick_one moves.regular
+    return calc.pick_one moves.regular
   else
     return 'no moves'
 
@@ -23,7 +20,7 @@ think_of_one_operation = (board, color) ->
           coord_to: result_coord
         }
   if all_moves.length > 0
-    return pick_one all_moves
+    return calc.pick_one all_moves
   else
     return 'abort'
 
