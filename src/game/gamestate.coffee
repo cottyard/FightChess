@@ -22,13 +22,13 @@ send_current_state = ->
   ev.trigger_now 'network_out_gamestate', {gamestate: state}
 
 cache_size = ->
-	state_queue.length
+  state_queue.length
 
 init = ->
-	ev.hook 'network_in_gamestate', on_network_gamestate_in
+  ev.hook 'network_in_gamestate', on_network_gamestate_in
 
 window.gamestate = {
-	init,
+  init,
   get_state,
   set_state,
   to_next_state,
