@@ -1,8 +1,9 @@
 class Piece
-  constructor: (@color, @type, @coordinate) ->
+  constructor: (@color, @type, @coordinate, @board) ->
     @retrieve_basic_info()
     @initialize_state_info()
-    @hook_actions()
+    if @board.is_battleground
+      @hook_actions()
     
   retrieve_basic_info: ->
     ability = rule.ability[@type]
@@ -143,13 +144,18 @@ class Piece
       coord: @coordinate
     }
 
+  clone: (board) ->
+    new Piece @color, @type, @coordinate, board
+
   info: ->
     """hp: #{Math.ceil @hp}/#{@hp_total}
        shield: #{Math.floor @shield}/#{@shield_total} (#{@shield_heal.toFixed(1)})
     """
 
-piece_equal = (piece_1, piece_2) ->
+equal = (piece_1, piece_2) ->
   piece_1.type is piece_2.type and piece_1.color is piece_2.color
+
+
 
 byte_spec = 
   color: 1
@@ -198,7 +204,7 @@ deserialize_piece = (buffer) ->
 
 window.piece = {
   Piece,
-  piece_equal,
+  equal,
   
   serialize_piece,
   deserialize_piece,

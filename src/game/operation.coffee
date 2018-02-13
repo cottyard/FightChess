@@ -12,7 +12,7 @@ send_cached_operations = ->
 is_valid_operation = (op_evt) ->
   return false unless board.instance.is_occupied op_evt.piece.coordinate
   authentic_piece = board.instance.get_piece op_evt.piece.coordinate
-  return false unless piece.piece_equal authentic_piece, op_evt.piece # replace this with unique piece identity
+  return false unless piece.equal authentic_piece, op_evt.piece # replace this with unique piece identity
   return false unless authentic_piece.can_move()
   moves = authentic_piece.valid_moves()
   if calc.coord_one_of op_evt.coord_to, moves.regular

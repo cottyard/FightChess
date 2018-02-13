@@ -1,18 +1,29 @@
 class Board
-  piece_arrangement = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
-  constructor: ->
+  spawn_row = {
+    white: 7,
+    black: 2
+  }
+  king_spawn_coord = {
+    white: [5, 8],
+    black: [5, 1]
+  }
+  constructor: (@is_battleground) ->
     @board = (
       (null for j in [1..8]) for i in [1..8]
     )
+    @is_battle_board ?= false
   
   set_out_board: ->
-    for x in [1..8]
-      @place_piece new piece.Piece 'white', 'pawn', [x, 7]
-      @place_piece new piece.Piece 'white', piece_arrangement[x - 1], [x, 8]
-
-    for x in [1..8]
-      @place_piece new piece.Piece 'black', 'pawn', [x, 2]
-      @place_piece new piece.Piece 'black', piece_arrangement[x - 1], [x, 1]
+    w = 'white'
+    b = 'black'
+    @place_piece new piece.Piece w, 'king', king_spawn_coord[w], this
+    @place_piece new piece.Piece b, 'king', king_spawn_coord[b], this
+    @spawn w
+    @spawn w
+    @spawn w
+    @spawn b
+    @spawn b
+    @spawn b
 
   clean_up_board: ->
     for i in [1..8]
@@ -20,9 +31,6 @@ class Board
         if @is_occupied [i, j]
           @get_piece([i, j]).unhook_actions()
           @lift_piece [i, j]
-
-  is_occupied: ([coord_x, coord_y]) ->
-    @board[coord_x - 1][coord_y - 1]?
 
   get_piece: ([coord_x, coord_y]) ->
     @board[coord_x - 1][coord_y - 1]
@@ -34,8 +42,25 @@ class Board
     [coord_x, coord_y] = piece.coordinate
     @board[coord_x - 1][coord_y - 1] = piece
 
+  is_occupied: ([coord_x, coord_y]) ->
+    @board[coord_x - 1][coord_y - 1]?
+
+  spawn: (color) ->
+    @place_piece new piece.Piece color, 'pawn', [(calc.randint [1, 8]), spawn_row[color]], this
+
+  is_battleground: ->
+    @is_battleground
+
+  clone: ->
+    brd = new Board()
+    for i in [1..8]
+      for j in [1..8]
+        if @is_occupied [i, j]
+          brd.place_piece (@get_piece [i, j]).clone(brd)
+    brd
+
 init = ->
-  board.instance = new Board()
+  board.instance = new Board(true)
   board.instance.set_out_board()
   ev.hook 'render', on_render
 

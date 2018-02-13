@@ -6,7 +6,7 @@ previewing_coord = [-1, -1]
 
 preview_condition = ->
   board.instance.is_occupied(previewing_coord) and
-  piece.piece_equal board.instance.get_piece(previewing_coord), previewing_piece
+  piece.equal board.instance.get_piece(previewing_coord), previewing_piece
 
 preview = (evt) ->
   if not preview_condition()
