@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Plain webRTC</title>
+	<style type="text/css">
+		.sent{
+			color:blue;
+		}
+	</style>
+	<script src="../../lib/network/peer.js"></script>
+</head>
+<body onload="peer.init()">
+
+<div>
+	<div>
+		<input type="radio" name="role" onclick="peer.change_status(['host', 'begin'])" checked="true">Host<br>
+		<input type="radio" name="role" onclick="peer.change_status(['guest', 'begin'])">Guest<br>
+	</div>
+	<div>
+		<button id=local_offer_btn onclick="peer.local_offer_onclick()">Copy My Offer To Clipboard</button>
+		<button id=local_answer_btn onclick="peer.local_answer_onclick()">Copy My Answer To Clipboard</button>
+		<textarea id="status" rows="1" cols="60" readOnly="true" style="resize: none"></textarea>
+	</div>
+</div>
+
+<div id="chat" style="overflow:scroll;"></div>
+<div>
+	<br><br>
+	<div>
+		<input id=send_txt type="text" placeholder="chat here" size="50">
+		<button onclick="peer.send_message()">send</button>		
+	</div>
+</div>
+<div>
+
+</body>
+</html>
