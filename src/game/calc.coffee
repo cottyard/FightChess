@@ -47,6 +47,12 @@ arraybuffer_to_obj = (buffer, byte_spec) ->
     byte_count += byte_spec[attr]
   obj
 
+write_buf_to_buf = (buffer_1, buffer_2, from_1, from_2, size)->
+  view_1 = new Uint8Array buffer_1
+  view_2 = new Uint8Array buffer_2
+  for i in [1..size]
+    view_2[from_2++] = view_1[from_1++]
+
 to_string = (obj) ->
   JSON.stringify obj
 
@@ -143,5 +149,7 @@ window.calc = {
   arraybuffer_to_obj,
 
   wrap_float_for_arraybuffer,
-  unwrap_float_from_arraybuffer
+  unwrap_float_from_arraybuffer,
+
+  write_buf_to_buf
 }
