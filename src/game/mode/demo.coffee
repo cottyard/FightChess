@@ -1,9 +1,9 @@
 on_gametick = (evt) ->
-  game.ai_think_round()
-  game.move_round()
-  game.assist_round()
-  game.recover_round()
-  game.attack_round()
+  #game.ai_think_round()
+  game.move_round battleground.instance
+  game.assist_round battleground.instance
+  game.recover_round battleground.instance
+  game.attack_round battleground.instance
   #gamestate.send_current_state()
   game.render_gametick()
 
@@ -13,7 +13,7 @@ init_demo = ->
   operation.init()
   preview.init()
   preview.set_color 'white'
-  board.init()
+  battleground.init()
   battle.init()
   effect.init()
   network.init()

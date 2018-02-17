@@ -1,13 +1,3 @@
-# clone = (obj) ->
-#   c = {}
-#   for i of obj
-#     if obj.hasOwnProperty(i)
-#       if (typeof(obj[i]) is "object") and (obj[i] isnt null)
-#         c[i] = clone obj[i]
-#       else
-#         c[i] = obj[i]
-#   c
-
 wrap_float_for_arraybuffer = (num, precision = 0.1) ->
   Math.floor num * (1 / precision)
 

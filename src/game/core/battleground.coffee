@@ -1,5 +1,5 @@
 init = ->
-  battleground.instance = new Board(true)
+  battleground.instance = new board.Board(true)
   battleground.instance.set_out_board()
   ev.hook 'render', on_render
 

@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "host.js",
+  "sourceRoot": "..\\..\\..",
+  "sources": [
+    "src\\game\\mode\\host.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,SAAA,EAAA;;EAAA,WAAA,GAAc,QAAA,CAAC,GAAD,CAAA;IACZ,IAAI,CAAC,UAAL,CAAgB,YAAY,CAAC,QAA7B;IACA,IAAI,CAAC,YAAL,CAAkB,YAAY,CAAC,QAA/B;IACA,IAAI,CAAC,aAAL,CAAmB,YAAY,CAAC,QAAhC;IACA,IAAI,CAAC,YAAL,CAAkB,YAAY,CAAC,QAA/B;IACA,SAAS,CAAC,kBAAV,CAAA;WACA,IAAI,CAAC,eAAL,CAAA;EANY;;EAQd,SAAA,GAAY,QAAA,CAAA,CAAA;IACV,EAAE,CAAC,IAAH,CAAA;IACA,KAAK,CAAC,IAAN,CAAA;IACA,SAAS,CAAC,IAAV,CAAA;IACA,OAAO,CAAC,IAAR,CAAA;IACA,OAAO,CAAC,SAAR,CAAkB,OAAlB;IACA,YAAY,CAAC,IAAb,CAAA;IACA,MAAM,CAAC,IAAP,CAAA;IACA,MAAM,CAAC,IAAP,CAAA;IACA,OAAO,CAAC,IAAR,CAAA;IAEA,EAAE,CAAC,IAAH,CAAQ,UAAR,EAAoB,WAApB;WACA,EAAE,CAAC,IAAH,CAAQ,kBAAR,EAA4B,SAAS,CAAC,wBAAtC;EAZU;;EAcZ,MAAM,CAAC,IAAI,CAAC,SAAZ,GAAwB;AAtBxB",
+  "sourcesContent": [
+    "on_gametick = (evt) ->\r\n  game.move_round battleground.instance\r\n  game.assist_round battleground.instance\r\n  game.recover_round battleground.instance\r\n  game.attack_round battleground.instance\r\n  gamestate.send_current_state()\r\n  game.render_gametick()\r\n\r\ninit_host = ->\r\n  ev.init()\r\n  input.init()\r\n  operation.init()\r\n  preview.init()\r\n  preview.set_color 'white'\r\n  battleground.init()\r\n  battle.init()\r\n  effect.init()\r\n  network.init()\r\n\r\n  ev.hook 'gametick', on_gametick\r\n  ev.hook 'move_round_begin', operation.handle_cached_operations\r\n\r\nwindow.game.init_host = init_host"
+  ]
+}

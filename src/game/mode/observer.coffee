@@ -8,7 +8,7 @@ on_gametick = (evt) ->
 init_observer = ->
   ev.init()
   gamestate.init()
-  board.init()
+  battleground.init()
   effect.init()
   
   ev.hook 'gametick', on_gametick

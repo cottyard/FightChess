@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "ai.js",
+  "sourceRoot": "..\\..\\..",
+  "sources": [
+    "src\\game\\ai\\ai.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,QAAA,EAAA,QAAA,EAAA,UAAA,EAAA,UAAA,EAAA,IAAA,EAAA,QAAA,EAAA,MAAA,EAAA,YAAA,EAAA,cAAA,EAAA;;EAAA,cAAA,GAAiB;;EACjB,iBAAA,GAAoB;;EACpB,QAAA,GAAW;;EACX,UAAA,GAAa;;EAEb,IAAA,GAAO,QAAA,CAAA,CAAA,EAAA;;EAEP,QAAA,GAAW,QAAA,CAAC,KAAD,CAAA;IACT,EAAE,CAAC,IAAH,CAAQ,gBAAR,EAA0B,QAA1B;WACA,QAAA,GAAW;EAFF;;EAIX,UAAA,GAAa,QAAA,CAAA,CAAA;WACX,EAAE,CAAC,MAAH,CAAU,gBAAV,EAA4B,QAA5B;EADW;;EAGb,QAAA,GAAW,QAAA,CAAA,CAAA;AACT,QAAA;IAAA,IAAc,kBAAd;AAAA,aAAA;;IACA,IAAG,iBAAA,KAAqB,CAAxB;MACE,EAAA,GAAK,UAAU,CAAC,sBAAX,CAAkC,YAAY,CAAC,QAAQ,CAAC,KAAtB,CAAA,CAAlC,EAAiE,QAAjE;MACL,IAAkC,EAAA,KAAQ,OAA1C;QAAA,EAAE,CAAC,OAAH,CAAW,cAAX,EAA2B,EAA3B,EAAA;;aACA,iBAAA,GAAoB,eAHtB;KAAA,MAAA;aAKE,iBAAA,GALF;;EAFS;;EASX,YAAA,GAAe,QAAA,CAAC,QAAD,CAAA;WACb,cAAA,GAAiB,IAAI,CAAC,KAAL,CAAW,QAAA,GAAW,EAAtB;EADJ;;EAGf,MAAA,GAAS,QAAA,CAAC,SAAD,CAAA;AACP,QAAA;IAAA,MAAA,GAAS,CAAC,IAAD,EAAO,EAAE,CAAC,MAAV,EAAkB,EAAE,CAAC,OAArB;WACT,UAAA,GAAa,MAAO,CAAA,SAAA;EAFb;;EAIT,MAAM,CAAC,EAAP,GAAY;IACV,IADU;IAEV,QAFU;IAGV,UAHU;IAIV,YAJU;IAKV,MALU;IAMV,MAAA,EAAQ,IANE;IAOV,OAAA,EAAS;EAPC;AA9BZ",
+  "sourcesContent": [
+    "think_interval = 10\r\nthinking_cooldown = think_interval\r\nai_color = null\r\nai_current = null\r\n\r\ninit = ->\r\n\r\nactivate = (color) ->\r\n  ev.hook 'ai_think_round', on_think\r\n  ai_color = color\r\n\r\ndeactivate = ->\r\n  ev.unhook 'ai_think_round', on_think\r\n\r\non_think = ->\r\n  return unless ai_current?\r\n  if thinking_cooldown is 0\r\n    op = ai_current.think_of_one_operation(battleground.instance.clone(), ai_color)\r\n    ev.trigger('op_movepiece', op) if op isnt 'abort'\r\n    thinking_cooldown = think_interval\r\n  else\r\n    thinking_cooldown--\r\n\r\nset_interval = (interval) ->\r\n  think_interval = Math.floor interval * 10\r\n\r\nset_ai = (ai_number) ->\r\n  all_ai = [null, ai.monkey, ai.dolphin]\r\n  ai_current = all_ai[ai_number]\r\n\r\nwindow.ai = {\r\n  init,\r\n  activate,\r\n  deactivate,\r\n  set_interval,\r\n  set_ai,\r\n  monkey: null,\r\n  dolphin: null\r\n}"
+  ]
+}

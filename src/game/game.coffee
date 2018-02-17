@@ -1,25 +1,25 @@
-move_round = ->
-  ev.trigger_now 'move_round_begin', {}
-  ev.trigger_now 'move_round', {}
-  ev.trigger_now 'move_round_end', {}
+move_round = (board) ->
+  ev.trigger_now 'move_round_begin', { board }
+  ev.trigger_now 'move_round', { board }
+  ev.trigger_now 'move_round_end', { board }
 
-assist_round = ->
-  ev.trigger_now 'assist_round_begin', {}
-  ev.trigger_now 'assist_round', {}
-  ev.trigger_now 'assist_round_end', {}
+assist_round = (board) ->
+  ev.trigger_now 'assist_round_begin', { board }
+  ev.trigger_now 'assist_round', { board }
+  ev.trigger_now 'assist_round_end', { board }
   
-recover_round = ->
-  ev.trigger_now 'recover_round_begin', {}
-  ev.trigger_now 'recover_round', {}
-  ev.trigger_now 'recover_round_end', {}
+recover_round = (board) ->
+  ev.trigger_now 'recover_round_begin', { board }
+  ev.trigger_now 'recover_round', { board }
+  ev.trigger_now 'recover_round_end', { board }
 
-attack_round = ->
-  ev.trigger_now 'attack_round_begin', {}
-  ev.trigger_now 'attack_round', {}
-  ev.trigger_now 'attack_round_end', {}
+attack_round = (board) ->
+  ev.trigger_now 'attack_round_begin', { board }
+  ev.trigger_now 'attack_round', { board }
+  ev.trigger_now 'attack_round_end', { board }
   
-ai_think_round = ->
-  ev.trigger_now 'ai_think_round', {}
+ai_think_round = (board) ->
+  ev.trigger_now 'ai_think_round', { board }
 
 render_gametick = ->
   shape.clear_canvas ui.ctx.static

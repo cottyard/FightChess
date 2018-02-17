@@ -67,6 +67,9 @@ class Piece
     if @hp > @hp_total
       @hp = @hp_total
 
+  can_move: ->
+    @move_cd_ticks is 0
+
   is_dead: ->
     @hp <= 0
 
@@ -74,7 +77,7 @@ class Piece
     new Piece @color, @type
 
   equals: (another) ->
-    @type == another.type and @color == another.color
+    @type is another.type and @color is another.color
 
   change_type: (type) ->
     @type = type

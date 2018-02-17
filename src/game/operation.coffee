@@ -1,29 +1,24 @@
-operation_queue = [] # queue of user operation
+operation_queue = []
 
-handle_cached_operations = ->
+handle_cached_operations = (evt) ->
   while operation_queue.length > 0
-    handle_operation(operation_queue.shift())
+    handle_operation evt.board, operation_queue.shift()
 
 send_cached_operations = ->
   for op in operation_queue
     ev.trigger_now 'network_out_operation', {operation: calc.to_string op}
   operation_queue = []
 
-is_valid_operation = (op_evt) ->
-  return false unless board.instance.is_occupied op_evt.piece.coordinate
-  authentic_piece = board.instance.get_piece op_evt.piece.coordinate
-  return false unless piece.equal authentic_piece, op_evt.piece # replace this with unique piece identity
-  return false unless authentic_piece.can_move()
-  moves = authentic_piece.valid_moves()
-  if calc.coord_one_of op_evt.coord_to, moves.regular
-    return true
-  else
-    return false
+is_valid_operation = (board, op_evt) ->
+  return false unless board.is_occupied op_evt.coord_from
+  p = board.get_piece op_evt.coord_from
+  return false unless p.equals op_evt.piece
+  return calc.coord_one_of op_evt.coord_to, (board.get_valid_moves op_evt.coord_from).regular
 
-handle_operation = (op_evt) ->
-  if is_valid_operation op_evt
-    authentic_piece = board.instance.get_piece op_evt.piece.coordinate
-    ev.trigger 'battle_move', {piece: authentic_piece, coord_to: op_evt.coord_to}
+handle_operation = (board, op_evt) ->
+  if is_valid_operation board, op_evt
+    p = board.get_piece op_evt.coord_from
+    ev.trigger 'battle_move', {piece: p, coord_from: op_evt.coord_from, coord_to: op_evt.coord_to}
 
 on_network_operation_in = (evt) ->
   op = calc.from_string evt.operation

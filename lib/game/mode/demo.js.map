@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "demo.js",
+  "sourceRoot": "..\\..\\..",
+  "sources": [
+    "src\\game\\mode\\demo.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,SAAA,EAAA;;EAAA,WAAA,GAAc,QAAA,CAAC,GAAD,CAAA,EAAA;;IAEZ,IAAI,CAAC,UAAL,CAAgB,YAAY,CAAC,QAA7B;IACA,IAAI,CAAC,YAAL,CAAkB,YAAY,CAAC,QAA/B;IACA,IAAI,CAAC,aAAL,CAAmB,YAAY,CAAC,QAAhC;IACA,IAAI,CAAC,YAAL,CAAkB,YAAY,CAAC,QAA/B,EAHA;;WAKA,IAAI,CAAC,eAAL,CAAA;EAPY;;EASd,SAAA,GAAY,QAAA,CAAA,CAAA;IACV,EAAE,CAAC,IAAH,CAAA;IACA,KAAK,CAAC,IAAN,CAAA;IACA,SAAS,CAAC,IAAV,CAAA;IACA,OAAO,CAAC,IAAR,CAAA;IACA,OAAO,CAAC,SAAR,CAAkB,OAAlB;IACA,YAAY,CAAC,IAAb,CAAA;IACA,MAAM,CAAC,IAAP,CAAA;IACA,MAAM,CAAC,IAAP,CAAA;IACA,OAAO,CAAC,IAAR,CAAA;IAEA,EAAE,CAAC,IAAH,CAAQ,UAAR,EAAoB,WAApB;IACA,EAAE,CAAC,IAAH,CAAQ,kBAAR,EAA4B,SAAS,CAAC,wBAAtC;IAEA,EAAE,CAAC,IAAH,CAAA;WACA,EAAE,CAAC,QAAH,CAAY,OAAZ;EAfU;;EAiBZ,MAAM,CAAC,IAAI,CAAC,SAAZ,GAAwB;AA1BxB",
+  "sourcesContent": [
+    "on_gametick = (evt) ->\r\n  #game.ai_think_round()\r\n  game.move_round battleground.instance\r\n  game.assist_round battleground.instance\r\n  game.recover_round battleground.instance\r\n  game.attack_round battleground.instance\r\n  #gamestate.send_current_state()\r\n  game.render_gametick()\r\n\r\ninit_demo = ->\r\n  ev.init()\r\n  input.init()\r\n  operation.init()\r\n  preview.init()\r\n  preview.set_color 'white'\r\n  battleground.init()\r\n  battle.init()\r\n  effect.init()\r\n  network.init()\r\n\r\n  ev.hook 'gametick', on_gametick\r\n  ev.hook 'move_round_begin', operation.handle_cached_operations\r\n\r\n  ai.init()\r\n  ai.activate 'black'\r\n\r\nwindow.game.init_demo = init_demo"
+  ]
+}

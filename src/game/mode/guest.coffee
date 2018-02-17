@@ -21,7 +21,7 @@ init_guest = ->
   preview.init()
   preview.set_color 'black'
   gamestate.init()
-  board.init()
+  battleground.init()
   effect.init()
   network.init()
 

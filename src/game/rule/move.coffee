@@ -150,11 +150,11 @@ king = (color, coord, board) ->
   
   {regular, offensive, defensive}
 
-valid_moves: (type, color, coord, board) ->
+valid_moves = (type, color, coord, board) ->
   rule.move.strategies[type] color, coord, board
 
 window.rule.move = {
-  valid_moves
+  valid_moves,
   strategies: {
     pawn,
     super_pawn,

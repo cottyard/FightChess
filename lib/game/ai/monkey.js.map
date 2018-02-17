@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "monkey.js",
+  "sourceRoot": "..\\..\\..",
+  "sources": [
+    "src\\game\\ai\\monkey.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,sBAAA,EAAA;;EAAA,gBAAA,GAAmB,QAAA,CAAC,KAAD,CAAA;AACjB,QAAA;IAAA,IAAA,CAAyB,KAAK,CAAC,QAAN,CAAA,CAAzB;AAAA,aAAO,WAAP;;IACA,KAAA,GAAQ,KAAK,CAAC,WAAN,CAAA;IACR,IAAG,KAAK,CAAC,OAAO,CAAC,MAAd,GAAuB,CAA1B;AACE,aAAO,IAAI,CAAC,QAAL,CAAc,KAAK,CAAC,OAApB,EADT;KAAA,MAAA;AAGE,aAAO,WAHT;;EAHiB;;EAQnB,sBAAA,GAAyB,QAAA,CAAC,KAAD,EAAQ,KAAR,CAAA;AACvB,QAAA,SAAA,EAAA,aAAA,EAAA,CAAA,EAAA,CAAA,EAAA,CAAA,EAAA,CAAA,EAAA;IAAA,SAAA,GAAY;IACZ,KAAS,0BAAT;MACE,KAAS,0BAAT;QACE,IAAA,CAAgB,KAAK,CAAC,WAAN,CAAkB,CAAC,CAAD,EAAI,CAAJ,CAAlB,CAAhB;AAAA,mBAAA;;QACA,aAAA,GAAgB,KAAK,CAAC,SAAN,CAAgB,CAAC,CAAD,EAAI,CAAJ,CAAhB;QAChB,IAAgB,aAAa,CAAC,KAAd,KAAuB,KAAvC;AAAA,mBAAA;;QACA,YAAA,GAAe,gBAAA,CAAiB,aAAjB;QACf,IAAG,YAAA,KAAkB,UAArB;UACE,SAAS,CAAC,IAAV,CAAe;YACb,KAAA,EAAO,aADM;YAEb,QAAA,EAAU;UAFG,CAAf,EADF;;MALF;IADF;IAWA,IAAG,SAAS,CAAC,MAAV,GAAmB,CAAtB;AACE,aAAO,IAAI,CAAC,QAAL,CAAc,SAAd,EADT;KAAA,MAAA;AAGE,aAAO,QAHT;;EAbuB;;EAkBzB,MAAM,CAAC,EAAE,CAAC,MAAV,GAAmB,CACjB,sBADiB;AA1BnB",
+  "sourcesContent": [
+    "try_moving_piece = (piece) ->\r\n  return 'no moves' unless piece.can_move()\r\n  moves = piece.valid_moves()\r\n  if moves.regular.length > 0\r\n    return calc.pick_one moves.regular\r\n  else\r\n    return 'no moves'\r\n\r\nthink_of_one_operation = (board, color) ->\r\n  all_moves = []\r\n  for i in [1..8]\r\n    for j in [1..8]\r\n      continue unless board.is_occupied [j, i]\r\n      current_piece = board.get_piece [j, i]\r\n      continue unless current_piece.color is color\r\n      result_coord = try_moving_piece current_piece\r\n      if result_coord isnt 'no moves'\r\n        all_moves.push {\r\n          piece: current_piece,\r\n          coord_to: result_coord\r\n        }\r\n  if all_moves.length > 0\r\n    return calc.pick_one all_moves\r\n  else\r\n    return 'abort'\r\n\r\nwindow.ai.monkey = {\r\n  think_of_one_operation\r\n}"
+  ]
+}

@@ -11,26 +11,31 @@ on_battle_attack = (evt) ->
 on_battle_move = (evt) ->
   move_queue.push evt
 
-handle_assist_queue = ->
+handle_assist_queue = (evt) ->
   while assist_queue.length > 0
-    handle_assist assist_queue.shift()
+    handle_assist evt.board, assist_queue.shift()
 
-handle_attack_queue = ->
+handle_attack_queue = (evt) ->
   while attack_queue.length > 0
-    handle_attack attack_queue.shift()
+    handle_attack evt.board, attack_queue.shift()
 
-handle_move_queue = ->
+handle_move_queue = (evt) ->
   while move_queue.length > 0
-    handle_move move_queue.shift()
+    handle_move evt.board, move_queue.shift()
 
-handle_assist = (evt) ->
-  evt.astee.enhance evt.enhancement
+handle_assist = (board, evt) ->
+  evt.astee.assist evt.assistance
 
-handle_attack = (evt) ->
-  evt.atkee.inflict evt.damage
+handle_attack = (board, evt) ->
+  hurt = evt.atkee.inflict evt.damage
+  if hurt
+    ev.trigger 'piece_hurt', {
+      piece: evt.atkee, 
+      coord: evt.coord_to
+    }
 
-handle_move = (evt) ->
-  evt.piece.move_to evt.coord_to
+handle_move = (board, evt) ->
+  board.move_to evt.coord_from, evt.coord_to
 
 init = ->
   ev.hook 'battle_assist', on_battle_assist

@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "log.js",
+  "sourceRoot": "..\\..",
+  "sources": [
+    "src\\game\\log.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,IAAA,EAAA,YAAA,EAAA,WAAA,EAAA;;EAAA,UAAA,GAAa;;EAEb,WAAA,GAAc,QAAA,CAAA,CAAA;IACZ,UAAA;IACA,IAAkC,UAAA,GAAa,GAAb,KAAoB,CAAtD;aAAA,OAAO,CAAC,GAAR,CAAY,MAAZ,EAAoB,UAApB,EAAA;;EAFY;;EAId,YAAA,GAAe,CAAC,MAAD,EAAS,MAAT,EAAiB,eAAjB;;EAEf,IAAA,GAAO,QAAA,CAAA,CAAA;AACL,QAAA,QAAA,EAAA,CAAA,EAAA,GAAA,EAAA;IAAA,EAAE,CAAC,IAAH,CAAQ,UAAR,EAAoB,WAApB;AACA;IAAA,KAAA,8CAAA;;mBACE,EAAE,CAAC,IAAH,CAAQ,QAAR,EAAqB,CAAA,QAAA,CAAC,QAAD,CAAA;eAAc,QAAA,CAAC,GAAD,CAAA;iBAAS,OAAO,CAAC,GAAR,CAAY,QAAZ;QAAT;MAAd,CAAA,CAAH,CAAI,QAAJ,CAAlB;IADF,CAAA;;EAFK;;EAKP,MAAM,CAAC,GAAP,GAAa,CACX,IADW;AAbb",
+  "sourcesContent": [
+    "tick_count = 0\r\n\r\non_gametick = ->\r\n  tick_count++\r\n  console.log 'tick', tick_count if tick_count % 100 is 0\r\n\r\nlogging_evts = ['pick', 'drop', 'battle_assist']\r\n\r\ninit = ->\r\n  ev.hook 'gametick', on_gametick\r\n  for evt_name in logging_evts\r\n    ev.hook evt_name, do (evt_name) -> (evt) -> console.log evt_name\r\n\r\nwindow.log = {\r\n  init\r\n}"
+  ]
+}

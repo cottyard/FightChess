@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "gamestate.js",
+  "sourceRoot": "..\\..",
+  "sources": [
+    "src\\game\\gamestate.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,UAAA,EAAA,SAAA,EAAA,IAAA,EAAA,uBAAA,EAAA,kBAAA,EAAA,SAAA,EAAA,WAAA,EAAA;;EAAA,WAAA,GAAc;;EAEd,aAAA,GAAgB,QAAA,CAAA,CAAA;IACd,IAAG,CAAI,WAAW,CAAC,MAAhB,GAAyB,CAA5B;AACE,aAAO,MADT;;IAEA,SAAA,CAAU,WAAW,CAAC,KAAZ,CAAA,CAAV;WACA;EAJc;;EAMhB,SAAA,GAAY,QAAA,CAAA,CAAA;WACV;MAAA,KAAA,EAAO,KAAK,CAAC,SAAN,CAAA,CAAP;MACA,MAAA,EAAQ,MAAM,CAAC,SAAP,CAAA;IADR;EADU;;EAIZ,SAAA,GAAY,QAAA,CAAC,KAAD,CAAA;IACV,KAAK,CAAC,SAAN,CAAgB,KAAK,CAAC,KAAtB;WACA,MAAM,CAAC,SAAP,CAAiB,KAAK,CAAC,MAAvB;EAFU;;EAIZ,uBAAA,GAA0B,QAAA,CAAC,GAAD,CAAA;WACxB,WAAW,CAAC,IAAZ,CAAiB,GAAG,CAAC,SAArB;EADwB;;EAG1B,kBAAA,GAAqB,QAAA,CAAA,CAAA;AACnB,QAAA;IAAA,KAAA,GAAQ,SAAA,CAAA;WACR,EAAE,CAAC,WAAH,CAAe,uBAAf,EAAwC;MAAC,SAAA,EAAW;IAAZ,CAAxC;EAFmB;;EAIrB,UAAA,GAAa,QAAA,CAAA,CAAA;WACX,WAAW,CAAC;EADD;;EAGb,IAAA,GAAO,QAAA,CAAA,CAAA;WACL,EAAE,CAAC,IAAH,CAAQ,sBAAR,EAAgC,uBAAhC;EADK;;EAGP,MAAM,CAAC,SAAP,GAAmB,CACjB,IADiB,EAEjB,SAFiB,EAGjB,SAHiB,EAIjB,aAJiB,EAKjB,UALiB,EAMjB,kBANiB;AA7BnB",
+  "sourcesContent": [
+    "state_queue = []\r\n\r\nto_next_state = ->\r\n  if not state_queue.length > 0\r\n    return false\r\n  set_state state_queue.shift()\r\n  true\r\n\r\nget_state = ->\r\n  board: board.get_state()\r\n  effect: effect.get_state()\r\n\r\nset_state = (state) ->\r\n  board.set_state state.board\r\n  effect.set_state state.effect\r\n\r\non_network_gamestate_in = (evt) ->\r\n  state_queue.push evt.gamestate\r\n\r\nsend_current_state = ->\r\n  state = get_state()\r\n  ev.trigger_now 'network_out_gamestate', {gamestate: state}\r\n\r\ncache_size = ->\r\n  state_queue.length\r\n\r\ninit = ->\r\n  ev.hook 'network_in_gamestate', on_network_gamestate_in\r\n\r\nwindow.gamestate = {\r\n  init,\r\n  get_state,\r\n  set_state,\r\n  to_next_state,\r\n  cache_size,\r\n  send_current_state\r\n}"
+  ]
+}

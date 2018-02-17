@@ -103,10 +103,10 @@ local_offer_onclick = ->
 remote_onpaste = (evt) ->
   [type, phase] = data.status
   
-  if type == 'host' and phase == 'pending'
+  if type is 'host' and phase is 'pending'
     answer_remote get_clipboard evt
   
-  if type == 'guest' and phase == 'begin'
+  if type is 'guest' and phase is 'begin'
     answer_remote get_clipboard evt
     change_status ['guest', 'pending']
 

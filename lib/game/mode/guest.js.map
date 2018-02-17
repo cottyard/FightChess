@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "guest.js",
+  "sourceRoot": "..\\..\\..",
+  "sources": [
+    "src\\game\\mode\\guest.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,UAAA,EAAA,WAAA,EAAA,SAAA,EAAA;;EAAA,SAAA,GAAY;;EAEZ,iBAAA,GAAoB,QAAA,CAAA,CAAA;AAClB,QAAA;IAAA,QAAA,GAAW;AACX,WAAM,SAAS,CAAC,UAAV,CAAA,CAAA,GAAyB,SAA/B;MACE,QAAA,GAAW,SAAS,CAAC,aAAV,CAAA;IADb;WAEA;EAJkB;;EAMpB,WAAA,GAAc,QAAA,CAAC,GAAD,CAAA;IACZ,SAAS,CAAC,sBAAV,CAAA;IACA,IAAG,iBAAA,CAAA,CAAH;MACE,IAAI,CAAC,eAAL,CAAA;MACA,IAAoB,SAAA,GAAY,CAAhC;eAAA,SAAA,IAAa,IAAb;OAFF;KAAA,MAAA;MAIE,IAAkB,SAAA,GAAY,CAA9B;eAAA,SAAA,IAAa,EAAb;OAJF;;EAFY;;EAQd,UAAA,GAAa,QAAA,CAAA,CAAA;IACX,EAAE,CAAC,IAAH,CAAA;IACA,KAAK,CAAC,IAAN,CAAA;IACA,SAAS,CAAC,IAAV,CAAA;IACA,OAAO,CAAC,IAAR,CAAA;IACA,OAAO,CAAC,SAAR,CAAkB,OAAlB;IACA,SAAS,CAAC,IAAV,CAAA;IACA,YAAY,CAAC,IAAb,CAAA;IACA,MAAM,CAAC,IAAP,CAAA;IACA,OAAO,CAAC,IAAR,CAAA;WAEA,EAAE,CAAC,IAAH,CAAQ,UAAR,EAAoB,WAApB;EAXW;;EAab,MAAM,CAAC,IAAI,CAAC,UAAZ,GAAyB;AA7BzB",
+  "sourcesContent": [
+    "state_buf = 0\r\n\r\nsync_up_gamestate = ->\r\n  suceeded = no\r\n  while gamestate.cache_size() > state_buf\r\n    suceeded = gamestate.to_next_state()\r\n  suceeded\r\n\r\non_gametick = (evt) ->\r\n  operation.send_cached_operations()\r\n  if sync_up_gamestate()\r\n    game.render_gametick()\r\n    state_buf -= 0.1 if state_buf > 1\r\n  else\r\n    state_buf += 1 if state_buf < 5\r\n\r\ninit_guest = ->\r\n  ev.init()\r\n  input.init()\r\n  operation.init()\r\n  preview.init()\r\n  preview.set_color 'black'\r\n  gamestate.init()\r\n  battleground.init()\r\n  effect.init()\r\n  network.init()\r\n\r\n  ev.hook 'gametick', on_gametick\r\n\r\nwindow.game.init_guest = init_guest"
+  ]
+}

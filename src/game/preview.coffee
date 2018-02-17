@@ -5,15 +5,15 @@ previewing_piece = null
 previewing_coord = [-1, -1]
 
 preview_condition = ->
-  board.instance.is_occupied(previewing_coord) and
-  piece.equal board.instance.get_piece(previewing_coord), previewing_piece
+  battleground.instance.is_occupied(previewing_coord) and
+  battleground.instance.get_piece(previewing_coord).equals previewing_piece
 
 preview = (evt) ->
   if not preview_condition()
     abort_preview()
     return
   paint.mark_grid ui.ctx.static, previewing_coord 
-  moves = previewing_piece.valid_moves()
+  moves = battleground.instance.get_valid_moves previewing_coord
   for mr in moves.regular
     paint.mark_grid ui.ctx.static, mr, shape.style_green_tp
   for mo in moves.offensive
@@ -53,8 +53,8 @@ view_info_coord = [1, 1]
 
 view_info = (evt) ->
   cursor = "auto"
-  if board.instance.is_occupied view_info_coord
-    ui.info.value = board.instance.get_piece(view_info_coord).info()
+  if battleground.instance.is_occupied view_info_coord
+    ui.info.value = battleground.instance.get_piece(view_info_coord).info()
     if pick_condition.check view_info_coord
       cursor = "pointer"
   else
@@ -63,9 +63,9 @@ view_info = (evt) ->
 
 # input operation handlers
 
-default_pick_condition = (coord) ->
-  board.instance.is_occupied(coord) and 
-  board.instance.get_piece(coord).can_move()
+default_pick_condition = (coord) -> 
+  battleground.instance.is_occupied(coord) and 
+  battleground.instance.get_piece(coord).can_move()
 
 pick_condition = 
   check: default_pick_condition
@@ -76,19 +76,23 @@ set_color = (color) ->
   else
     pick_condition.check = (coord) ->
       default_pick_condition(coord) and
-      board.instance.get_piece(coord).color is color
+      battleground.instance.get_piece(coord).color is color
 
 on_pick = (evt) ->
   return unless pick_condition.check evt.coord
-  previewing_piece = board.instance.get_piece evt.coord
+  previewing_piece = battleground.instance.get_piece evt.coord
   previewing_coord = evt.coord
   launch_preview()
 
 on_drop = (evt) ->
   return unless previewing
-  moves = previewing_piece.valid_moves().regular
-  if calc.coord_one_of(evt.coord, moves)
-    ev.trigger 'op_movepiece', {piece: previewing_piece, coord_to: evt.coord}
+  moves = battleground.instance.get_valid_moves previewing_coord
+  if calc.coord_one_of evt.coord, moves.regular
+    ev.trigger 'op_movepiece', {
+      piece: previewing_piece, 
+      coord_from: previewing_coord, 
+      coord_to: evt.coord
+    }
   abort_preview()
 
 on_hover = (evt) ->

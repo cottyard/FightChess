@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "input.js",
+  "sourceRoot": "..\\..",
+  "sources": [
+    "src\\game\\input.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,aAAA,EAAA,IAAA,EAAA,iBAAA,EAAA,iBAAA,EAAA;;EAAA,aAAA,GAAgB,QAAA,CAAC,GAAD,CAAA;AACd,QAAA,OAAA,EAAA;IAAA,OAAA,GAAU,GAAG,CAAC,OAAJ,GAAc,EAAE,CAAC,iBAAiB,CAAC,IAAnC,GAA0C,QAAQ,CAAC;IAC7D,OAAA,GAAU,GAAG,CAAC,OAAJ,GAAc,EAAE,CAAC,iBAAiB,CAAC,GAAnC,GAAyC,QAAQ,CAAC;WAC5D,CAAC,OAAD,EAAU,OAAV;EAHc;;EAKhB,iBAAA,GAAoB,QAAA,CAAC,GAAD,CAAA;AAClB,QAAA;IAAA,GAAA,GAAM,aAAA,CAAc,GAAd;WACN,EAAE,CAAC,OAAH,CAAW,WAAX,EAAwB,CAAC,GAAD,CAAxB;EAFkB;;EAIpB,eAAA,GAAkB,QAAA,CAAC,GAAD,CAAA;AAChB,QAAA;IAAA,GAAA,GAAM,aAAA,CAAc,GAAd;WACN,EAAE,CAAC,OAAH,CAAW,SAAX,EAAsB,CAAC,GAAD,CAAtB;EAFgB;;EAIlB,iBAAA,GAAoB,QAAA,CAAC,GAAD,CAAA;AAClB,QAAA;IAAA,GAAA,GAAM,aAAA,CAAc,GAAd;WACN,EAAE,CAAC,OAAH,CAAW,WAAX,EAAwB,CAAC,GAAD,CAAxB;EAFkB;;EAIpB,IAAA,GAAO,QAAA,CAAA,CAAA;IACL,EAAE,CAAC,GAAG,CAAC,OAAO,CAAC,gBAAf,CAAgC,WAAhC,EAA6C,iBAA7C,EAAgE,KAAhE;IACA,EAAE,CAAC,GAAG,CAAC,OAAO,CAAC,gBAAf,CAAgC,SAAhC,EAA2C,eAA3C,EAA4D,KAA5D;WACA,EAAE,CAAC,GAAG,CAAC,OAAO,CAAC,gBAAf,CAAgC,WAAhC,EAA6C,iBAA7C,EAAgE,KAAhE;EAHK;;EAKP,MAAM,CAAC,KAAP,GAAe,CACb,IADa;AAtBf",
+  "sourcesContent": [
+    "get_mouse_pos = (evt) ->\r\n  mouse_x = evt.clientX - ui.cvs_bounding_rect.left - settings.cvs_border_width \r\n  mouse_y = evt.clientY - ui.cvs_bounding_rect.top - settings.cvs_border_width \r\n  [mouse_x, mouse_y]\r\n\r\non_user_mousedown = (evt) ->\r\n  pos = get_mouse_pos evt\r\n  ev.trigger 'mousedown', {pos}\r\n\r\non_user_mouseup = (evt) ->\r\n  pos = get_mouse_pos evt\r\n  ev.trigger 'mouseup', {pos}\r\n\r\non_user_mousemove = (evt) ->\r\n  pos = get_mouse_pos evt\r\n  ev.trigger 'mousemove', {pos}\r\n\r\ninit = ->\r\n  ui.cvs.animate.addEventListener \"mousedown\", on_user_mousedown, false\r\n  ui.cvs.animate.addEventListener \"mouseup\", on_user_mouseup, false\r\n  ui.cvs.animate.addEventListener \"mousemove\", on_user_mousemove, false\r\n\r\nwindow.input = {\r\n  init\r\n}"
+  ]
+}
