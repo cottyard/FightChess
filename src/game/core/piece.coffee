@@ -40,6 +40,28 @@ class Piece
     @shield_total += assistance[0]
     @shield_heal += assistance[1]
 
+  activate_attack_cd: ->
+    @attack_cd_ticks = @attack_cd
+
+  reduce_attack_cd: ->
+    if @attack_cd_ticks > 0
+      @attack_cd_ticks--
+
+  adjust_shield: ->
+    if @shield > @shield_total
+      @shield = @shield_total
+
+  recover_shield: ->
+    @shield += @shield_heal
+    @adjust_shield()
+
+  activate_move_cd: ->
+    @move_cd_ticks = @move_cd
+
+  reduce_move_cd: ->
+    if @move_cd_ticks > 0
+      @move_cd_ticks--
+
   heal: (hp) ->
     @hp += hp
     if @hp > @hp_total
@@ -54,6 +76,11 @@ class Piece
   equals: (another) ->
     @type == another.type and @color == another.color
 
+  change_type: (type) ->
+    @type = type
+    @retrieve_basic_info()
+    @initialize_state_info()
+    
 byte_spec = 
   color: 1
   type: 1

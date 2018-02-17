@@ -136,6 +136,7 @@ king_moves_deltas = [
   [1, 0], [0, 1], [-1, 0], [0, -1],
   [1, 1], [1, -1], [-1, 1], [-1, -1]
 ]
+
 king = (color, coord, board) ->
   regular = []
   offensive = []
@@ -149,7 +150,11 @@ king = (color, coord, board) ->
   
   {regular, offensive, defensive}
 
+valid_moves: (type, color, coord, board) ->
+  rule.move.strategies[type] color, coord, board
+
 window.rule.move = {
+  valid_moves
   strategies: {
     pawn,
     super_pawn,

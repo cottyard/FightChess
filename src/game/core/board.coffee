@@ -31,12 +31,15 @@ class Board
     @spawn b
     @spawn b
 
-  clean_up_board: ->
+  all_pieces: ->
     for i in [1..8]
       for j in [1..8]
         if @is_occupied [i, j]
-          @get_piece([i, j])
-          @lift_piece [i, j]
+          yield [[i, j], @get_piece [i, j]]
+
+  clean_up_board: ->
+    for [[i, j], piece] from @all_pieces()
+      @lift_piece [i, j]
 
   get_piece: ([coord_x, coord_y]) ->
     @board[coord_x - 1][coord_y - 1]
@@ -51,17 +54,16 @@ class Board
     @board[coord_x - 1][coord_y - 1]?
 
   spawn: (color) ->
-    @place_piece new piece.Piece color, 'pawn', [(calc.randint [1, 8]), spawn_row[color]]
+    @place_piece (new piece.Piece color, 'pawn'), 
+                 [(calc.randint [1, 8]), spawn_row[color]]
 
   is_battleground: ->
     @is_battleground
 
   clone: ->
     brd = new Board()
-    for i in [1..8]
-      for j in [1..8]
-        if @is_occupied [i, j]
-          brd.place_piece (@get_piece [i, j]).clone()
+    for [[i, j], piece] from @all_pieces()
+      brd.place_piece piece.clone()
     brd
 
   @hook: ->
@@ -79,94 +81,101 @@ class Board
     ev.unhook 'recover_round', @on_recover_round
 
   on_assist_round_begin: =>
-    @shield_total = @shield_total_born
-    @shield_heal = @shield_heal_born
-    for coord in @valid_moves().defensive
-      astee = board.instance.get_piece coord
-      ev.trigger 'battle_assist', {
-        aster: @, 
-        astee: astee,
-        coord_from: @coordinate, 
-        coord_to: coord,
-        enhancement: @assistance
-      }
+    for [coord, p] from all_pieces()
+      p.shield_total = p.shield_total_born
+      p.shield_heal = p.shield_heal_born
+      moves = rule.move.valid_moves p.type, p.color, coord, this
+      for def_coord in moves.defensive
+        astee = get_piece def_coord
+        ev.trigger 'battle_assist', {
+          aster: p, 
+          astee: astee,
+          coord_from: coord, 
+          coord_to: def_coord,
+          enhancement: p.assistance
+        }
 
   on_assist_round_end: =>
-    if @shield > @shield_total
-      @shield = @shield_total
+    for [coord, p] from all_pieces()
+      p.adjust_shield()
 
   on_attack_round_begin: =>
-    return if @attack_cd_ticks > 0 or @valid_moves().offensive.length is 0
-    for coord in @valid_moves().offensive
-      target = board.instance.get_piece coord
-      ev.trigger 'battle_attack', {
-        atker: @, 
-        atkee: target,
-        coord_from: @coordinate, 
-        coord_to: coord,
-        damage: calc.randint @attack
-      }
-    @attack_cd_ticks = @attack_cd
+    for [coord, p] from all_pieces()
+      if p.attack_cd_ticks > 0
+        continue
+      moves = rule.move.valid_moves p.type, p.color, coord, this
+      if moves.offensive.length is 0
+        continue
+      for atk_coord in moves.offensive
+        target = get_piece atk_coord
+        ev.trigger 'battle_attack', {
+          atker: p, 
+          atkee: target,
+          coord_from: coord, 
+          coord_to: atk_coord,
+          damage: p.attack
+        }
+      p.activate_attack_cd()
 
   on_attack_round_end: =>
-    if @attack_cd_ticks > 0
-      @attack_cd_ticks--
+    for [coord, p] from all_pieces()
+      p.reduce_attack_cd()
 
   on_recover_round: =>
-    @shield += @shield_heal
-    if @shield > @shield_total
-      @shield = @shield_total
-    @move_cd_ticks-- if @move_cd_ticks > 0
+    for [coord, p] from all_pieces()
+      p.recover_shield()
+      p.reduce_move_cd()
 
+  move_to: (from_coord, to_coord) ->
+    if not @is_occupied from_coord
+      return
 
+    p = @get_piece from_coord
+    @place_piece p, to_coord
+    @lift_piece from_coord
+
+    p.activate_move_cd()
+    
+    try_promoting p, to_coord
+    try_transforming p, to_coord
 
 ##################################################
-
 
       # ev.trigger 'piece_hurt', {
       #   piece: @, 
       #   coord: @coordinate
       # }
 
-move_to: (new_coord) ->
-  board.instance.lift_piece @coordinate if @is_onboard()
-  @coordinate = new_coord
-  board.instance.place_piece @
-  @move_cd_ticks = @move_cd
-  if @type is 'pawn'
-    @try_promoting()
-  if @type is 'super_pawn'
-    @try_transforming()
+# can_move: ->
+#   @move_cd_ticks is 0
 
-can_move: ->
-  @move_cd_ticks is 0
-
-try_promoting: (coord) ->
-  if (@color is 'white' and @coordinate[1] is 1) or
-     (@color is 'black' and @coordinate[1] is 8)
-    @type = 'super_pawn'
-    @retrieve_basic_info()
-    @initialize_state_info()
-    @move_cd_ticks = @move_cd
+try_promoting: (piece, coord) ->
+  if p.type is not 'pawn'
+    return
+  if (p.color is 'white' and coord[1] is 1) or
+     (p.color is 'black' and coord[1] is 8)
+    p.change_type 'super_pawn'
+    p.activate_move_cd()
 
 transform_column = ['rook', 'knight', 'bishop', 'queen', 'queen', 'bishop', 'knight', 'rook']
-try_transforming: (coord) ->
-  if (@color is 'white' and @coordinate[1] is 8) or
-     (@color is 'black' and @coordinate[1] is 1)
-    @type = transform_column[@coordinate[0] - 1]
-    @retrieve_basic_info()
-    @initialize_state_info()
-    @move_cd_ticks = @move_cd
+try_transforming: (piece, coord) ->
+  if p.type is not 'super_pawn'
+    return
+  if (@color is 'white' and coord[1] is 8) or
+     (@color is 'black' and coord[1] is 1)
+    p.change_type transform_column[coord[0] - 1]
+    p.activate_move_cd()
 
-valid_moves: (board_instance = board.instance)->
-  rule.move.strategies[@type] @color, @coordinate, board_instance
+# die: ->
+#   return unless @is_onboard()
+#   board.instance.lift_piece @coordinate
+#   @coordinate = null
+#   @unhook_actions()
+#   ev.trigger 'piece_die', {
+#     piece: @,
+#     coord: @coordinate
+#   }
 
-die: ->
-  return unless @is_onboard()
-  board.instance.lift_piece @coordinate
-  @coordinate = null
-  @unhook_actions()
-  ev.trigger 'piece_die', {
-    piece: @,
-    coord: @coordinate
-  }
+window.board = {
+  Board
+}
