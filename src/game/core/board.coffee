@@ -1,4 +1,6 @@
 class Board
+  players = ['white', 'black']
+
   spawn_row = {
     white: 7,
     black: 2
@@ -14,20 +16,26 @@ class Board
       (null for j in [1..8]) for i in [1..8]
     )
 
+    @spawn_cd = 0
+    
     @is_battleground ?= false
 
     if @is_battleground
       @hook()
 
   set_out_board: ->
-    w = 'white'
-    b = 'black'
-    @place_piece (new piece.Piece w, 'king'), king_spawn_coord[w]
-    @place_piece (new piece.Piece b, 'king'), king_spawn_coord[b]
-    @spawn w
-    @spawn w
-    @spawn b
-    @spawn b
+    for p in players
+      @place_piece (new piece.Piece p, 'king'), king_spawn_coord[p]
+    @spawn()
+    @spawn()
+    @activate_spawn_cd()
+
+  activate_spawn_cd: ->
+    @spawn_cd = rule.spawn.spawn_cd
+
+  reduce_spawn_cd: ->
+    if @spawn_cd > 0
+      @spawn_cd--
 
   all_pieces: ->
     for i in [1..8]
@@ -51,9 +59,15 @@ class Board
   is_occupied: ([coord_x, coord_y]) ->
     @board[coord_x - 1][coord_y - 1]?
 
-  spawn: (color) ->
-    @place_piece (new piece.Piece color, 'pawn'), 
-                 [(calc.randint [1, 8]), spawn_row[color]]
+  spawn: ->
+    for p in players
+      spawn_cols = []
+      row = spawn_row[p]
+      for col in [1..8]
+        spawn_cols.push col if not @is_occupied [col, row]
+      continue unless spawn_cols.length > 0
+      @place_piece (new piece.Piece p, 'pawn'), 
+                   [spawn_cols[(calc.randint [0, spawn_cols.length - 1])], row]
 
   is_battleground: ->
     @is_battleground
@@ -70,6 +84,7 @@ class Board
     ev.hook 'attack_round_begin', @on_attack_round_begin
     ev.hook 'attack_round_end', @on_attack_round_end
     ev.hook 'recover_round', @on_recover_round
+    ev.hook 'move_round_end', @on_move_round_end
 
   unhook: ->
     ev.unhook 'assist_round_begin', @on_assist_round_begin
@@ -77,6 +92,7 @@ class Board
     ev.unhook 'attack_round_begin', @on_attack_round_begin
     ev.unhook 'attack_round_end', @on_attack_round_end
     ev.unhook 'recover_round', @on_recover_round
+    ev.unhook 'move_round_end', @on_move_round_end
 
   on_assist_round_begin: =>
     for [coord, p] from @all_pieces()
@@ -130,6 +146,12 @@ class Board
     for [coord, p] from @all_pieces()
       p.recover_shield()
       p.reduce_move_cd()
+
+  on_move_round_end: =>
+    @reduce_spawn_cd()
+    if @spawn_cd is 0
+      @spawn()
+      @activate_spawn_cd()
 
   get_valid_moves: (coord) ->
     return [] unless @is_occupied coord

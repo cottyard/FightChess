@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "spawn.js",
+  "sourceRoot": "..\\..\\..",
+  "sources": [
+    "src\\game\\rule\\spawn.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,MAAM,CAAC,IAAI,CAAC,KAAZ,GAAoB;IAClB,QAAA,EAAU;EADQ;AAApB",
+  "sourcesContent": [
+    "window.rule.spawn = { \r\n  spawn_cd: 50\r\n}"
+  ]
+}
