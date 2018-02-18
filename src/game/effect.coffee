@@ -31,13 +31,7 @@ class Hurt
     @transparency = 0.3
 
   render: (ctx) ->
-    shape.save_style ctx
-    shape.set_style ctx, "rgba(255, 0, 0, #{@transparency})"
-    [x, y] = calc.coord_to_pos @coord
-    shape.rectangle ctx, \
-      x - settings.half_grid_size, y - settings.half_grid_size, \
-      settings.grid_size, settings.grid_size, yes
-    shape.restore_style ctx
+    paint.paint_grid ctx, @coord, "rgba(255, 0, 0, #{@transparency})"
     
   next_frame: ->
     @transparency -= 0.1

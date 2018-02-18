@@ -6,8 +6,8 @@
     "src\\game\\settings.coffee"
   ],
   "names": [],
-  "mappings": ";AAAA;AAAA,MAAA,gBAAA,EAAA,QAAA,EAAA,SAAA,EAAA,cAAA,EAAA;;EAAA,gBAAA,GAAmB;;EACnB,QAAA,GAAW;;EACX,SAAA,GAAY,QAAA,GAAW;;EACvB,UAAA,GAAa;;EAEb,cAAA,GAAiB,SAAA,GAAY;;EAE7B,MAAM,CAAC,QAAP,GAAkB,CAChB,gBADgB,EAEhB,QAFgB,EAGhB,SAHgB,EAIhB,cAJgB,EAKhB,UALgB;AAPlB",
+  "mappings": ";AAAA;AAAA,MAAA,gBAAA,EAAA,QAAA,EAAA,SAAA,EAAA,cAAA,EAAA,UAAA,EAAA;;EAAA,gBAAA,GAAmB;;EACnB,QAAA,GAAW;;EACX,SAAA,GAAY,QAAA,GAAW;;EACvB,UAAA,GAAa;;EAEb,cAAA,GAAiB,SAAA,GAAY;;EAC7B,oBAAA,GAAuB;;EAEvB,MAAM,CAAC,QAAP,GAAkB,CAChB,gBADgB,EAEhB,QAFgB,EAGhB,SAHgB,EAIhB,cAJgB,EAKhB,UALgB,EAMhB,oBANgB;AARlB",
   "sourcesContent": [
-    "cvs_border_width = 3\r\ncvs_size = 400\r\ngrid_size = cvs_size / 8\r\npiece_font = \"40px Courier New\"\r\n\r\nhalf_grid_size = grid_size / 2\r\n\r\nwindow.settings = {\r\n  cvs_border_width,\r\n  cvs_size,\r\n  grid_size,\r\n  half_grid_size,\r\n  piece_font\r\n}"
+    "cvs_border_width = 3\r\ncvs_size = 400\r\ngrid_size = cvs_size / 8\r\npiece_font = \"40px Courier New\"\r\n\r\nhalf_grid_size = grid_size / 2\r\ntop_indicator_height = 5\r\n\r\nwindow.settings = {\r\n  cvs_border_width,\r\n  cvs_size,\r\n  grid_size,\r\n  half_grid_size,\r\n  piece_font,\r\n  top_indicator_height\r\n}"
   ]
 }

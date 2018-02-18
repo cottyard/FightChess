@@ -68,6 +68,7 @@ style_tp = "rgba(0, 0, 0, 0.5)"
 style_white = "#FFF"
 style_blue = "#BBF"
 style_brown = "#BB9"
+style_grey = "rgb(200, 200, 200)"
 
 window.shape = {
   arrow,
@@ -88,5 +89,6 @@ window.shape = {
   style_white,
   style_brown,
   style_blue,
+  style_grey,
   style_tp
 }

@@ -8,6 +8,6 @@
   "names": [],
   "mappings": ";AAAA;EAAA,MAAM,CAAC,IAAI,CAAC,KAAZ,GAAoB;IAClB,QAAA,EAAU;EADQ;AAApB",
   "sourcesContent": [
-    "window.rule.spawn = { \r\n  spawn_cd: 50\r\n}"
+    "window.rule.spawn = { \r\n  spawn_cd: 200\r\n}"
   ]
 }

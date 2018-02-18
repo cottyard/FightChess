@@ -45,12 +45,10 @@ pawn = (color, coord, board) ->
   
   {regular, offensive, defensive}
 
-super_pawn_moves_deltas = [
-  [1, 0], [-1, 0], [0, 1], [0, -1]
-]
 super_pawn_atk_ast_deltas = [
   [1, 1], [1, -1], [-1, 1], [-1, -1]
 ]
+
 super_pawn = (color, coord, board) ->
   regular = []
   offensive = []
@@ -136,6 +134,8 @@ king_moves_deltas = [
   [1, 0], [0, 1], [-1, 0], [0, -1],
   [1, 1], [1, -1], [-1, 1], [-1, -1]
 ]
+
+super_pawn_moves_deltas = king_moves_deltas
 
 king = (color, coord, board) ->
   regular = []

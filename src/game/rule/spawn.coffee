@@ -1,3 +1,3 @@
 window.rule.spawn = { 
-  spawn_cd: 50
+  spawn_cd: 200
 }
