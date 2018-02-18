@@ -28,8 +28,15 @@ rectangle = (ctx, x, y, width, height, fill = no) ->
   else 
     ctx.strokeRect x, y, width, height
 
-text = (ctx, text, x, y) ->
+text = (ctx, text, x, y, style) ->
+  if style?
+    save_style ctx
+    set_style ctx, style
+
   ctx.fillText text, x, y
+
+  if style?
+    restore_style ctx
 
 clear_canvas = (ctx) ->
   ctx.save()
@@ -68,7 +75,8 @@ style_tp = "rgba(0, 0, 0, 0.5)"
 style_white = "#FFF"
 style_blue = "#BBF"
 style_brown = "#BB9"
-style_grey = "rgb(200, 200, 200)"
+style_grey = "#DDD"
+style_light = "#888"
 
 window.shape = {
   arrow,
@@ -90,5 +98,6 @@ window.shape = {
   style_brown,
   style_blue,
   style_grey,
+  style_light,
   style_tp
 }

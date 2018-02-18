@@ -99,17 +99,16 @@ piece_at_pos = (ctx, piece, [pos_x, pos_y]) ->
   color = piece.color
   type = piece.type
   half = settings.half_grid_size
+  style = if piece.can_move() then null else shape.style_light
   shape.text ctx, piece_drawing_types[color][type],
-             pos_x - half + 5, pos_y - half + 40
+             pos_x - half + 5, pos_y - half + 40, style
   if piece.type is 'super_pawn'
     shape.text ctx, piece_super_pawn_decorator,
                pos_x + 3, pos_y - half + 28
 
 board = (ctx) ->
-  for i in [1..8]
-    for j in [1..8]
-      continue unless battleground.instance.is_occupied [i, j]
-      piece_with_indicators ctx, battleground.instance.get_piece([i, j]), [i, j]
+  for [coord, p] from battleground.instance.all_pieces()
+      piece_with_indicators ctx, p, coord
 
 paint_grid = (ctx, coord, style) ->
   shape.save_style ctx
