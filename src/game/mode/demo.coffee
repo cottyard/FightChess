@@ -1,5 +1,5 @@
 on_gametick = (evt) ->
-  #game.ai_think_round()
+  game.ai_think_round battleground.instance
   game.move_round battleground.instance
   game.assist_round battleground.instance
   game.recover_round battleground.instance

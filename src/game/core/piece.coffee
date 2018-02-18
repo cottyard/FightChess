@@ -74,7 +74,14 @@ class Piece
     @hp <= 0
 
   clone: ->
-    new Piece @color, @type
+    p = new Piece @color, @type
+    p.hp = @hp
+    p.shield = @shield
+    p.shield_total = @shield_total
+    p.shield_heal = @shield_heal
+    p.attack_cd_ticks = @attack_cd_ticks
+    p.move_cd_ticks = @move_cd_ticks
+    p
 
   equals: (another) ->
     @type is another.type and @color is another.color

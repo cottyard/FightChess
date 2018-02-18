@@ -155,6 +155,11 @@ valid_moves = (type, color, coord, board) ->
 
 window.rule.move = {
   valid_moves,
+  empty_moves: {
+    regular: [],
+    offensive: [],
+    defensive: []
+  },
   strategies: {
     pawn,
     super_pawn,

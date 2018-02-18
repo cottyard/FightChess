@@ -1,6 +1,6 @@
-try_moving_piece = (piece) ->
+try_moving_piece = (board, piece, coord) ->
   return 'no moves' unless piece.can_move()
-  moves = piece.valid_moves()
+  moves = board.get_valid_moves coord
   if moves.regular.length > 0
     return calc.pick_one moves.regular
   else
@@ -8,16 +8,15 @@ try_moving_piece = (piece) ->
 
 think_of_one_operation = (board, color) ->
   all_moves = []
-  for i in [1..8]
-    for j in [1..8]
-      continue unless board.is_occupied [j, i]
-      current_piece = board.get_piece [j, i]
+  for [coord, p] from board.all_pieces()
+      current_piece = board.get_piece coord
       continue unless current_piece.color is color
-      result_coord = try_moving_piece current_piece
+      result_coord = try_moving_piece board, current_piece, coord
       if result_coord isnt 'no moves'
         all_moves.push {
           piece: current_piece,
-          coord_to: result_coord
+          coord_to: result_coord,
+          coord_from: coord
         }
   if all_moves.length > 0
     return calc.pick_one all_moves

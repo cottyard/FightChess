@@ -12,10 +12,10 @@ activate = (color) ->
 deactivate = ->
   ev.unhook 'ai_think_round', on_think
 
-on_think = ->
+on_think = (evt) ->
   return unless ai_current?
   if thinking_cooldown is 0
-    op = ai_current.think_of_one_operation(battleground.instance.clone(), ai_color)
+    op = ai_current.think_of_one_operation evt.board.clone(), ai_color
     ev.trigger('op_movepiece', op) if op isnt 'abort'
     thinking_cooldown = think_interval
   else
