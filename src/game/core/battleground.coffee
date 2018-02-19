@@ -17,17 +17,14 @@ on_end_of_rounds = (evt) ->
 on_render = (evt) ->
   paint.board ui.ctx.static
 
-# TODO: rewrite the serialization
 get_state = ->
   serialized_pieces = []
-  for pieces in battleground.instance.board
-    for p in pieces
-      if p?
-        serialized_pieces.push piece.serialize_piece p
+  for [coord, p] in battleground.instance.all_pieces()
+    serialized_pieces.push piece.serialize_piece p, coord
   buffer = new ArrayBuffer serialized_pieces.length * piece.serialization_btyes
   pointer = 0
-  for pb in serialized_pieces
-    calc.write_buf_to_buf pb, buffer, 0, pointer, piece.serialization_btyes
+  for sp in serialized_pieces
+    calc.write_buf_to_buf sp, buffer, 0, pointer, piece.serialization_btyes
     pointer += piece.serialization_btyes
   buffer
 
@@ -36,10 +33,10 @@ set_state = (buffer) ->
   piece_count = buffer.byteLength / piece.serialization_btyes
   pointer = 0
   for i in [0...piece_count]
-    pb = new ArrayBuffer piece.serialization_btyes
-    calc.write_buf_to_buf buffer, pb, i * piece.serialization_btyes, 0, piece.serialization_btyes
-    p = piece.deserialize_piece pb
-    battleground.instance.place_piece p
+    sp = new ArrayBuffer piece.serialization_btyes
+    calc.write_buf_to_buf buffer, sp, i * piece.serialization_btyes, 0, piece.serialization_btyes
+    [p, coord] = piece.deserialize_piece sp
+    battleground.instance.place_piece p, coord
 
 window.battleground = {
   init,

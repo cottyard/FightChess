@@ -30,7 +30,6 @@ init_demo = ->
   battleground.init()
   battle.init()
   effect.init()
-  network.init()
 
   ev.hook 'gametick', on_gametick
   ev.hook 'move_round_begin', operation.handle_cached_operations

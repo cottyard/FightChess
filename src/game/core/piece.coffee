@@ -103,7 +103,7 @@ byte_spec =
 
 serialization_btyes = 11
 
-serialize_piece = (piece) ->
+serialize_piece = (piece, [coord_x, coord_y]) ->
   piece_obj =
     color: if piece.color is 'white' then 0 else 1
     type: (a for a of rule.ability).indexOf piece.type

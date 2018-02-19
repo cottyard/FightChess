@@ -3,8 +3,23 @@ on_gametick = (evt) ->
   game.assist_round battleground.instance
   game.recover_round battleground.instance
   game.attack_round battleground.instance
+  game.end_of_rounds battleground.instance
   gamestate.send_current_state()
   game.render_gametick()
+
+on_gametick_game_end = (evt) ->
+  game.render_gametick()
+
+end_game = (evt) ->
+  ev.unhook 'gametick', on_gametick
+  ev.hook 'gametick', on_gametick_game_end
+  preview.disable()
+  if evt.result is 'draw'
+    ui.gamestat.value = 'draw!'
+  else if evt.result is 'win'
+    ui.gamestat.value = evt.player + ' wins!'
+  else
+    ui.gamestat.value = 'game ended with unknown status'
 
 init_host = ->
   ev.init()
@@ -19,5 +34,6 @@ init_host = ->
 
   ev.hook 'gametick', on_gametick
   ev.hook 'move_round_begin', operation.handle_cached_operations
+  ev.hook 'game_end', end_game
 
 window.game.init_host = init_host
