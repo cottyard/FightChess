@@ -64,11 +64,11 @@ view_info = (evt) ->
 
 # view game status
 
-view_gamestat = ->
+view_spawntime = ->
   return unless previewing_color?
   ticks = battleground.instance.spawn_cd[previewing_color]
   secs = (ticks - 1) // 10 + 1
-  ui.gamestat.value = "pawn spawns in: #{secs} seconds"
+  ui.spawntime.value = "pawn spawns in: #{secs} seconds"
 
 # input operation handlers
 
@@ -90,6 +90,10 @@ set_color = (color) ->
   else
     pick_condition.check = get_pick_condition color
     previewing_color = color
+
+disable = () ->
+  pick_condition =
+    check: (coord) -> false
 
 on_pick = (evt) ->
   return unless pick_condition.check evt.coord
@@ -138,9 +142,10 @@ init = ->
   ev.hook 'hover', on_hover
   
   ev.hook 'render', view_info
-  ev.hook 'render', view_gamestat
+  ev.hook 'render', view_spawntime
 
 window.preview = {
   init,
-  set_color
+  set_color,
+  disable
 }

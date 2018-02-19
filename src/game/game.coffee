@@ -21,6 +21,9 @@ attack_round = (board) ->
 ai_think_round = (board) ->
   ev.trigger_now 'ai_think_round', { board }
 
+end_of_rounds = (board) ->
+  ev.trigger_now 'end_of_rounds', { board }
+
 render_gametick = ->
   shape.clear_canvas ui.ctx.static
   ev.trigger_now 'render', {}
@@ -48,5 +51,6 @@ window.game = {
   recover_round,
   attack_round,
   ai_think_round,
+  end_of_rounds,
   render_gametick
 }

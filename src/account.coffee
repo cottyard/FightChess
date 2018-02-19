@@ -58,7 +58,6 @@ on_challenge_accepted = ->
   game.start()
 
 on_challenge_failed = ->
-  console.log 'here'
   set_ui_state_before_challenge()
   ui.show_message 'challenge failed'
 

@@ -33,6 +33,13 @@ class Board
       @spawn p
       @activate_spawn_cd p
 
+  count_piece: (type, color) ->
+    count = 0
+    for [coord, p] from @all_pieces()
+      if p.type is type and p.color is color
+        count++
+    count
+
   count_pieces: ->
     count = {}
     for p in players
@@ -43,7 +50,6 @@ class Board
 
   activate_spawn_cd: (color) ->
     @spawn_cd[color] = rule.spawn.spawn_cd @count_pieces()[color]
-    console.log @spawn_cd[color]
 
   reduce_spawn_cd: ->
     for p in players
@@ -174,8 +180,8 @@ class Board
     return rule.move.valid_moves p.type, p.color, coord, this
 
   move_to: (from_coord, to_coord) ->
-    if not @is_occupied from_coord
-      return
+    return unless @is_occupied from_coord
+    return if @is_occupied to_coord
 
     p = @get_piece from_coord
     @place_piece p, to_coord

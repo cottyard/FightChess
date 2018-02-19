@@ -51,9 +51,9 @@
   <a>AI Move Interval</a>
   <select onchange="ai.set_interval(this.value)">
     <option value="0.5">0.5</option>
-    <option value="1" selected="selected">1</option>
+    <option value="1">1</option>
     <option value="2">2</option>
-    <option value="3">3</option>
+    <option value="3" selected="selected">3</option>
   </select>
   <a>AI</a>
   <select onchange="ai.set_ai(this.value)">
@@ -61,6 +61,8 @@
     <option value="1">monkey</option>
     <option value="2">dolphin</option>
   </select>
+  <textarea id="spawntime" cols="25" readonly></textarea>
+  <textarea id="gamestat" cols="10" readonly>demo</textarea>
   <p id="message"></p>
   <div align="center">
     <div align="left" style="width: 40%;padding-top: 50px">
@@ -69,7 +71,6 @@
       <canvas id="background"></canvas>
     </div>
   </div>
-  <textarea id="gamestat" cols="40" readonly>game status</textarea>
   <script>
     function start() {
       ui.init();

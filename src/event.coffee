@@ -21,9 +21,11 @@ game
   assist_round_begin { board }, assist_round { board }, assist_round_end { board }
   recover_round_begin { board }, recover_round { board }, recover_round_end { board }
   attack_round_begin { board }, attack_round { board }, attack_round_end { board }
+  end_of_rounds { board }
   ai_think_round { board }
   gametick {}
   render {}
+  game_end { result: draw/win, player }
 piece state
   piece_die {piece, coord}
   piece_hurt {piece, coord}
@@ -37,6 +39,7 @@ network
 handlers = {}
 dispatching = no
 event_queue = []
+halted = no
 
 trigger = (evt_name, evt) ->
   event_queue.push [evt_name, evt]
@@ -50,10 +53,11 @@ trigger_now = (evt_name, evt) ->
   dispatch_queue()
 
 dispatch_queue = ->
-  while event_queue.length > 0
-    dispatch_an_event_from_queue()
+  unless halted
+    while event_queue.length > 0
+      dispatch_one_event_from_queue()
 
-dispatch_an_event_from_queue = ->
+dispatch_one_event_from_queue = ->
   [evt_name, evt] = event_queue.shift()
   dispatch_event evt_name, evt
 
@@ -80,10 +84,18 @@ init = ->
   dispatching = no 
   event_queue = []
 
+halt = ->
+  halted = yes
+
+resume = ->
+  halted = no
+
 window.ev = {
   init,
   trigger,
   trigger_now,
   hook,
-  unhook
+  unhook,
+  halt,
+  resume
 }
