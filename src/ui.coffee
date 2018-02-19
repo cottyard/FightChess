@@ -56,6 +56,7 @@ init = ->
   ui.opponent_id = document.getElementById 'opponent_id'
   ui.login_button = document.getElementById 'login'
   ui.challenge_button = document.getElementById 'challenge'
+  ui.gamestat = document.getElementById 'gamestat'
 
 window.ui = {
   init,
@@ -74,5 +75,6 @@ window.ui = {
   player_id: null,
   opponent_id: null,
   login_button: null,
-  challenge_button: null
+  challenge_button: null,
+  gamestat: null
 }

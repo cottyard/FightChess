@@ -16,7 +16,10 @@ class Board
       (null for j in [1..8]) for i in [1..8]
     )
 
-    @spawn_cd = 0
+    @spawn_cd = {
+      white: 0,
+      black: 0
+    }
     
     @is_battleground ?= false
 
@@ -26,16 +29,26 @@ class Board
   set_out_board: ->
     for p in players
       @place_piece (new piece.Piece p, 'king'), king_spawn_coord[p]
-    @spawn()
-    @spawn()
-    @activate_spawn_cd()
+      @spawn p
+      @spawn p
+      @activate_spawn_cd p
 
-  activate_spawn_cd: ->
-    @spawn_cd = rule.spawn.spawn_cd
+  count_pieces: ->
+    count = {}
+    for p in players
+      count[p] = 0
+    for [coord, p] from @all_pieces()
+      count[p.color]++
+    count
+
+  activate_spawn_cd: (color) ->
+    @spawn_cd[color] = rule.spawn.spawn_cd @count_pieces()[color]
+    console.log @spawn_cd[color]
 
   reduce_spawn_cd: ->
-    if @spawn_cd > 0
-      @spawn_cd--
+    for p in players
+      if @spawn_cd[p] > 0
+        @spawn_cd[p]--
 
   all_pieces: ->
     for i in [1..8]
@@ -59,15 +72,15 @@ class Board
   is_occupied: ([coord_x, coord_y]) ->
     @board[coord_x - 1][coord_y - 1]?
 
-  spawn: ->
-    for p in players
-      spawn_cols = []
-      row = spawn_row[p]
-      for col in [1..8]
-        spawn_cols.push col if not @is_occupied [col, row]
-      continue unless spawn_cols.length > 0
-      @place_piece (new piece.Piece p, 'pawn'), 
-                   [spawn_cols[(calc.randint [0, spawn_cols.length - 1])], row]
+  spawn: (color) ->
+    spawn_cols = []
+    row = spawn_row[color]
+    for col in [1..8]
+      spawn_cols.push col if not @is_occupied [col, row]
+    return false unless spawn_cols.length > 0
+    @place_piece (new piece.Piece color, 'pawn'), 
+                 [spawn_cols[(calc.randint [0, spawn_cols.length - 1])], row]
+    true
 
   is_battleground: ->
     @is_battleground
@@ -149,9 +162,10 @@ class Board
 
   on_move_round_end: =>
     @reduce_spawn_cd()
-    if @spawn_cd is 0
-      @spawn()
-      @activate_spawn_cd()
+    for p in players
+      if @spawn_cd[p] is 0
+        if @spawn p
+          @activate_spawn_cd p
 
   get_valid_moves: (coord) ->
     return rule.move.empty_moves unless @is_occupied coord

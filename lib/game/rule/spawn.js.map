@@ -6,8 +6,8 @@
     "src\\game\\rule\\spawn.coffee"
   ],
   "names": [],
-  "mappings": ";AAAA;EAAA,MAAM,CAAC,IAAI,CAAC,KAAZ,GAAoB;IAClB,QAAA,EAAU;EADQ;AAApB",
+  "mappings": ";AAAA;AAAA,MAAA,EAAA,EAAA,YAAA,EAAA;;EAAA,uBAAA;;AACE;AAAA;IAAA,KAAA,qCAAA;;mBAAA,EAAA,GAAK;IAAL,CAAA;;;;EAMF,YAAA,GAAe,QAAA,CAAC,WAAD,CAAA;IACb,IAAG,WAAA,GAAc,CAAd,IAAmB,WAAA,GAAc,EAApC;MACE,MAAM,sBADR;;WAEA,uBAAwB,CAAA,WAAA,GAAc,CAAd;EAHX;;EAKf,MAAM,CAAC,IAAI,CAAC,KAAZ,GAAoB;IAClB,QAAA,EAAU;EADQ;AAZpB",
   "sourcesContent": [
-    "window.rule.spawn = { \r\n  spawn_cd: 200\r\n}"
+    "spawn_cd_by_piece_count = (\r\n  cd * 10 \\\r\n  for cd in [\r\n    5,5,5,6,7,\r\n    8,9,10,12,14,\r\n    16,18,20,22,25])\r\n\r\nget_sapwn_cd = (piece_count) ->\r\n  if piece_count < 1 or piece_count > 16\r\n    throw \"invalid piece count\"\r\n  spawn_cd_by_piece_count[piece_count - 1]\r\n\r\nwindow.rule.spawn = { \r\n  spawn_cd: get_sapwn_cd\r\n}"
   ]
 }

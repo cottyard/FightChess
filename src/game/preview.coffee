@@ -3,6 +3,7 @@
 previewing = no
 previewing_piece = null
 previewing_coord = [-1, -1]
+previewing_color = null
 
 preview_condition = ->
   battleground.instance.is_occupied(previewing_coord) and
@@ -61,11 +62,24 @@ view_info = (evt) ->
     ui.info.value = ''
   ui.cvs.animate.style.cursor = cursor
 
+# view game status
+
+view_gamestat = ->
+  return unless previewing_color?
+  ticks = battleground.instance.spawn_cd[previewing_color]
+  secs = (ticks - 1) // 10 + 1
+  ui.gamestat.value = "pawn spawns in: #{secs} seconds"
+
 # input operation handlers
 
 default_pick_condition = (coord) -> 
   battleground.instance.is_occupied(coord) and 
   battleground.instance.get_piece(coord).can_move()
+
+get_pick_condition = (color) ->
+  (coord) ->
+    default_pick_condition(coord) and
+    battleground.instance.get_piece(coord).color is color
 
 pick_condition = 
   check: default_pick_condition
@@ -74,9 +88,8 @@ set_color = (color) ->
   if not color?
     pick_condition = default_pick_condition
   else
-    pick_condition.check = (coord) ->
-      default_pick_condition(coord) and
-      battleground.instance.get_piece(coord).color is color
+    pick_condition.check = get_pick_condition color
+    previewing_color = color
 
 on_pick = (evt) ->
   return unless pick_condition.check evt.coord
@@ -125,6 +138,7 @@ init = ->
   ev.hook 'hover', on_hover
   
   ev.hook 'render', view_info
+  ev.hook 'render', view_gamestat
 
 window.preview = {
   init,
