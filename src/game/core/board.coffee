@@ -115,8 +115,7 @@ class Board
 
   on_assist_round_begin: =>
     for [coord, p] from @all_pieces()
-      p.shield_total = p.shield_total_born
-      p.shield_heal = p.shield_heal_born
+      p.reset_assisted_abilities()
       moves = rule.move.valid_moves p.type, p.color, coord, this
       for def_coord in moves.defensive
         astee = @get_piece def_coord
@@ -125,7 +124,8 @@ class Board
           astee: astee,
           coord_from: coord, 
           coord_to: def_coord,
-          assistance: p.assistance
+          assistance: p.assistance,
+          heal: p.heal
         }
 
   on_assist_round_end: =>
@@ -164,6 +164,7 @@ class Board
   on_recover_round: =>
     for [coord, p] from @all_pieces()
       p.recover_shield()
+      p.recover_hp()
       p.reduce_move_cd()
 
   on_move_round_end: =>

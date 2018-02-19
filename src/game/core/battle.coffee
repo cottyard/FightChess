@@ -24,7 +24,7 @@ handle_move_queue = (evt) ->
     handle_move evt.board, move_queue.shift()
 
 handle_assist = (board, evt) ->
-  evt.astee.assist evt.assistance
+  evt.astee.assist evt.assistance, evt.heal
 
 handle_attack = (board, evt) ->
   hurt = evt.atkee.inflict evt.damage

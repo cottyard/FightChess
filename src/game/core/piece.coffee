@@ -13,17 +13,20 @@ class Piece
     @shield_total_born = ability['shield']
     @shield_heal_born = ability['shield_heal']
     @move_cd = ability['move_cd']
+    @heal = ability['heal']
+    @hp_heal_born = ability['self_heal']
 
   initialize_state_info: ->
     @hp = @hp_total
+    @hp_heal = @hp_heal_born
     @shield = @shield_total = @shield_total_born
     @shield_heal = @shield_heal_born
     @attack_cd_ticks = 0
     @move_cd_ticks = 0
 
   info: ->
-    """hp: #{Math.ceil @hp}/#{@hp_total}
-       shield: #{Math.floor @shield}/#{@shield_total} (#{@shield_heal.toFixed(1)})
+    """hp: #{Math.ceil @hp}/#{@hp_total} (+#{(@hp_heal*10).toFixed(0)})
+       shield: #{Math.floor @shield}/#{@shield_total} (+#{(@shield_heal*10).toFixed(0)})
     """
 
   inflict: (damage) ->
@@ -36,9 +39,10 @@ class Piece
       @hp -= damage
       true
 
-  assist: (assistance) ->
+  assist: (assistance, heal) ->
     @shield_total += assistance[0]
     @shield_heal += assistance[1]
+    @hp_heal += heal
 
   activate_attack_cd: ->
     @attack_cd_ticks = @attack_cd
@@ -55,6 +59,19 @@ class Piece
     @shield += @shield_heal
     @adjust_shield()
 
+  recover_hp: ->
+    @hp += @hp_heal
+    @adjust_hp()
+
+  adjust_hp: ->
+    if @hp > @hp_total
+      @hp = @hp_total
+
+  reset_assisted_abilities: ->
+    @shield_total = @shield_total_born
+    @shield_heal = @shield_heal_born
+    @hp_heal = @hp_heal_born
+
   activate_move_cd: ->
     @move_cd_ticks = @move_cd
 
@@ -62,12 +79,8 @@ class Piece
     if @move_cd_ticks > 0
       @move_cd_ticks--
 
-  heal: (hp) ->
-    @hp += hp
-    if @hp > @hp_total
-      @hp = @hp_total
-
   can_move: ->
+    #return true
     @move_cd_ticks is 0
 
   is_dead: ->
