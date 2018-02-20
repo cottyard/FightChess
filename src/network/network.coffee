@@ -37,9 +37,9 @@ login = (id, callback_success, callback_failure) ->
 handle_network_in = (data) ->
   switch data.type
     when 'gamestate'
-      ev.trigger 'network_in_gamestate', {gamestate: data.content}
+      ev.trigger 'network_in_gamestate', { gamestate: data.content.gamestate, boardstate: data.content.boardstate }
     when 'operation'
-      ev.trigger 'network_in_operation', {operation: data.content}
+      ev.trigger 'network_in_operation', { operation: data.content.operation }
 
 wrap_data = (type, content) ->
   {
@@ -47,14 +47,14 @@ wrap_data = (type, content) ->
     content
   }
 
-on_network_out = (type, content_name) ->
+on_network_out = (type) ->
   (evt) ->
     return unless connection?
-    connection.send wrap_data type, evt[content_name]
+    connection.send wrap_data type, evt
 
 init = ->
-  ev.hook 'network_out_gamestate', on_network_out 'gamestate', 'gamestate'
-  ev.hook 'network_out_operation', on_network_out 'operation', 'operation'
+  ev.hook 'network_out_gamestate', on_network_out 'gamestate'
+  ev.hook 'network_out_operation', on_network_out 'operation'
 
 window.network = {
   init,

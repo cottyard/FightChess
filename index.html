@@ -49,21 +49,22 @@
   <textarea id="opponent_id" onclick="this.focus();this.select();" cols="12" rows="1">opponent name</textarea>
   <button id="challenge" type="button" disabled>challenge</button>
   <textarea id="info" cols="20" readonly></textarea>
-  <a>AI Move Interval</a>
+<!--   <a>AI Move Interval</a>
   <select onchange="ai.set_interval(this.value)">
     <option value="0.5">0.5</option>
     <option value="1">1</option>
     <option value="2">2</option>
     <option value="3" selected="selected">3</option>
-  </select>
+  </select> -->
   <a>AI</a>
   <select onchange="ai.set_ai(this.value)">
     <option value="0" selected="selected">(none)</option>
     <option value="1">monkey</option>
-    <option value="2">dolphin</option>
+    <!-- <option value="2">dolphin</option> -->
   </select>
   <textarea id="spawntime" cols="25" readonly></textarea>
   <textarea id="gamestat" cols="10" readonly>demo</textarea>
+  <button id="startgame" type="button" hidden="true">start game</button>
   <p id="message"></p>
   <div align="center">
     <div align="left" style="width: 40%;padding-top: 50px">
@@ -78,6 +79,7 @@
       ui.init();
       account.init();
       game.init_demo();
+      gamestate.start_game('white');
       game.start();
     }
   </script>

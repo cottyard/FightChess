@@ -13,15 +13,12 @@ on_gametick_game_end = (evt) ->
 end_game = (evt) ->
   ev.unhook 'gametick', on_gametick
   ev.hook 'gametick', on_gametick_game_end
+  gamestate.end_game evt.result, evt.player
   preview.disable()
-  if evt.result is 'draw'
-    ui.gamestat.value = 'draw!'
-  else if evt.result is 'win'
-    ui.gamestat.value = evt.player + ' wins!'
-  else
-    ui.gamestat.value = 'game ended with unknown status'
 
 init_demo = ->
+  game.stop()
+
   ev.init()
   input.init()
   operation.init()

@@ -33,10 +33,12 @@ next_gametick = ->
 
 game_loop_obj = null
 start = ->
+  return if game_loop_obj?
   game_loop_obj = setInterval next_gametick, 100
 
 stop = ->
   clearInterval game_loop_obj
+  game_loop_obj = null
 
 window.game = {
   start,

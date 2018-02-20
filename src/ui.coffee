@@ -58,6 +58,10 @@ init = ->
   ui.challenge_button = document.getElementById 'challenge'
   ui.spawntime = document.getElementById 'spawntime'
   ui.gamestat = document.getElementById 'gamestat'
+  ui.startgame = document.getElementById 'startgame'
+
+  ui.startgame.onclick = ->
+    ev.trigger 'game_start', {}
 
 window.ui = {
   init,
@@ -78,5 +82,6 @@ window.ui = {
   login_button: null,
   challenge_button: null,
   spawntime: null,
-  gamestat: null
+  gamestat: null,
+  startgame: null
 }

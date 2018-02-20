@@ -26,14 +26,15 @@ game
   gametick {}
   render {}
   game_end { result: draw/win, player }
+  game_start {}
 piece state
-  piece_die {piece, coord}
-  piece_hurt {piece, coord}
+  piece_die { piece, coord }
+  piece_hurt { piece, coord }
 network
-  network_out_gamestate {gamestate}
-  network_out_operation {operation}
-  network_in_gamestate {gamestate}
-  network_in_operation {operation}
+  network_out_gamestate { gamestate, boardstate }
+  network_out_operation { operation }
+  network_in_gamestate { gamestate, boardstate }
+  network_in_operation { operation }
 ###
 
 handlers = {}
