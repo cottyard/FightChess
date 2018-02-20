@@ -65,10 +65,13 @@ view_info = (evt) ->
 # view game status
 
 view_spawntime = ->
-  return unless previewing_color?
-  ticks = battleground.instance.spawn_cd[previewing_color]
-  secs = (ticks - 1) // 10 + 1
-  ui.spawntime.value = "pawn spawns in: #{secs} seconds"
+  #return unless previewing_color?
+  msg = []
+  for p in ['white', 'black']
+    ticks = battleground.instance.spawn_cd[p]
+    secs = (ticks - 1) // 10 + 1
+    msg.push "#{p} spawns: #{secs} secs"
+  ui.spawntime.value = msg.join '\n'
 
 # input operation handlers
 

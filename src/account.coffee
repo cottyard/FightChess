@@ -24,7 +24,7 @@ set_ui_state_challenging = ->
 
 set_ui_state_after_challenge = ->
   ui.opponent_id.readOnly = true
-  ui.set_button_text ui.challenge_button, 'challenge was accepted'
+  ui.set_button_text ui.challenge_button, 'challenge accepted'
 
 set_ui_state_before_challenge = ->
   ui.opponent_id.readOnly = false

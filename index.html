@@ -44,9 +44,9 @@
   </style>
 </head>
 <body onload="start()">
-  <textarea id="player_id" onclick="this.focus();this.select();" cols="20" rows="1">your name</textarea>
+  <textarea id="player_id" onclick="this.focus();this.select();" cols="12" rows="1">your name</textarea>
   <button id="login" type="button">log in</button>
-  <textarea id="opponent_id" onclick="this.focus();this.select();" cols="20" rows="1">opponent's name</textarea>
+  <textarea id="opponent_id" onclick="this.focus();this.select();" cols="12" rows="1">opponent name</textarea>
   <button id="challenge" type="button" disabled>challenge</button>
   <textarea id="info" cols="20" readonly></textarea>
   <a>AI Move Interval</a>
@@ -74,11 +74,11 @@
   </div>
   <script>
     function start() {
-      gamestatetest.test();
-      // ui.init();
-      // account.init();
-      // game.init_demo();
-      // game.start();
+      // gamestatetest.test();
+      ui.init();
+      account.init();
+      game.init_demo();
+      game.start();
     }
   </script>
 </body>

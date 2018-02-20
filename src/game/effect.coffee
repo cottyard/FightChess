@@ -69,23 +69,17 @@ init = ->
   ev.hook 'piece_hurt', on_piece_hurt
   ev.hook 'render', render_all
 
-assist_byte_spec =
-    from_x: 1
-    from_y: 1
-    to_x: 1
-    to_y: 1
+assist_serial_attrs = ['from_x', 'from_y', 'to_x', 'to_y']
 
-attack_byte_spec =
-    from_x: 1
-    from_y: 1
-    to_x: 1
-    to_y: 1
-    tp: 1
+attack_serial_attrs = ['from_x', 'from_y', 'to_x', 'to_y', 'tp']
 
-hurt_byte_spec =
-    x: 1
-    y: 1
-    tp: 1
+hurt_serial_attrs = ['x', 'y', 'tp']
+
+get_obj = (attrs) ->
+  o = {}
+  for a in attrs
+    o[a] = null
+  o
 
 get_state = ->
   serialized_assist = []
@@ -95,7 +89,7 @@ get_state = ->
       from_y: e.coord_from[1]
       to_x: e.coord_to[0]
       to_y: e.coord_to[1]
-    serialized_assist.push calc.obj_to_arraybuffer e_obj, assist_byte_spec
+    serialized_assist.push calc.obj_to_arraybuffer e_obj
 
   serialized_attack = []
   for e in effects_attack
@@ -105,7 +99,7 @@ get_state = ->
       to_x: e.coord_to[0]
       to_y: e.coord_to[1]
       tp: Math.floor e.transparency * 10
-    serialized_attack.push calc.obj_to_arraybuffer e_obj, attack_byte_spec
+    serialized_attack.push calc.obj_to_arraybuffer e_obj
 
   serialized_hurt = []
   for e in effects_hurt
@@ -113,7 +107,7 @@ get_state = ->
       x: e.coord[0]
       y: e.coord[1]
       tp: Math.floor e.transparency * 10
-    serialized_hurt.push calc.obj_to_arraybuffer e_obj, hurt_byte_spec
+    serialized_hurt.push calc.obj_to_arraybuffer e_obj
 
   {
     assist: serialized_assist,
@@ -125,13 +119,15 @@ set_state = (state) ->
   serialized_assist = state.assist
   effects_assist = []
   for se in serialized_assist
-    e_obj = calc.arraybuffer_to_obj se, assist_byte_spec
+    e_obj = get_obj assist_serial_attrs
+    calc.arraybuffer_to_obj se, e_obj
     effects_assist.push new Assist [e_obj.from_x, e_obj.from_y], [e_obj.to_x, e_obj.to_y]
 
   serialized_attack = state.attack
   effects_attack = []
   for se in serialized_attack
-    e_obj = calc.arraybuffer_to_obj se, attack_byte_spec
+    e_obj = get_obj attack_serial_attrs
+    calc.arraybuffer_to_obj se, e_obj
     atk = new Attack [e_obj.from_x, e_obj.from_y], [e_obj.to_x, e_obj.to_y]
     atk.transparency = e_obj.tp / 10
     effects_attack.push atk
@@ -139,7 +135,8 @@ set_state = (state) ->
   serialized_hurt = state.hurt
   effects_hurt = []
   for se in serialized_hurt
-    e_obj = calc.arraybuffer_to_obj se, hurt_byte_spec
+    e_obj = get_obj hurt_serial_attrs
+    calc.arraybuffer_to_obj se, e_obj
     hrt = new Hurt [e_obj.x, e_obj.y]
     hrt.transparency = e_obj.tp / 10
     effects_hurt.push hrt
