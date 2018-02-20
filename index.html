@@ -35,6 +35,7 @@
   <script src="lib/game/ai/dolphin.js"></script> <!-- window.ai.monkey -->
   <script src="lib/network/network.js"></script> <!-- window.network -->
   <script src="src/network/peer.min.js"></script> <!-- window.Peer -->
+  <script src="lib/game/gamestate_test.js"></script> <!-- window.gamestatetest -->
   
   <style>
     textarea {
@@ -73,10 +74,11 @@
   </div>
   <script>
     function start() {
-      ui.init();
-      account.init();
-      game.init_demo();
-      game.start();
+      gamestatetest.test();
+      // ui.init();
+      // account.init();
+      // game.init_demo();
+      // game.start();
     }
   </script>
 </body>

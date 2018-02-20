@@ -1,37 +1,48 @@
-state_queue = []
+test = ->
+  piece_test()
+  board_test()
 
-to_next_state = ->
-  if not state_queue.length > 0
-    return false
-  set_state state_queue.shift()
-  true
+board_test = ->
+  b0 = new board.Board()
+  b0.set_out_board()
+  sb = board.serialize b0
+  b = new board.Board()
+  board.deserialize sb, b
 
-get_state = ->
-  battleground: battleground.get_state()
-  effect: effect.get_state()
+  compare_boards b, b0
+  console.log 'board test passed'
 
-set_state = (state) ->
-  battleground.set_state state.battleground
-  effect.set_state state.effect
+compare_boards = (b, b0) ->
+  for i in [1..8]
+    for j in [1..8]
+      o = b.is_occupied [i, j]
+      o0 = b0.is_occupied [i, j]
+      assert o, o0, 'occupied #{i}, #{j}'
+      compare_pieces (b.get_piece [i, j]), (b0.get_piece [i, j]) if o
+  assert b.spawn_cd['white'], b0.spawn_cd['white'], 'spawn cd white'
+  assert b.spawn_cd['black'], b0.spawn_cd['black'], 'spawn cd black'
 
-on_network_gamestate_in = (evt) ->
-  state_queue.push evt.gamestate
+piece_test = ->
+  p = new piece.Piece 'white', 'king'
+  p.activate_attack_cd()
+  p.activate_move_cd()
+  sp = piece.serialize p, [1, 2]
+  [pd, [x, y]] = piece.deserialize sp
+  assert x, 1, 'x'
+  assert y, 2, 'y'
 
-send_current_state = ->
-  state = get_state()
-  ev.trigger_now 'network_out_gamestate', { gamestate: state }
+  compare_pieces pd, p
+  console.log 'piece test passed'
 
-cache_size = ->
-  state_queue.length
+compare_pieces = (p, p0) ->
+  for a in piece.serialization_attributes
+    assert p[a], p0[a], a
 
-init = ->
-  ev.hook 'network_in_gamestate', on_network_gamestate_in
+assert = (value, expected, msg) ->
+  if value isnt expected
+    console.log 'assertion fail', value, expected, msg
+    throw 'test failed'
 
-window.gamestate = {
-  init,
-  get_state,
-  set_state,
-  to_next_state,
-  cache_size,
-  send_current_state
+window.gamestatetest = {
+  test
 }

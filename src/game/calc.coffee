@@ -4,38 +4,31 @@ wrap_float_for_arraybuffer = (num, precision = 0.1) ->
 unwrap_float_from_arraybuffer = (num, precision = 0.1) ->
   num / (1 / precision)
 
-write_to_buffer = (buffer, pos, bytes, content) ->
-  constructor = if bytes is 1 then Uint8Array else Uint16Array
-  view = new constructor buffer, pos, 1
+write_to_buffer = (buffer, pos, content) ->
+  # console.log "leng", buffer.byteLength
+  # console.log "pos", pos
+  # console.log "cont", content
+  view = new Uint16Array buffer, pos, 1
   view[0] = content
 
-read_from_buffer = (buffer, pos, bytes) ->
-  constructor = if bytes is 1 then Uint8Array else Uint16Array
-  view = new constructor buffer, pos, 1
+read_from_buffer = (buffer, pos) ->
+  view = new Uint16Array buffer, pos, 1
   view[0]
 
-sum_byte_spec_size = (byte_spec) ->
-  total_bytes = 0
-  for attr of byte_spec
-    total_bytes += byte_spec[attr]
-  total_bytes
-
-obj_to_arraybuffer = (obj, byte_spec) ->
-  buffer = new ArrayBuffer sum_byte_spec_size byte_spec
-  byte_count = 0
-  for attr of byte_spec
-    write_to_buffer buffer, byte_count, byte_spec[attr], obj[attr]
-    byte_count += byte_spec[attr]
+obj_to_arraybuffer = (obj) ->
+  buffer = new ArrayBuffer Object.keys(obj).length * 2
+  p = 0
+  for attr of obj
+    write_to_buffer buffer, p, obj[attr]
+    p += 2
   buffer
 
-arraybuffer_to_obj = (buffer, byte_spec) ->
-  obj = {}
-  byte_count = 0
-  for attr of byte_spec
-    content = read_from_buffer buffer, byte_count, byte_spec[attr]
+arraybuffer_to_obj = (buffer, obj) ->
+  p = 0
+  for attr of obj
+    content = read_from_buffer buffer, p
     obj[attr] = content
-    byte_count += byte_spec[attr]
-  obj
+    p += 2
 
 write_buf_to_buf = (buffer_1, buffer_2, from_1, from_2, size)->
   view_1 = new Uint8Array buffer_1
@@ -141,5 +134,7 @@ window.calc = {
   wrap_float_for_arraybuffer,
   unwrap_float_from_arraybuffer,
 
-  write_buf_to_buf
+  write_buf_to_buf,
+  write_to_buffer,
+  read_from_buffer
 }

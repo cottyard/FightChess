@@ -18,25 +18,10 @@ on_render = (evt) ->
   paint.board ui.ctx.static
 
 get_state = ->
-  serialized_pieces = []
-  for [coord, p] in battleground.instance.all_pieces()
-    serialized_pieces.push piece.serialize_piece p, coord
-  buffer = new ArrayBuffer serialized_pieces.length * piece.serialization_btyes
-  pointer = 0
-  for sp in serialized_pieces
-    calc.write_buf_to_buf sp, buffer, 0, pointer, piece.serialization_btyes
-    pointer += piece.serialization_btyes
-  buffer
+  board.serialize battleground.instance
 
 set_state = (buffer) ->
-  battleground.instance.clean_up_board()
-  piece_count = buffer.byteLength / piece.serialization_btyes
-  pointer = 0
-  for i in [0...piece_count]
-    sp = new ArrayBuffer piece.serialization_btyes
-    calc.write_buf_to_buf buffer, sp, i * piece.serialization_btyes, 0, piece.serialization_btyes
-    [p, coord] = piece.deserialize_piece sp
-    battleground.instance.place_piece p, coord
+  board.deserialize buffer, battleground.instance
 
 window.battleground = {
   init,

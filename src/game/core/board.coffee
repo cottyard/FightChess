@@ -171,6 +171,8 @@ class Board
     @reduce_spawn_cd()
     for p in players
       if @spawn_cd[p] is 0
+        count = @count_pieces()[p]
+        continue if count >= 16 
         if @spawn p
           @activate_spawn_cd p
 
@@ -208,6 +210,32 @@ try_transforming = (piece, coord) ->
     piece.change_type transform_column[coord[0] - 1]
     piece.activate_move_cd()
 
+serialize = (board) ->
+  serialized_pieces = []
+  for [coord, p] from board.all_pieces()
+    serialized_pieces.push piece.serialize p, coord
+  buffer = new ArrayBuffer(serialized_pieces.length * piece.serialization_size + 4)
+  p = 0
+  for sp in serialized_pieces
+    calc.write_buf_to_buf sp, buffer, 0, p, piece.serialization_size
+    p += piece.serialization_size
+  calc.write_to_buffer buffer, p, board.spawn_cd['white']
+  calc.write_to_buffer buffer, p + 2, board.spawn_cd['black']
+  buffer
+
+deserialize = (buffer, board) ->
+  board.clean_up_board()
+  piece_count = (buffer.byteLength - 4) / piece.serialization_size
+  for i in [0...piece_count]
+    sp = new ArrayBuffer piece.serialization_size
+    calc.write_buf_to_buf buffer, sp, i * piece.serialization_size, 0, piece.serialization_size
+    [p, coord] = piece.deserialize sp
+    board.place_piece p, coord
+  board.spawn_cd['white'] = calc.read_from_buffer buffer, buffer.byteLength - 4
+  board.spawn_cd['black'] = calc.read_from_buffer buffer, buffer.byteLength - 2
+
 window.board = {
-  Board
+  Board,
+  serialize,
+  deserialize
 }

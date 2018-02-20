@@ -103,51 +103,53 @@ class Piece
     @type = type
     @retrieve_basic_info()
     @initialize_state_info()
-    
-byte_spec = 
-  color: 1
-  type: 1
-  hp: 2
-  sd: 2
-  sd_total: 2
-  sd_heal: 1
-  atk_cd: 1
-  mv_cd: 1
 
-serialization_btyes = 11
+serialization_attributes = [
+  'color', 'type', 'hp', 'hp_heal', 'sd', 'sd_total', 'sd_heal', 'atk_cd', 'mv_cd', 'coord_x', 'coord_y']
 
-serialize_piece = (piece, [coord_x, coord_y]) ->
+serialize = (piece, [coord_x, coord_y]) ->
   piece_obj =
     color: if piece.color is 'white' then 0 else 1
     type: (a for a of rule.ability).indexOf piece.type
     hp: calc.wrap_float_for_arraybuffer piece.hp
+    hp_heal: calc.wrap_float_for_arraybuffer piece.hp_heal
     sd: calc.wrap_float_for_arraybuffer piece.shield
     sd_total: calc.wrap_float_for_arraybuffer piece.shield_total
     sd_heal: calc.wrap_float_for_arraybuffer piece.shield_heal
     atk_cd: piece.attack_cd_ticks
     mv_cd: piece.move_cd_ticks
+    coord_x: coord_x
+    coord_y: coord_y
   
-  calc.obj_to_arraybuffer piece_obj, byte_spec
+  calc.obj_to_arraybuffer piece_obj
 
-deserialize_piece = (buffer) ->
-  piece_obj = calc.arraybuffer_to_obj buffer, byte_spec
-
+deserialize = (buffer) ->
+  piece_obj = {}
+  for a in serialization_attributes
+    piece_obj[a] = null
+  
+  calc.arraybuffer_to_obj buffer, piece_obj
+  
   color = if piece_obj.color is 0 then 'white' else 'black'
   type = (a for a of rule.ability)[piece_obj.type]
 
   piece = new Piece color, type
   piece.hp = calc.unwrap_float_from_arraybuffer piece_obj.hp
+  piece.hp_heal = calc.unwrap_float_from_arraybuffer piece_obj.hp_heal
   piece.shield = calc.unwrap_float_from_arraybuffer piece_obj.sd
   piece.shield_total = calc.unwrap_float_from_arraybuffer piece_obj.sd_total
   piece.shield_heal = calc.unwrap_float_from_arraybuffer piece_obj.sd_heal
   piece.attack_cd_ticks = piece_obj.atk_cd
   piece.move_cd_ticks = piece_obj.mv_cd
-  piece
+  coord_x = piece_obj.coord_x
+  coord_y = piece_obj.coord_y
+  [piece, [coord_x, coord_y]]
 
 window.piece = {
   Piece,
   
-  serialize_piece,
-  deserialize_piece,
-  serialization_btyes
+  serialize,
+  deserialize,
+  serialization_attributes,
+  serialization_size: serialization_attributes.length * 2
 }

@@ -72,7 +72,8 @@ dispatch_event = (evt_name, evt) ->
 hook = (evt_name, hdl) ->
   unless handlers[evt_name]?
     handlers[evt_name] = []
-  handlers[evt_name].push hdl
+  if handlers[evt_name].indexOf hdl is -1
+    handlers[evt_name].push hdl
 
 unhook = (evt_name, hdl) ->
   hdls = handlers[evt_name]

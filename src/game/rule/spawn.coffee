@@ -1,9 +1,9 @@
 spawn_cd_by_piece_count = (
   cd * 10 \
   for cd in [
-    10,10,10,12,14,
-    16,18,20,24,28,
-    32,36,40,44,50])
+    5,6,8,12,14,
+    16,18,20,25,30,
+    35,40,45,50,55,60])
 
 get_sapwn_cd = (piece_count) ->
   if piece_count < 1 or piece_count > 16
