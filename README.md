@@ -1,8 +1,6 @@
 FightChess
 ==========
-
-It's chess. It's live.
-
+Real-time chess. 
 
 Rules 规则介绍:
 
@@ -31,27 +29,29 @@ Rules 规则介绍:
 1. Basic Statistics
 
 ```
-                hp  shield   shield recover speed(per second)   move cooldown(second)        self-healing speed(per second)
-  king        1000       3               3                               6                               1
-  queen        100      50               1                               5                               3
-  rook         600       3               1                              14                               0
-  bishop       450       1               1                               6                               0
-  knight       400       1               1                               4                               0
-  pawn         240       0               0                               8                               0
-  super_pawn   300       0               0                               7                               0
+                hp  shield   shield recover speed   move cooldown   self-healing speed
+                                (per second)           (second)         (per second)
+  king        1000       3            3                   6                 1
+  queen        100      50            1                   5                 3
+  rook         600       3            1                  14                 0
+  bishop       450       1            1                   6                 0
+  knight       400       1            1                   4                 0
+  pawn         240       0            0                   8                 0
+  super_pawn   300       0            0                   7                 0
 ```
 
 2. Attacking Enemies
 
 ```
-                   attack damage    attack cooldown(second)    average attack damage(per second)
-  king                   3                     5                          6
-  queen                  3                    20                          1.5
-  rook                  20                    30                          6.7
-  bishop                12                    20                          6
-  knight                 3                     6                          5
-  pawn                   6                    12                          5
-  super_pawn             7                    15                          4.7
+                attack damage    attack cooldown    average attack damage
+                                    (second)           (per second)
+  king                3                  5                   6
+  queen               3                 20                   1.5
+  rook               20                 30                   6.7
+  bishop             12                 20                   6
+  knight              3                  6                   5
+  pawn                6                 12                   5
+  super_pawn          7                 15                   4.7
 
 
 
@@ -60,14 +60,15 @@ Rules 规则介绍:
 3. Supporting Allies
 
 ```
-            shield limit increase    shield recover speed increase(per second)    hp recover speed increase(per second)
-  king               2                               1                                          1                             
-  queen             10                               0                                          1                            
-  rook               1                               1                                          0                             
-  bishop             1                               1                                          0                             
-  knight             1                               1                                          0                             
-  pawn               1                               1                                          0                             
-  super_pawn         1                               1                                          0                             
+            shield limit increase    shield recover speed increase    hp recover speed increase
+                                            (per second)                    (per second)
+  king               2                           1                              1                             
+  queen             10                           0                              1                            
+  rook               1                           1                              0                             
+  bishop             1                           1                              0                             
+  knight             1                           1                              0                             
+  pawn               1                           1                              0                             
+  super_pawn         1                           1                              0                             
 ```
 
 
