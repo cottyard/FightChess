@@ -28,12 +28,18 @@ rectangle = (ctx, x, y, width, height, fill = no) ->
   else 
     ctx.strokeRect x, y, width, height
 
-text = (ctx, text, x, y, style) ->
+text = (ctx, text, x, y, style, font) ->
   if style?
     save_style ctx
     set_style ctx, style
 
+  if font?
+    ctx.font = font
+
   ctx.fillText text, x, y
+
+  if font?
+    ctx.font = settings.piece_font
 
   if style?
     restore_style ctx

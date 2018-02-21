@@ -16,7 +16,7 @@ piece_drawing_types =
     queen: '\u2655'
     king: '\u2654'
 
-piece_super_pawn_decorator = '\u2B51'
+piece_super_pawn_decorator = 'S'
 
 # indicators
 
@@ -104,7 +104,7 @@ piece_at_pos = (ctx, piece, [pos_x, pos_y]) ->
              pos_x - half + 5, pos_y - half + 40, style
   if piece.type is 'super_pawn'
     shape.text ctx, piece_super_pawn_decorator,
-               pos_x + 3, pos_y - half + 28
+               pos_x + 8, pos_y - half + 20, null, "18px Courier New"
 
 board = (ctx) ->
   for [coord, p] from battleground.instance.all_pieces()

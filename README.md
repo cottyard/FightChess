@@ -21,7 +21,7 @@ Rules 规则介绍:
 
 - Spawning and Promotion 刷兵和升变
 
-  A Pawn spawns every a few seconds depending on how many pieces you have left on board. The fewer pieces, the quicker the spawning. When a Pawn is pushed all the way through the enemy line, it gets promoted to the Super Pawn, marked with a star. The Super Pawn moves like the King and strikes in four directions. When a Super Pawn has made the return trip back to the lowest rank (row) of your side, it gets promoted again to one of the four kinds of pieces: Rook, Knight, Bishop or Queen, depending on the file (column) it reaches.
+  A Pawn spawns every a few seconds depending on how many pieces you have left on board. The fewer pieces, the quicker the spawning. When a Pawn is pushed all the way through the enemy line, it gets promoted to the Super Pawn, marked with a capital S. The Super Pawn moves like the King and strikes in four directions. When a Super Pawn has made the return trip back to the lowest rank (row) of your side, it gets promoted again to one of the four kinds of pieces: Rook, Knight, Bishop or Queen, depending on the file (column) it reaches.
   每隔几十秒双方就会各刷一个兵，一方的棋子越少，刷兵就越快。当兵一直向前走到对方阵营的底线时，就会升级成超级兵，以一颗星标注。超级兵像王一样移动，并且可以朝四个方向攻击。当超级兵一直往回走，到达己方阵营底线的时候，就会再次升变成车、马、象、后这四个棋子之一，变成哪个则取决于到达时在哪一列。
 
 - Data
