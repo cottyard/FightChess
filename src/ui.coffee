@@ -39,7 +39,8 @@ init = ->
   init_cvs 'static'
   init_cvs 'animate'
 
-  ui.cvs_bounding_rect = cvs.animate.getBoundingClientRect()
+  ui.cvs_bounding_rect = ->
+   cvs.animate.getBoundingClientRect()
   
   set_canvas_attr cvs.background, 1, settings.cvs_size
   set_canvas_attr cvs.static, 2, settings.cvs_size

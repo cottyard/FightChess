@@ -1,6 +1,6 @@
 get_mouse_pos = (evt) ->
-  mouse_x = evt.clientX - ui.cvs_bounding_rect.left - settings.cvs_border_width 
-  mouse_y = evt.clientY - ui.cvs_bounding_rect.top - settings.cvs_border_width 
+  mouse_x = evt.clientX - ui.cvs_bounding_rect().left - settings.cvs_border_width 
+  mouse_y = evt.clientY - ui.cvs_bounding_rect().top - settings.cvs_border_width 
   [mouse_x, mouse_y]
 
 on_user_mousedown = (evt) ->
