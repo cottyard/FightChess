@@ -16,9 +16,41 @@ on_user_mousemove = (evt) ->
   ev.trigger 'mousemove', {pos}
 
 init = ->
-  ui.cvs.animate.addEventListener "mousedown", on_user_mousedown, false
-  ui.cvs.animate.addEventListener "mouseup", on_user_mouseup, false
-  ui.cvs.animate.addEventListener "mousemove", on_user_mousemove, false
+  ui.cvs.animate.addEventListener "mousedown", on_user_mousedown
+  ui.cvs.animate.addEventListener "mouseup", on_user_mouseup
+  ui.cvs.animate.addEventListener "mousemove", on_user_mousemove
+
+  ui.cvs.animate.addEventListener "touchstart", on_touch
+  ui.cvs.animate.addEventListener "touchmove", on_touch
+  ui.cvs.animate.addEventListener "touchend", on_touch
+  #ui.cvs.animate.addEventListener "touchcancel", on_touch
+
+on_touch = (evt) ->
+  touches = evt.changedTouches
+  first = touches[0]
+  type = ""
+
+  switch evt.type
+    when "touchstart"
+      type = "mousedown"
+    when "touchmove"
+      type = "mousemove"    
+    when "touchend"
+      type = "mouseup"
+
+    # initMouseEvent(type, canBubble, cancelable, view, clickCount, 
+    #                screenX, screenY, clientX, clientY, ctrlKey, 
+    #                altKey, shiftKey, metaKey, button, relatedTarget);
+
+  simulated = document.createEvent "MouseEvent"
+  simulated.initMouseEvent \
+    type, true, true, window, 1, \
+    first.screenX, first.screenY, \
+    first.clientX, first.clientY, false, \
+    false, false, false, 0, null
+
+  first.target.dispatchEvent simulated
+  evt.preventDefault()
 
 window.input = {
   init
