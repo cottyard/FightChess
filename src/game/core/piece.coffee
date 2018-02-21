@@ -80,7 +80,7 @@ class Piece
       @move_cd_ticks--
 
   can_move: ->
-    return true
+    #return true
     @move_cd_ticks is 0
 
   is_dead: ->
