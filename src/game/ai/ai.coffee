@@ -1,9 +1,11 @@
-think_interval = 10
-thinking_cooldown = think_interval
+think_interval = null
+thinking_cooldown = null
 ai_color = null
 ai_current = null
 
 init = ->
+  think_interval = set_interval ui.ai_interval.value
+  ai_current = set_ai ui.ai.value
 
 activate = (color) ->
   ev.hook 'ai_think_round', on_think
@@ -14,7 +16,7 @@ deactivate = ->
 
 on_think = (evt) ->
   return unless ai_current?
-  if thinking_cooldown is 0
+  if thinking_cooldown < 0
     op = ai_current.think_of_one_operation evt.board.clone(), ai_color
     ev.trigger('op_movepiece', op) if op isnt 'abort'
     thinking_cooldown = think_interval

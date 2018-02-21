@@ -60,6 +60,9 @@ init = ->
   ui.gamestat = document.getElementById 'gamestat'
   ui.startgame = document.getElementById 'startgame'
 
+  ui.ai_interval = document.getElementById 'ai_interval'
+  ui.ai = document.getElementById 'ai'
+
   ui.startgame.onclick = ->
     ev.trigger 'game_start', {}
 
@@ -83,5 +86,7 @@ window.ui = {
   challenge_button: null,
   spawntime: null,
   gamestat: null,
-  startgame: null
+  startgame: null,
+  ai_interval: null,
+  ai: null
 }

@@ -33,7 +33,7 @@ Rules 规则介绍:
                                 (per second)           (second)         (per second)
   king        1000       3            3                   6                 1
   queen        100      50            1                   5                 3
-  rook         600       3            1                  12                 0
+  rook         600       5            1                   9                 0
   bishop       450       1            1                   6                 0
   knight       400       1            1                   5                 0
   pawn         240       0            0                   8                 0

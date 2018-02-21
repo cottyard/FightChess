@@ -49,17 +49,17 @@
   <textarea id="opponent_id" onclick="this.focus();this.select();" cols="12" rows="1">opponent name</textarea>
   <button id="challenge" type="button" disabled>challenge</button>
   <textarea id="info" cols="20" readonly></textarea>
-<!--   <a>AI Move Interval</a>
-  <select onchange="ai.set_interval(this.value)">
-    <option value="0.5">0.5</option>
+  <a>AI Move Interval</a>
+  <select id="ai_interval" onchange="ai.set_interval(this.value)">
     <option value="1">1</option>
     <option value="2">2</option>
     <option value="3" selected="selected">3</option>
-  </select> -->
+    <option value="5">5</option>
+  </select>
   <a>AI</a>
-  <select onchange="ai.set_ai(this.value)">
-    <option value="0" selected="selected">(none)</option>
-    <option value="1">monkey</option>
+  <select id="ai" onchange="ai.set_ai(this.value)">
+    <option value="0">(none)</option>
+    <option value="1" selected="selected">monkey</option>
     <option value="2">dolphin</option>
   </select>
   <textarea id="spawntime" cols="25" readonly></textarea>
