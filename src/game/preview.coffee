@@ -14,7 +14,7 @@ preview = (evt) ->
     abort_preview()
     return
   paint.mark_grid ui.ctx.static, previewing_coord 
-  moves = battleground.instance.get_valid_moves previewing_coord
+  moves = battleground.instance.get_moves previewing_coord
   for mr in moves.regular
     paint.mark_grid ui.ctx.static, mr, shape.style_green_tp
   for mo in moves.offensive
@@ -106,8 +106,8 @@ on_pick = (evt) ->
 
 on_drop = (evt) ->
   return unless previewing
-  moves = battleground.instance.get_valid_moves previewing_coord
-  if calc.coord_one_of evt.coord, moves.regular
+  moves = battleground.instance.get_valid_regular_moves previewing_coord
+  if calc.coord_one_of evt.coord, moves
     ev.trigger 'op_movepiece', {
       piece: previewing_piece, 
       coord_from: previewing_coord, 

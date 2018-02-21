@@ -1,8 +1,8 @@
 try_moving_piece = (board, piece, coord) ->
   return 'no moves' unless piece.can_move()
-  moves = board.get_valid_moves coord
-  if moves.regular.length > 0
-    return calc.pick_one moves.regular
+  moves = board.get_valid_regular_moves coord
+  if moves.length > 0
+    return calc.pick_one moves
   else
     return 'no moves'
 

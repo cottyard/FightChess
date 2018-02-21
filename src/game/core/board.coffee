@@ -176,10 +176,15 @@ class Board
         if @spawn p
           @activate_spawn_cd p
 
-  get_valid_moves: (coord) ->
+  get_valid_regular_moves: (coord) ->
     return rule.move.empty_moves unless @is_occupied coord
     p = @get_piece coord
     return rule.move.empty_moves unless p.can_move()
+    return (rule.move.valid_moves p.type, p.color, coord, this).regular
+
+  get_moves: (coord) ->
+    return rule.move.empty_moves unless @is_occupied coord
+    p = @get_piece coord
     return rule.move.valid_moves p.type, p.color, coord, this
 
   move_to: (from_coord, to_coord) ->

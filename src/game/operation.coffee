@@ -13,7 +13,7 @@ is_valid_operation = (board, op_evt) ->
   return false unless board.is_occupied op_evt.coord_from
   p = board.get_piece op_evt.coord_from
   return false unless p.equals op_evt.piece
-  return calc.coord_one_of op_evt.coord_to, (board.get_valid_moves op_evt.coord_from).regular
+  return calc.coord_one_of op_evt.coord_to, (board.get_valid_regular_moves op_evt.coord_from)
 
 handle_operation = (board, op_evt) ->
   if is_valid_operation board, op_evt
