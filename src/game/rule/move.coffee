@@ -67,6 +67,7 @@ knight_moves_deltas = [
   [2, 1], [2, -1], [-2, 1], [-2, -1],
   [1, 2], [1, -2], [-1, 2], [-1, -2]
 ]
+
 knight = (color, coord, board) ->
   regular = []
   offensive = []

@@ -67,7 +67,10 @@ evaluate_board = (board, color, log = no) ->
 
     coeff = if ours then 1 else -1
 
-    e += moves.offensive.length * coeff
+    if p.type is 'queen'
+      e += moves.offensive.length * coeff * 0.2
+    else
+      e += moves.offensive.length * coeff
     e -= moves.defensive.length * coeff * 0.5
 
     if ours
