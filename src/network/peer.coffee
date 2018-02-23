@@ -4,15 +4,6 @@ data = {
   'channel'
 }
 
-inputs = {
-  'role_btn',
-  'local_offer_btn',
-  'local_answer_btn',
-  'status',
-  'send_txt',
-  'chat'
-}
-
 change_status = (status) ->
   data.status = status
   [type, phase] = status
@@ -21,50 +12,46 @@ change_status = (status) ->
 status_binds =
   'host':
     'begin': ->
-      enable inputs.local_offer_btn
-      hide inputs.local_answer_btn
-      inputs.status.value = 'Please send your offer to your peer.'
+      ui.enable ui.local_offer_btn
+      ui.hide ui.local_answer_btn
+      ui.p2p_status.value = 'Please copy and send your offer to your peer.'
     'pending': ->
-      enable inputs.local_offer_btn
-      hide inputs.local_answer_btn
-      inputs.status.value = 'Please paste the answer you received from your peer.'
+      ui.enable ui.local_offer_btn
+      ui.hide ui.local_answer_btn
+      ui.p2p_status.value = 'Please paste the answer you received from your peer below.'
     'connected': ->
-      hide inputs.local_offer_btn
-      hide inputs.local_answer_btn
-      inputs.status.value = 'You are connected to your peer.'
+      ui.hide ui.local_offer_btn
+      ui.hide ui.local_answer_btn
+      ui.hide ui.radio_host
+      ui.hide ui.radio_guest
+      ui.hide ui.p2p_paste
+      ui.p2p_status.value = 'You are connected to your peer as the host.'
   'guest':
     'begin': ->
-      hide inputs.local_offer_btn
-      disable inputs.local_answer_btn
-      inputs.status.value = 'Please paste the offer you received from your peer.'
+      ui.hide ui.local_offer_btn
+      ui.disable ui.local_answer_btn
+      ui.p2p_status.value = 'Please paste the offer you received from your peer below.'
     'pending': ->
-      hide inputs.local_offer_btn
-      enable inputs.local_answer_btn
-      inputs.status.value = 'Please send the answer to your peer.'
+      ui.hide ui.local_offer_btn
+      ui.enable ui.local_answer_btn
+      ui.p2p_status.value = 'Please copy and send the answer to your peer.'
     'connected': ->
-      hide inputs.local_offer_btn
-      hide inputs.local_answer_btn
-      inputs.status.value = 'You are connected to your peer.'
+      ui.hide ui.local_offer_btn
+      ui.hide ui.local_answer_btn
+      ui.hide ui.radio_host
+      ui.hide ui.radio_guest
+      ui.hide ui.p2p_paste
+      ui.p2p_status.value = 'You are connected to your peer as the guest.'
 
 init = ->
-  for i of inputs
-    inputs[i] = document.getElementById i
+  ui.hide ui.account_panel
+  ui.enable ui.p2p_panel
+
   change_status data.status
   data.connection = new RTCPeerConnection({iceServers: [{urls: []}]});
   init_data_channel data.connection
   data.connection.ondatachannel = receive_data_channel
-  document.addEventListener 'paste', remote_onpaste
-
-enable = (btn) ->
-  btn.style.display = ''
-  btn.disabled = false
-
-disable = (btn) ->
-  btn.style.display = ''
-  btn.disabled = true
-
-hide = (btn) ->
-  btn.style.display = 'none'
+  ui.p2p_paste.addEventListener 'paste', remote_onpaste
 
 set_clipboard = (message) ->
   dummy = document.createElement "input"
@@ -72,7 +59,6 @@ set_clipboard = (message) ->
   dummy.setAttribute "value", message
   dummy.select()
   document.execCommand "copy"
-  console.log "copied" + dummy.value
   document.body.removeChild dummy
 
 get_clipboard = (evt) ->
@@ -80,6 +66,7 @@ get_clipboard = (evt) ->
 
 init_data_channel = (conn) ->
   data.channel = conn.createDataChannel 'data'
+  console.log data.channel.binaryType
   hook_data_channel data.channel
 
 receive_data_channel = (e) ->
@@ -124,30 +111,28 @@ answer_remote = (remote_sdp) ->
 
 hook_data_channel = (data_channel) ->
   data_channel.onopen = (e) ->
-    console.log 'chat channel is open', e
+    console.log 'channel is open', e
     [type, phase] = data.status
     change_status [type, 'connected']
+    network.set_output_channel data_channel
+    if data.status[0] is 'guest'
+      mode.play_as_guest()
+    else
+      mode.play_as_host()
   
   data_channel.onmessage = (e) ->
-    console.log 'received' + e.data
-    inputs.chat.innerHTML = inputs.chat.innerHTML + "<pre>"+ e.data + "</pre>"
+    network.incoming e.data
 
   data_channel.onclose = ->
-    console.log 'chat channel closed'
+    console.log 'channel closed'
 
 err_handler = (err) ->
   console.log err
-
-send_message = ->
-  text = inputs.send_txt.value
-  chat.innerHTML = chat.innerHTML + "<pre class=sent>" + text + "</pre>"
-  data.channel.send text
-  inputs.send_txt.value = ""
 
 window.peer = {
   init,
   change_status,
   local_offer_onclick,
   local_answer_onclick,
-  send_message
+  remote_onpaste
 }

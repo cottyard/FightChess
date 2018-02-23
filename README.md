@@ -31,8 +31,8 @@ Rules 规则介绍:
 ```
                 hp  shield   shield recover speed   move cooldown   self-healing speed
                                 (per second)           (second)         (per second)
-  king        1000       3            3                   6                 1
-  queen        100      50            1                   5                 3
+  king        1000      10            1                   6                 1
+  queen        100      50            1                   5                 2
   rook         600       5            1                   9                 0
   bishop       450       1            1                   6                 0
   knight       400       1            1                   5                 0
@@ -49,9 +49,9 @@ Rules 规则介绍:
   queen               3                 20                   1.5
   rook               20                 30                   6.7
   bishop             12                 20                   6
-  knight              3                  6                   5
+  knight              3                  5                   6
   pawn                6                 12                   5
-  super_pawn          7                 15                   4.7
+  super_pawn          7                 14                   5
 
 
 
@@ -62,7 +62,7 @@ Rules 规则介绍:
 ```
             shield limit increase    shield recover speed increase    hp recover speed increase
                                             (per second)                    (per second)
-  king               2                           1                              1                             
+  king               3                           1                              1                             
   queen             10                           0                              1                            
   rook               1                           1                              0                             
   bishop             1                           1                              0                             

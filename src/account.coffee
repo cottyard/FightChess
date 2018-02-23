@@ -35,17 +35,17 @@ on_login_clicked = ->
   id = ui.player_id.value
   return unless id
   set_ui_state_logging_in()
-  network.login id, on_login_succeeded, on_login_failed
+  peer_server.login id, on_login_succeeded, on_login_failed
 
 on_challenge_clicked = ->
   id = ui.opponent_id.value
   return unless id
   set_ui_state_challenging()
-  network.connect id, on_challenge_accepted, on_challenge_failed
+  peer_server.connect id, on_challenge_accepted, on_challenge_failed
 
 on_login_succeeded = ->
   set_ui_state_after_log_in()
-  network.wait on_challenged
+  peer_server.wait on_challenged
 
 on_login_failed = ->
   set_ui_state_before_log_in()
@@ -53,8 +53,7 @@ on_login_failed = ->
 
 on_challenge_accepted = ->
   set_ui_state_after_challenge()
-  game.init_guest()
-  game.start()
+  mode.play_as_guest()
 
 on_challenge_failed = ->
   set_ui_state_before_challenge()
@@ -65,7 +64,7 @@ on_challenged = (challenger_id) ->
   ui.opponent_id.value = challenger_id
   ui.disable_button ui.challenge_button
   ui.set_button_text ui.challenge_button, 'challenged you'
-  game.init_host()
+  mode.play_as_host()
 
 window.account = {
   init

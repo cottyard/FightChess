@@ -37,6 +37,9 @@ shield_indicator = (ctx, coord, current, total) ->
   # shape.set_style ctx, "rgba(0, 0, 255, #{transparency})"
   # shape.rectangle ctx, x, y, w, h, yes
 
+determine_shield_transparency = (val) ->
+  if val >= 20 then 0.5 else val / 40
+
 hp_indicator = (ctx, [pos_x, pos_y], current, total) ->
   half = settings.half_grid_size
   # for hp < 10%, give the red indicator.
@@ -70,9 +73,6 @@ move_cd_indicator = (ctx, [pos_x, pos_y], current, total) ->
   shape.set_style ctx, "rgba(0, 255, 255, 0.7)"
   shape.rectangle ctx, pos_x - half, pos_y + half - 3, settings.grid_size * percentage, 4, yes
   shape.restore_style ctx
-
-determine_shield_transparency = (val) ->
-  if val >= 10 then 0.5 else val / 20
 
 # api
 

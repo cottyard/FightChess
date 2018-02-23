@@ -14,7 +14,7 @@
   <script src="lib/game/mode/demo.js"></script> <!-- window.game.init_demo -->
   <script src="lib/game/mode/host.js"></script> <!-- window.game.init_host -->
   <script src="lib/game/mode/guest.js"></script> <!-- window.game.init_guest -->
-  <script src="lib/game/mode/observer.js"></script> <!-- window.game.init_observer -->
+  <script src="lib/game/mode/mode.js"></script> <!-- window.mode -->
   <script src="lib/game/core/battle.js"></script> <!-- window.battle -->
   <script src="lib/game/core/board.js"></script> <!-- window.board -->
   <script src="lib/game/core/battleground.js"></script> <!-- window.battleground -->
@@ -34,53 +34,92 @@
   <script src="lib/game/ai/monkey.js"></script> <!-- window.ai.monkey -->
   <script src="lib/game/ai/dolphin.js"></script> <!-- window.ai.monkey -->
   <script src="lib/network/network.js"></script> <!-- window.network -->
+  <script src="lib/network/peer.js"></script> <!-- window.peer -->
+  <script src="lib/network/peer_server.js"></script> <!-- window.peer_server -->
   <script src="src/network/peer.min.js"></script> <!-- window.Peer -->
+  <script src="src/network/binarypack.min.js"></script> <!-- window.BinaryPack -->
   <script src="lib/game/gamestate_test.js"></script> <!-- window.gamestatetest -->
   
   <style>
     textarea {
       resize: none;
     }
+    .panel {
+      padding: 10px;
+    }
+    .column {
+      float: left;
+      width: 33.33%;
+    }
+    .row:after {
+      content:"";
+      display: table;
+      clear: both;
+    }
+    .column-left{ float: left; width: 33%; }
+    /*.column-right{ float: right; width: 33%; }*/
+    .column-center{ display: inline-block; width: 33%; }
   </style>
 </head>
-<body onload="start()">
-  <textarea id="player_id" ontou onclick="this.focus();this.select();" cols="12" rows="1">your name</textarea>
-  <button id="login" type="button">log in</button>
-  <textarea id="opponent_id" onclick="this.focus();this.select();" cols="12" rows="1">opponent name</textarea>
-  <button id="challenge" type="button" disabled>challenge</button>
-  <textarea id="info" cols="20" readonly></textarea>
-  <a>AI Move Interval</a>
-  <select id="ai_interval" onchange="ai.set_interval(this.value)">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3" selected="selected">3</option>
-    <option value="5">5</option>
-  </select>
-  <a>AI</a>
-  <select id="ai" onchange="ai.set_ai(this.value)">
-    <option value="0">(none)</option>
-    <option value="1" selected="selected">monkey</option>
-    <option value="2">dolphin</option>
-  </select>
-  <textarea id="spawntime" cols="25" readonly></textarea>
-  <textarea id="gamestat" cols="10" readonly>demo</textarea>
-  <button id="startgame" type="button" hidden="true">start game</button>
-  <p id="message"></p>
-  <div align="center">
-    <div align="left" style="width: 40%;padding-top: 50px">
+<body class="row" onload="start()">
+  <div class="column-left">&nbsp;</div>
+  <div class="column-center">
+    <div id="p2p_panel" class="panel" style="display:none">
+      <input id="radio_host" type="radio" name="role" onclick="peer.change_status(['host', 'begin'])" checked="true">Host
+      <input id="radio_guest" type="radio" name="role" onclick="peer.change_status(['guest', 'begin'])">Guest
+      <button id=local_offer_btn onclick="peer.local_offer_onclick()">Copy My Offer To Clipboard</button>
+      <button id=local_answer_btn onclick="peer.local_answer_onclick()">Copy My Answer To Clipboard</button>
+      <div style="padding-top: 5px">
+        <textarea id="p2p_status" rows="1" cols="60" readOnly="true" style="resize: none"></textarea>
+      </div>
+      <div align="center" style="padding-top: 5px">
+        <textarea id="p2p_paste" rows="1" cols="5" onclick="this.focus();this.select();" style="resize: none">paste</textarea>
+      </div>
+    </div>
+    <div id="account_panel" class="panel">
+      <textarea id="player_id" ontou onclick="this.focus();this.select();" cols="12" rows="1">your name</textarea>
+      <button id="login_button" type="button">log in</button>
+      <textarea id="opponent_id" onclick="this.focus();this.select();" cols="12" rows="1">opponent name</textarea>
+      <button id="challenge_button" type="button" disabled>challenge</button>
+      <button id="switch_to_p2p_button" type="button" onclick="peer.init()">switch to manual</button>
+    </div>
+    <div id="ai_panel" class="panel">
+      <a>AI Move Interval</a>
+      <select id="ai_interval" onchange="ai.set_interval(this.value)">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected="selected">3</option>
+        <option value="5">5</option>
+      </select>
+      <a>AI</a>
+      <select id="ai" onchange="ai.set_ai(this.value)">
+        <option value="0">(none)</option>
+        <option value="1" selected="selected">monkey</option>
+        <option value="2">dolphin</option>
+      </select>
+    </div>
+    <div id="info_panel" class="panel">
+      <textarea id="info" cols="20" readonly></textarea>
+      <textarea id="spawntime" cols="25" readonly></textarea>
+      <textarea id="gamestat" cols="10" readonly>demo</textarea>
+    </div>
+    <div id="control_panel" class="panel">
+      <button id="startgame" type="button" hidden="true">start game</button>
+    </div>
+    <p id="message"></p>
+    <div align="left" style="padding-top: 50px;">
       <canvas id="animate" tabindex="1"></canvas>
       <canvas id="static"></canvas>
       <canvas id="background"></canvas>
     </div>
   </div>
+  <!-- <div class="column-right">&nbsp;</div> -->
   <script>
     function start() {
       // gamestatetest.test();
       ui.init();
       account.init();
-      game.init_demo();
-      gamestate.start_game('white');
-      game.start();
+      mode.play_demo();
     }
   </script>
 </body>

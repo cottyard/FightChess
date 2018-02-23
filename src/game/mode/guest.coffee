@@ -1,4 +1,4 @@
-state_buf = 0
+state_buf = 1
 
 sync_up_gamestate = ->
   suceeded = no
@@ -10,9 +10,10 @@ on_gametick = (evt) ->
   operation.send_cached_operations()
   if sync_up_gamestate()
     game.render_gametick()
-    state_buf -= 0.1 if state_buf > 1
+    state_buf -= 0.1 if state_buf > 3
   else
-    state_buf += 1 if state_buf < 5
+    state_buf += 0.2 if state_buf < 10
+  console.log "state buf", state_buf
 
 end_game = (evt) ->
   preview.disable()

@@ -34,6 +34,17 @@ show_message = (message) ->
   clearTimeout message_timeout_obj
   message_timeout_obj = setTimeout (-> ui.message.innerHTML = ''), 5000
 
+enable = (btn) ->
+  btn.style.display = ''
+  btn.disabled = false
+
+disable = (btn) ->
+  btn.style.display = ''
+  btn.disabled = true
+
+hide = (btn) ->
+  btn.style.display = 'none'
+
 init = ->
   init_cvs 'background'
   init_cvs 'static'
@@ -51,21 +62,34 @@ init = ->
 
   paint.background ctx.background, settings.cvs_size
   
-  ui.info = document.getElementById 'info'
-  ui.message = document.getElementById 'message'
-  ui.player_id = document.getElementById 'player_id'
-  ui.opponent_id = document.getElementById 'opponent_id'
-  ui.login_button = document.getElementById 'login'
-  ui.challenge_button = document.getElementById 'challenge'
-  ui.spawntime = document.getElementById 'spawntime'
-  ui.gamestat = document.getElementById 'gamestat'
-  ui.startgame = document.getElementById 'startgame'
+  for w of widgets
+    ui[w] = document.getElementById w
 
   ui.ai_interval = document.getElementById 'ai_interval'
   ui.ai = document.getElementById 'ai'
 
   ui.startgame.onclick = ->
     ev.trigger 'game_start', {}
+
+widgets = {
+  'info',
+  'message',
+  'player_id',
+  'opponent_id',
+  'login_button',
+  'challenge_button',
+  'spawntime',
+  'gamestat',
+  'startgame',
+  'radio_host',
+  'radio_guest',
+  'local_offer_btn',
+  'local_answer_btn',
+  'p2p_status',
+  'p2p_paste',
+  'p2p_panel',
+  'account_panel'
+}
 
 window.ui = {
   init,
@@ -74,20 +98,16 @@ window.ui = {
   disable_button,
   enable_button,
 
+  enable,
+  disable,
+  hide,
+
   show_message,
   
   cvs,
   ctx,
   cvs_bounding_rect: null,
-  info: null,
-  message: null,
-  player_id: null,
-  opponent_id: null,
-  login_button: null,
-  challenge_button: null,
-  spawntime: null,
-  gamestat: null,
-  startgame: null,
+
   ai_interval: null,
   ai: null
 }

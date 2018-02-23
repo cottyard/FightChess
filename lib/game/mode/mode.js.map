@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "mode.js",
+  "sourceRoot": "..\\..\\..",
+  "sources": [
+    "src\\game\\mode\\mode.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,MAAM,CAAC,IAAP,GAAc;IACZ,YAAA,EAAc,QAAA,CAAA,CAAA;aACZ,IAAI,CAAC,SAAL,CAAA;IADY,CADF;IAIZ,aAAA,EAAe,QAAA,CAAA,CAAA;MACb,IAAI,CAAC,UAAL,CAAA;aACA,IAAI,CAAC,KAAL,CAAA;IAFa,CAJH;IAQZ,SAAA,EAAW,QAAA,CAAA,CAAA;MACT,IAAI,CAAC,SAAL,CAAA;MACA,SAAS,CAAC,UAAV,CAAqB,OAArB;aACA,IAAI,CAAC,KAAL,CAAA;IAHS;EARC;AAAd",
+  "sourcesContent": [
+    "window.mode = {\r\n  play_as_host: -> \r\n    game.init_host()\r\n\r\n  play_as_guest: -> \r\n    game.init_guest()\r\n    game.start()\r\n\r\n  play_demo: ->\r\n    game.init_demo()\r\n    gamestate.start_game 'white'\r\n    game.start()\r\n}\r\n"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "peer_server.js",
+  "sourceRoot": "..\\..",
+  "sources": [
+    "src\\network\\peer_server.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,OAAA,EAAA,eAAA,EAAA,KAAA,EAAA,EAAA,EAAA,oBAAA,EAAA,kBAAA,EAAA;;EAAA,EAAA,GAAK;;EAEL,oBAAA,GAAuB,CAAA;;EAEvB,kBAAA,GAAqB,QAAA,CAAC,GAAD,CAAA;AACnB,QAAA;IAAA,OAAO,CAAC,GAAR,CAAY,GAAZ;yEACA,2BAAgC;EAFb;;EAIrB,IAAA,GAAO,QAAA,CAAC,QAAD,CAAA;WACL,EAAE,CAAC,EAAH,CAAM,YAAN,EAAoB,QAAA,CAAC,IAAD,CAAA;MAClB,eAAA,CAAgB,IAAhB;aACA,QAAA,CAAS,IAAI,CAAC,IAAd;IAFkB,CAApB;EADK;;EAKP,OAAA,GAAU,QAAA,CAAC,EAAD,EAAK,gBAAL,EAAuB,gBAAvB,CAAA;AACR,QAAA;IAAA,IAAA,GAAO,EAAE,CAAC,OAAH,CAAW,EAAX;IACP,IAAI,CAAC,EAAL,CAAQ,MAAR,EAAgB,QAAA,CAAA,CAAA;MACd,eAAA,CAAgB,IAAhB;aACA,gBAAA,CAAA;IAFc,CAAhB;WAGA,oBAAqB,CAAA,kBAAA,CAArB,GAA2C,QAAA,CAAA,CAAA;aACzC,gBAAA,CAAA;IADyC;EALnC;;EAQV,eAAA,GAAkB,QAAA,CAAC,IAAD,CAAA;IAChB,IAAI,CAAC,EAAL,CAAQ,MAAR,EAAgB,QAAA,CAAC,IAAD,CAAA;aACd,OAAO,CAAC,QAAR,CAAiB,IAAjB;IADc,CAAhB;WAEA,OAAO,CAAC,kBAAR,CAA2B,IAA3B;EAHgB;;EAKlB,KAAA,GAAQ,QAAA,CAAC,EAAD,EAAK,gBAAL,EAAuB,gBAAvB,CAAA;IACN,EAAA,GAAK,IAAI,IAAJ,CAAS,EAAT,EAAa;MAAC,GAAA,EAAK;IAAN,CAAb;IACL,EAAE,CAAC,EAAH,CAAM,MAAN,EAAc,QAAA,CAAC,EAAD,CAAA;aACZ,gBAAA,CAAA;IADY,CAAd;IAEA,EAAE,CAAC,EAAH,CAAM,OAAN,EAAe,kBAAf;WACA,oBAAqB,CAAA,SAAA,CAArB,GAAkC,QAAA,CAAA,CAAA;MAChC,EAAA,GAAK;aACL,gBAAA,CAAA;IAFgC;EAL5B;;EASR,MAAM,CAAC,WAAP,GAAqB,CACnB,IADmB,EAEnB,OAFmB,EAGnB,KAHmB;AAnCrB",
+  "sourcesContent": [
+    "me = null\r\n\r\npeer_error_callbacks = {}\r\n\r\npeer_error_handler = (err) ->\r\n  console.log err\r\n  peer_error_callbacks[err.type]?(err)\r\n\r\nwait = (callback) ->\r\n  me.on 'connection', (conn) ->\r\n    init_connection conn\r\n    callback conn.peer\r\n\r\nconnect = (id, callback_success, callback_failure) ->\r\n  conn = me.connect id\r\n  conn.on 'open', ->\r\n    init_connection conn\r\n    callback_success()\r\n  peer_error_callbacks['peer-unavailable'] = ->\r\n    callback_failure()\r\n\r\ninit_connection = (conn) ->\r\n  conn.on 'data', (data) ->\r\n    network.incoming data\r\n  network.set_output_channel conn\r\n\r\nlogin = (id, callback_success, callback_failure) ->\r\n  me = new Peer id, {key: '6l7puzc60rgujtt9'}\r\n  me.on 'open', (id) ->\r\n    callback_success()\r\n  me.on 'error', peer_error_handler\r\n  peer_error_callbacks['network'] = ->\r\n    me = null\r\n    callback_failure()\r\n\r\nwindow.peer_server = {\r\n  wait,\r\n  connect,\r\n  login\r\n}\r\n"
+  ]
+}
