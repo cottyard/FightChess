@@ -58,7 +58,7 @@
     }
     .column-left{ float: left; width: 33%; }
     /*.column-right{ float: right; width: 33%; }*/
-    .column-center{ display: inline-block; width: 33%; }
+    .column-center{ display: inline-block; width: 67%; }
   </style>
 </head>
 <body class="row" onload="start()">
@@ -82,6 +82,7 @@
       <textarea id="opponent_id" onclick="this.focus();this.select();" cols="12" rows="1">opponent name</textarea>
       <button id="challenge_button" type="button" disabled>challenge</button>
       <button id="switch_to_p2p_button" type="button" onclick="peer.init()">switch to manual</button>
+      <p id="message"></p>
     </div>
     <div id="ai_panel" class="panel">
       <a>AI Move Interval</a>
@@ -106,13 +107,13 @@
     <div id="control_panel" class="panel">
       <button id="startgame" type="button" hidden="true">start game</button>
     </div>
-    <p id="message"></p>
     <div align="left" style="padding-top: 50px;">
       <canvas id="animate" tabindex="1"></canvas>
       <canvas id="static"></canvas>
       <canvas id="background"></canvas>
     </div>
   </div>
+
   <!-- <div class="column-right">&nbsp;</div> -->
   <script>
     function start() {

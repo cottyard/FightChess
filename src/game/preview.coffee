@@ -45,7 +45,8 @@ paint_previewing_piece = (evt) ->
     return
   shape.clear_canvas ui.ctx.animate
   shape.set_style ui.ctx.animate, shape.style_tp
-  paint.piece_at_pos ui.ctx.animate, previewing_piece, last_mouse_position 
+  if last_mouse_position?
+    paint.piece_at_pos ui.ctx.animate, previewing_piece, last_mouse_position 
   ui.cvs.animate.style.cursor = "pointer"
 
 # view piece info

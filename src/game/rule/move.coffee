@@ -82,6 +82,7 @@ knight = (color, coord, board) ->
   {regular, offensive, defensive}
 
 bishop_moves_orients = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+bishop_extra_moves = [[1, 0], [-1, 0], [0, -1], [0, 1]]
 bishop = (color, coord, board) ->
   regular = []
   offensive = []
@@ -95,7 +96,16 @@ bishop = (color, coord, board) ->
       break unless add_regular_move regular, next, board
     add_offensive_move offensive, color, next, board
     add_defensive_move defensive, color, next, board
-    
+
+  born_col = [3, 6]
+  born_row =
+    white: 8
+    black: 1
+
+  if born_row[color] is row and col in born_col
+    for [dx, dy] in bishop_extra_moves
+      add_regular_move regular, [col + dx, row + dy], board
+
   {regular, offensive, defensive}
 
 rook_moves_orients = [[1, 0], [0, 1], [-1, 0], [0, -1]]
