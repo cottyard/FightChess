@@ -35,6 +35,8 @@ init_guest = ->
   effect.init()
   network.init()
 
+  ui.startgame.hidden = true
+
   ev.hook 'gametick', on_gametick
   ev.hook 'game_end', end_game
   ev.hook 'game_start', start_game

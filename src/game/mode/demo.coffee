@@ -16,6 +16,19 @@ end_game = (evt) ->
   gamestate.end_game evt.result, evt.player
   preview.disable()
 
+
+end_game = (evt) ->
+  ev.unhook 'gametick', on_gametick
+  ev.hook 'gametick', on_gametick_game_end
+  gamestate.end_game evt.result, evt.player
+  preview.disable()
+
+start_game = ->
+  console.log 'game starts from state:', gamestate.current_gamestate.state
+  init_demo()
+  gamestate.start_game 'white'
+  game.start()
+
 init_demo = ->
   game.stop()
 
@@ -31,6 +44,7 @@ init_demo = ->
   ev.hook 'gametick', on_gametick
   ev.hook 'move_round_begin', operation.handle_cached_operations
   ev.hook 'game_end', end_game
+  ev.hook 'game_start', start_game
 
   ai.init()
   ai.activate 'black'

@@ -33,7 +33,6 @@ do_start = ->
 init_host = ->
   game.stop()
 
-  ui.startgame.hidden = false
   ev.init()
   input.init()
   operation.init()

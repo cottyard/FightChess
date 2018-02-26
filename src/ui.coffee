@@ -65,9 +65,6 @@ init = ->
   for w of widgets
     ui[w] = document.getElementById w
 
-  ui.ai_interval = document.getElementById 'ai_interval'
-  ui.ai = document.getElementById 'ai'
-
   ui.startgame.onclick = ->
     ev.trigger 'game_start', {}
 

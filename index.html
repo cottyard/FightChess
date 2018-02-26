@@ -85,19 +85,19 @@
       <p id="message"></p>
     </div>
     <div id="ai_panel" class="panel">
-      <a>AI Move Interval</a>
-      <select id="ai_interval" onchange="ai.set_interval(this.value)">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3" selected="selected">3</option>
-        <option value="5">5</option>
-      </select>
-      <a>AI</a>
-      <select id="ai" onchange="ai.set_ai(this.value)">
-        <option value="0">(none)</option>
-        <option value="1" selected="selected">monkey</option>
-        <option value="2">dolphin</option>
-      </select>
+      <div>
+        <label>AI</label>
+        <input type="radio" name="ai" value="0" onclick="ai.set_ai(this.value)">none</input>
+        <input type="radio" name="ai" value="1" onclick="ai.set_ai(this.value)" checked="checked">monkey</input>
+        <input type="radio" name="ai" value="2" onclick="ai.set_ai(this.value)">dolphin</input>
+      </div>
+      <div>
+        <label>AI Move Interval</label>
+        <input type="radio" name="interval" value="1" onclick="ai.set_interval(this.value)">1</input>
+        <input type="radio" name="interval" value="2" onclick="ai.set_interval(this.value)">2</input>
+        <input type="radio" name="interval" value="3" onclick="ai.set_interval(this.value)" checked="checked">3</input>
+        <input type="radio" name="interval" value="5" onclick="ai.set_interval(this.value)">5</input>
+      </div>
     </div>
     <div id="info_panel" class="panel">
       <textarea id="info" cols="20" readonly></textarea>
@@ -105,7 +105,7 @@
       <textarea id="gamestat" cols="10" readonly>demo</textarea>
     </div>
     <div id="control_panel" class="panel">
-      <button id="startgame" type="button" hidden="true">start game</button>
+      <button id="startgame" type="button">start game</button>
     </div>
     <div align="left" style="padding-top: 50px;">
       <canvas id="animate" tabindex="1"></canvas>
