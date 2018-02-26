@@ -24,7 +24,7 @@ end_game = (evt) ->
   preview.disable()
 
 start_game = ->
-  console.log 'game starts from state:', gamestate.current_gamestate.state
+  console.log 'game starts from state:', gamestate.current()
   init_demo()
   gamestate.start_game 'white'
   game.start()

@@ -65,14 +65,16 @@
   <div class="column-left">&nbsp;</div>
   <div class="column-center">
     <div id="p2p_panel" class="panel" style="display:none">
-      <input id="radio_host" type="radio" name="role" onclick="peer.change_status(['host', 'begin'])" checked="true">Host
-      <input id="radio_guest" type="radio" name="role" onclick="peer.change_status(['guest', 'begin'])">Guest
-      <button id=local_offer_btn onclick="peer.local_offer_onclick()">Copy My Offer To Clipboard</button>
-      <button id=local_answer_btn onclick="peer.local_answer_onclick()">Copy My Answer To Clipboard</button>
+      <div id="p2p_panel_ctrl">
+        <input id="radio_host" type="radio" name="role" onclick="peer.change_status(['host', 'begin'])" checked="true">Host
+        <input id="radio_guest" type="radio" name="role" onclick="peer.change_status(['guest', 'begin'])">Guest
+        <button id=local_offer_btn onclick="peer.local_offer_onclick()">Copy My Offer To Clipboard</button>
+        <button id=local_answer_btn onclick="peer.local_answer_onclick()">Copy My Answer To Clipboard</button>
+      </div>
       <div style="padding-top: 5px">
         <textarea id="p2p_status" rows="1" cols="60" readOnly="true" style="resize: none"></textarea>
       </div>
-      <div align="center" style="padding-top: 5px">
+      <div style="padding-top: 5px">
         <textarea id="p2p_paste" rows="1" cols="5" onclick="this.focus();this.select();" style="resize: none">paste</textarea>
       </div>
     </div>

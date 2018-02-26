@@ -85,6 +85,8 @@ widgets = {
   'p2p_status',
   'p2p_paste',
   'p2p_panel',
+  'p2p_panel_ctrl',
+  'ai_panel',
   'account_panel'
 }
 

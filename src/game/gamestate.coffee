@@ -1,4 +1,5 @@
 state_queue = []
+current_gamestate = null
 
 to_next_state = ->
   if not state_queue.length > 0
@@ -70,6 +71,11 @@ start_game = (color) ->
   ui.gamestat.value = "playing #{color}"
   ui.set_button_text ui.startgame, "restart game"
 
+get_gamestate = ->
+  if gamestate.current_gamestate?
+    return gamestate.current_gamestate.state
+  null
+
 init = ->
   ev.hook 'network_in_gamestate', on_network_gamestate_in
   ui.gamestat.value = "waiting for start"
@@ -79,7 +85,7 @@ init = ->
 
 window.gamestate = {
   init,
-  current_gamestate: null,
+  current: get_gamestate,
   get_state,
   set_state,
   to_next_state,

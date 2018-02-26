@@ -18,8 +18,8 @@ end_game = (evt) ->
   preview.disable()
 
 start_game = ->
-  console.log 'game starts from state:', gamestate.current_gamestate.state
-  switch gamestate.current_gamestate.state
+  console.log 'game starts from state:', gamestate.current()
+  switch gamestate.current()
     when 'ready'
       do_start()
     else

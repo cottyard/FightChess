@@ -14,33 +14,33 @@ status_binds =
     'begin': ->
       ui.enable ui.local_offer_btn
       ui.hide ui.local_answer_btn
+      ui.hide ui.p2p_paste
       ui.p2p_status.value = 'Please copy and send your offer to your peer.'
     'pending': ->
       ui.enable ui.local_offer_btn
       ui.hide ui.local_answer_btn
+      ui.enable ui.p2p_paste
       ui.p2p_status.value = 'Please paste the answer you received from your peer below.'
     'connected': ->
-      ui.hide ui.local_offer_btn
-      ui.hide ui.local_answer_btn
-      ui.hide ui.radio_host
-      ui.hide ui.radio_guest
+      ui.hide ui.p2p_panel_ctrl
       ui.hide ui.p2p_paste
+      ui.hide ui.ai_panel
       ui.p2p_status.value = 'You are connected to your peer as the host.'
   'guest':
     'begin': ->
       ui.hide ui.local_offer_btn
       ui.disable ui.local_answer_btn
+      ui.enable ui.p2p_paste
       ui.p2p_status.value = 'Please paste the offer you received from your peer below.'
     'pending': ->
       ui.hide ui.local_offer_btn
       ui.enable ui.local_answer_btn
+      ui.hide ui.p2p_paste
       ui.p2p_status.value = 'Please copy and send the answer to your peer.'
     'connected': ->
-      ui.hide ui.local_offer_btn
-      ui.hide ui.local_answer_btn
-      ui.hide ui.radio_host
-      ui.hide ui.radio_guest
+      ui.hide ui.p2p_panel_ctrl
       ui.hide ui.p2p_paste
+      ui.hide ui.ai_panel
       ui.p2p_status.value = 'You are connected to your peer as the guest.'
 
 init = ->
@@ -124,9 +124,11 @@ hook_data_channel = (data_channel) ->
     network.incoming e.data
 
   data_channel.onclose = ->
+    ui.p2p_status.value = "You have lost connection to your peer."
     console.log 'channel closed'
 
 err_handler = (err) ->
+  ui.p2p_status.value = "Network error occured."
   console.log err
 
 window.peer = {
