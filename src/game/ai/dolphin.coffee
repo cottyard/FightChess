@@ -19,6 +19,7 @@ type_value =
   'bishop': 30,
   'rook': 30,
   'queen': 30,
+  'cannon': 30,
   'king': 0
 
 pawn_pos_value = 

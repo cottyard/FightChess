@@ -161,6 +161,42 @@ king = (color, coord, board) ->
   
   {regular, offensive, defensive}
 
+cannon_moves_deltas_0 = [
+  [1, 1], [1, -1], [-1, 1], [-1, -1]
+]
+
+cannon_moves_deltas_1 = [
+  [1, 0], [0, 1], [-1, 0], [0, -1]
+]
+
+cannon_atk_orients = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+cannon = (color, coord, board) ->
+  regular = []
+  offensive = []
+  
+  [col, row] = coord
+  for [dx, dy] in cannon_moves_deltas_0
+    add_regular_move regular, [col + dx, row + dy], board
+
+  for [dx, dy] in cannon_moves_deltas_1
+    if add_regular_move regular, [col + dx, row + dy], board
+      add_regular_move regular, [col + dx * 2, row + dy * 2], board
+
+  for [dx, dy] in cannon_atk_orients
+    bracket = false
+    next = [col, row]
+    while true
+      next = [next[0] + dx, next[1] + dy]
+      break unless is_in_board(next)
+      if board.is_occupied(next)
+        if bracket
+          add_offensive_move offensive, color, next, board
+          break
+        else
+          bracket = true
+
+  {regular, offensive, defensive: []}
+
 valid_moves = (type, color, coord, board) ->
   rule.move.strategies[type] color, coord, board
 
@@ -178,6 +214,7 @@ window.rule.move = {
     bishop,
     rook,
     queen,
-    king
+    king,
+    cannon
   }
 }

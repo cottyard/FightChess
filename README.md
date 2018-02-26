@@ -11,8 +11,8 @@ Rules 规则介绍:
 
 - Attack and Defense 攻击和守护
 
-  The chess pieces move just like they did in traditional chess games. The different part is that the pieces don't take out their enemies, instead, they automatically attack the enemies. And instead of being blocked by allies, your pieces can heal or give shield to your other pieces.
-  棋子的移动和攻击方法和传统国际象棋相同。不同的是，当一个棋子处在可以吃敌人棋子的位置时，它不是直接把敌人吃掉，而是在原地自动攻击它们。如果那些棋子是友军，它就不会攻击，而是给友军增加护盾或恢复生命。
+  The chess pieces move and attack just like they did in traditional chess games. The different part is that the pieces don't take out their enemies, instead, they automatically attack the enemies. And instead of being blocked by allies, your pieces can heal or give shield to your other pieces. There is also a new piece "cannon" that origins from xiangqi and only attacks enemy pieces when there is a "bracket" in between, the bracket being exactly one piece of either sides.
+  棋子的移动和攻击方法和国际象棋相同。炮的攻击方法和中国象棋相同。不同的是，当一个棋子处在可以吃敌人棋子的位置时，它不是直接把敌人吃掉，而是在原地自动攻击它们。如果那些棋子是友军，它就不会攻击，而是给友军增加护盾或恢复生命。
   
 - HP and Shield 血和盾
 
@@ -38,6 +38,7 @@ Rules 规则介绍:
   knight       400       1            1                   5                 0
   pawn         240       0            0                   8                 0
   super_pawn   300       0            0                   7                 0
+  cannon       500       0            0                   6                 0
 ```
 
 2. Attacking Enemies
@@ -45,16 +46,14 @@ Rules 规则介绍:
 ```
                 attack damage    attack cooldown    average attack damage
                                     (second)           (per second)
-  king                3                  5                   6
-  queen               3                 20                   1.5
-  rook               20                 30                   6.7
-  bishop             12                 20                   6
-  knight              3                  5                   6
-  pawn                6                 12                   5
-  super_pawn          7                 14                   5
-
-
-
+  king                3                  0.5                 6
+  queen               3                  2                   1.5
+  rook               20                  3                   6.7
+  bishop             12                  2                   6
+  knight              3                  0.5                 6
+  pawn                6                  1.2                 5
+  super_pawn          7                  1.4                 5
+  cannon            100                  9                  11
 ```
 
 3. Supporting Allies
@@ -68,9 +67,9 @@ Rules 规则介绍:
   bishop             1                           1                              0                             
   knight             1                           1                              0                             
   pawn               1                           1                              0                             
-  super_pawn         1                           1                              0                             
+  super_pawn         1                           1                              0     
+  cannon             0                           0                              0                        
 ```
-
 
 - Hints
 

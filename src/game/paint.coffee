@@ -7,6 +7,7 @@ piece_drawing_types =
     rook: '\u265C'
     queen: '\u265B'
     king: '\u265A'
+    cannon: '\u7832'
   white:
     pawn: '\u2659'
     super_pawn: '\u2659'
@@ -15,6 +16,7 @@ piece_drawing_types =
     rook: '\u2656'
     queen: '\u2655'
     king: '\u2654'
+    cannon: '\u70AE'
 
 piece_super_pawn_decorator = 'S'
 

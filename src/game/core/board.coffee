@@ -207,7 +207,7 @@ try_promoting = (piece, coord) ->
     piece.change_type 'super_pawn'
     piece.activate_move_cd()
 
-transform_column = ['rook', 'knight', 'bishop', 'queen', 'queen', 'bishop', 'knight', 'rook']
+transform_column = ['rook', 'knight', 'bishop', 'queen', 'cannon', 'bishop', 'knight', 'rook']
 try_transforming = (piece, coord) ->
   return unless piece.type is 'super_pawn'
   if (piece.color is 'white' and coord[1] is 8) or
