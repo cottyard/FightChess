@@ -4,8 +4,15 @@ ai_color = null
 ai_current = null
 
 init = ->
-  ai_current = set_ai 1
-  set_interval 3
+  ai = get_value_from_buttons ui.ai
+  ai_current = set_ai ai
+  interval = get_value_from_buttons ui.interval
+  set_interval interval
+
+get_value_from_buttons = (radio_buttons) ->
+  for button in radio_buttons
+    if button.checked
+      return button.value
 
 activate = (color) ->
   ev.hook 'ai_think_round', on_think

@@ -65,6 +65,9 @@ init = ->
   for w of widgets
     ui[w] = document.getElementById w
 
+  for r of radios
+    ui[r] = document.getElementsByName r
+
   ui.startgame.onclick = ->
     ev.trigger 'game_start', {}
 
@@ -88,6 +91,11 @@ widgets = {
   'p2p_panel_ctrl',
   'ai_panel',
   'account_panel'
+}
+
+radios = {
+  'ai',
+  'interval'
 }
 
 window.ui = {
