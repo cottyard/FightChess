@@ -132,10 +132,37 @@ mark_grid = (ctx, coord, style) ->
   shape.rectangle ctx, x, y, grid_size - 2 * padding, grid_size - 2 * padding
   ctx.restore()
 
+mark_attack = (ctx, coord_from, coord_to, transparency) ->
+  [[x, y], [to_x, to_y]] = calc.shrink_segment calc.coord_to_pos(coord_from), calc.coord_to_pos(coord_to)
+  shape.save_style ctx
+  shape.set_style ctx, "rgba(255, 0, 0, #{transparency})"
+  ctx.lineWidth = 3
+  shape.arrow ctx, x, y, to_x, to_y, 10, null, 3
+  shape.restore_style ctx
+
+mark_assist = (ctx, coord_from, coord_to) ->
+  [[x, y], [to_x, to_y]] = calc.shrink_segment calc.coord_to_pos(coord_from), calc.coord_to_pos(coord_to)
+  shape.save_style ctx
+  shape.set_style ctx, shape.style_blue_tp
+  shape.arrow ctx, x, y, to_x, to_y
+  shape.restore_style ctx
+
+mark_destination = (ctx, coord_from, coord_to) ->
+  return if calc.coord_equal coord_from, coord_to
+  [[x, y], [to_x, to_y]] = calc.shrink_segment calc.coord_to_pos(coord_from), calc.coord_to_pos(coord_to), 20, 0
+  [[x, y], [to_x, to_y]] = calc.shrink_segment [x, y], [to_x, to_y], 5
+  shape.save_style ctx
+  shape.set_style ctx, shape.style_cerulean_tp
+  shape.arrow ctx, x, y, to_x, to_y, 20, 5, 20
+  shape.restore_style ctx
+
 window.paint = {
   background,
   piece_at_pos,
   board,
   paint_grid,
-  mark_grid
+  mark_grid,
+  mark_attack,
+  mark_assist,
+  mark_destination
 }

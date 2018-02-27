@@ -59,16 +59,27 @@ randint = ([lower, upper]) ->
 pick_one = (list) ->
   list[calc.randint([0, list.length - 1])]
 
-shrink_segment = (point_from, point_to, length = 15)->
+shrink_segment = (point_from, point_to, length = 15, direction = 2)->
   [x, y] = point_from
   [to_x, to_y] = point_to
   angle = get_segment_angle x, y, to_x, to_y
   dx = length * Math.sin angle
   dy = length * Math.cos angle
-  x += dx
-  y -= dy
-  to_x -= dx
-  to_y += dy
+  shrink_from = no
+  shrink_to = no
+  switch direction
+    when 0
+      shrink_from = yes
+    when 1
+      shrink_to = yes
+    when 2
+      shrink_from = shrink_to = yes
+  if shrink_from
+    x += dx
+    y -= dy
+  if shrink_to
+    to_x -= dx
+    to_y += dy
   return [[x, y], [to_x, to_y]]
 
 get_segment_angle = (x, y, to_x, to_y) ->

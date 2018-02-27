@@ -3,6 +3,7 @@
 previewing = no
 previewing_piece = null
 previewing_coord = [-1, -1]
+previewing_dropping_coord = [-1, -1]
 previewing_color = null
 
 preview_condition = ->
@@ -21,6 +22,11 @@ preview = (evt) ->
     paint.mark_grid ui.ctx.static, mo, shape.style_red_tp
   for mo in moves.defensive
     paint.mark_grid ui.ctx.static, mo, shape.style_blue_tp
+  destination_coord = battleground.instance.get_destination previewing_coord
+  if destination_coord?
+    paint.mark_destination ui.ctx.static, previewing_coord, destination_coord
+  unless calc.coord_equal previewing_dropping_coord, previewing_coord
+    paint.mark_grid ui.ctx.static, previewing_dropping_coord, shape.style_dark_green
 
 abort_preview = ->
   ev.unhook 'render', preview
@@ -133,6 +139,8 @@ hovering_coord = [-1, -1]
 
 on_mousemove = (evt) ->
   coord = calc.pos_to_coord evt.pos
+  if previewing
+    previewing_dropping_coord = calc.pos_to_coord evt.pos
   ev.trigger 'hover', {coord} unless calc.coord_equal hovering_coord, coord
   hovering_coord = coord
 

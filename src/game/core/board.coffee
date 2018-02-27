@@ -16,6 +16,10 @@ class Board
       (null for j in [1..8]) for i in [1..8]
     )
 
+    @destination = (
+      (null for j in [1..8]) for i in [1..8]
+    )
+
     @spawn_cd = {
       white: 0,
       black: 0
@@ -199,6 +203,9 @@ class Board
     
     try_promoting p, to_coord
     try_transforming p, to_coord
+
+  get_destination: (coord) ->
+    null
 
 try_promoting = (piece, coord) ->
   return unless piece.type is 'pawn'

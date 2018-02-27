@@ -1,6 +1,9 @@
-arrow = (ctx, x, y, to_x, to_y, size = 5) ->
-  line ctx, x, y, to_x, to_y
-
+arrow = (ctx, x, y, to_x, to_y, size = 5, width = null, overlap_offset = 0) ->
+  if overlap_offset > 0
+    [_, [line_x, line_y]] = calc.shrink_segment [x, y], [to_x, to_y], overlap_offset, 1
+  else
+    [line_x, line_y] = [to_x, to_y]
+  line ctx, x, y, line_x, line_y, width
   angle = calc.get_segment_angle x, y, to_x, to_y
   ctx.save()
   ctx.translate to_x, to_y
@@ -8,7 +11,9 @@ arrow = (ctx, x, y, to_x, to_y, size = 5) ->
   triangle ctx, 0, 0, -size / 2, size, size / 2, size
   ctx.restore()
 
-line = (ctx, x, y, to_x, to_y) ->
+line = (ctx, x, y, to_x, to_y, width = null) ->
+  if width?
+    ctx.lineWidth = width
   ctx.beginPath()
   ctx.moveTo x, y
   ctx.lineTo to_x, to_y
@@ -83,6 +88,8 @@ style_blue = "#BBF"
 style_brown = "#BB9"
 style_grey = "#DDD"
 style_light = "#888"
+style_cerulean_tp = "rgba(153, 217, 234, 0.7)"
+style_dark_green = "rgb(67, 134, 45)"
 
 window.shape = {
   arrow,
@@ -105,5 +112,7 @@ window.shape = {
   style_blue,
   style_grey,
   style_light,
-  style_tp
+  style_tp,
+  style_cerulean_tp,
+  style_dark_green
 }

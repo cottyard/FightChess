@@ -1,11 +1,7 @@
 class Assist
   constructor: (@coord_from, @coord_to) ->
   render: (ctx) ->
-    [[x, y], [to_x, to_y]] = calc.shrink_segment calc.coord_to_pos(@coord_from), calc.coord_to_pos(@coord_to)
-    shape.save_style ctx
-    shape.set_style ctx, shape.style_blue_tp
-    shape.arrow ctx, x, y, to_x, to_y
-    shape.restore_style ctx
+    paint.mark_assist ctx, @coord_from, @coord_to
     
   next_frame: ->
     no
@@ -15,12 +11,7 @@ class Attack
     @transparency = 1
 
   render: (ctx) ->
-    [[x, y], [to_x, to_y]] = calc.shrink_segment calc.coord_to_pos(@coord_from), calc.coord_to_pos(@coord_to)
-    shape.save_style ctx
-    shape.set_style ctx, "rgba(255, 0, 0, #{@transparency})"
-    ctx.lineWidth = 3
-    shape.arrow ctx, x, y, to_x, to_y, 10
-    shape.restore_style ctx
+    paint.mark_attack ctx, @coord_from, @coord_to, @transparency
 
   next_frame: ->
     @transparency -= 0.2
