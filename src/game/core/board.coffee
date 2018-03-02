@@ -16,10 +16,6 @@ class Board
       (null for j in [1..8]) for i in [1..8]
     )
 
-    @destination = (
-      (null for j in [1..8]) for i in [1..8]
-    )
-
     @spawn_cd = {
       white: 0,
       black: 0
@@ -212,6 +208,10 @@ try_promoting = (piece, coord) ->
   if (piece.color is 'white' and coord[1] is 1) or
      (piece.color is 'black' and coord[1] is 8)
     piece.change_type 'super_pawn'
+    ev.trigger 'piece_promoted', {
+      piece: evt.piece,
+      coord: coord
+    }
     piece.activate_move_cd()
 
 transform_column = ['rook', 'knight', 'bishop', 'queen', 'cannon', 'bishop', 'knight', 'rook']
@@ -220,6 +220,10 @@ try_transforming = (piece, coord) ->
   if (piece.color is 'white' and coord[1] is 8) or
      (piece.color is 'black' and coord[1] is 1)
     piece.change_type transform_column[coord[0] - 1]
+    ev.trigger 'piece_transformed', {
+      piece: evt.piece,
+      coord: coord
+    }
     piece.activate_move_cd()
 
 serialize = (board) ->

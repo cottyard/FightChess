@@ -36,6 +36,11 @@ handle_attack = (board, evt) ->
 
 handle_move = (board, evt) ->
   board.move_to evt.coord_from, evt.coord_to
+  ev.trigger 'piece_move', {
+    piece: evt.piece,
+    coord_from: evt.coord_from,
+    coord_to: evt.coord_to
+  }
 
 init = ->
   ev.hook 'battle_assist', on_battle_assist

@@ -28,8 +28,11 @@ game
   game_end { result: draw/win, player }
   game_start {}
 piece state
+  piece_move { piece, coord_from, coord_to }
   piece_die { piece, coord }
   piece_hurt { piece, coord }
+  piece_promoted { piece, coord }
+  piece_transformed { piece, coord }
 network
   network_out_gamestate { gamestate, boardstate }
   network_out_operation { operation }
