@@ -18,6 +18,7 @@
   <script src="lib/game/core/battle.js"></script> <!-- window.battle -->
   <script src="lib/game/core/board.js"></script> <!-- window.board -->
   <script src="lib/game/core/battleground.js"></script> <!-- window.battleground -->
+  <script src="src/game/core/astar.js"></script> <!-- window.gamestatetest -->
   <script src="lib/game/core/piece.js"></script> <!-- window.piece -->
   <script src="lib/game/operation.js"></script> <!-- window.operation -->
   <script src="lib/game/preview.js"></script> <!-- window.preview -->
@@ -116,10 +117,12 @@
     </div>
   </div>
 
+
   <!-- <div class="column-right">&nbsp;</div> -->
   <script>
     function start() {
       // gamestatetest.test();
+
       ui.init();
       account.init();
       mode.play_demo();
